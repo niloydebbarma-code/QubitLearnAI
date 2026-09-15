@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "tsx server.ts",
+    "setup:runtime": "tsx scripts/configure_runtime.ts",
     "test": "tsx tests/run_all_tests.ts"
   },
   "dependencies": {
