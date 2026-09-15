@@ -13,6 +13,7 @@
   "dependencies": {
     "@google/genai": "^0.2.0",
     "@supabase/supabase-js": "^2.49.1",
+    "dompurify": "^3.4.15",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonrepair": "^3.15.0",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@types/dompurify": "^3.0.5",
     "@types/express": "^5.0.0",
     "@types/katex": "^0.16.7",
     "@types/node": "^22.13.8",

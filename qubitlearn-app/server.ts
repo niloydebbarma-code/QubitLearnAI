@@ -991,7 +991,21 @@ async function handleTutorChat(req: express.Request, res: express.Response) {
     const message = req.body.message || req.body.messages?.[0]?.text || "Hello";
     const rawHistory = req.body.conversationHistory || req.body.history || [];
     const circuitObj = req.body.circuitContext || req.body.circuit;
-    const circuitSummary = req.body.currentCircuitSummary || (circuitObj ? `${circuitObj.numQubits || 2} qubits, ${(circuitObj.gates || []).length} gates` : "");
+    let circuitSummary = req.body.currentCircuitSummary || "";
+    
+    if (circuitObj && typeof circuitObj === 'object') {
+      try {
+        const sim = QuantumEngine.runSimulation(circuitObj);
+        const gatesList = (circuitObj.gates || [])
+          .map((g: any) => `${g.type}(Q${g.qubit}${g.controlQubit !== undefined ? `, Ctrl: Q${g.controlQubit}` : ''})`)
+          .join(' -> ');
+        const stateStr = sim.statevector?.map((c: any) => `${c.amplitude?.re?.toFixed(3) || 0} ${c.braKet}`).join(' + ') || 'Ground State |00>';
+        circuitSummary = `Qubits: ${circuitObj.numQubits || 2}\nGates Sequence: ${gatesList || 'None (Initial Ground State)'}\nCalculated Statevector: ${stateStr}\nMeasurement Probabilities: ${JSON.stringify(sim.probabilities || {})}`;
+      } catch (_) {
+        circuitSummary = `${circuitObj.numQubits || 2} qubits, ${(circuitObj.gates || []).length} gates`;
+      }
+    }
+
     const ai = getAI();
 
     const systemPrompt = `You are the QubitLearn AI Socratic Quantum Computing Tutor.
@@ -1000,7 +1014,7 @@ RULES:
 1. Lead the user toward discovery of fundamental quantum principles (superposition, interference, entanglement, phase kickback).
 2. Never spoon-feed trivial answers; ask thought-provoking, probing questions.
 3. Express quantum states with pristine Dirac bra-ket notation (|0⟩, |1⟩, |+⟩, |−⟩, |Φ⁺⟩).
-4. Reference active circuit state if provided.
+4. Reference active circuit state, gates, and statevector amplitudes provided in context.
 5. Provide a Type B Verification Sidecar.
 ${circuitSummary ? `\nActive Student Circuit Context:\n${circuitSummary}` : ""}`;
 
@@ -1418,7 +1432,13 @@ Return valid JSON:
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(safeExtractJson(response.text, {}));
+    const parsed = safeExtractJson(response.text, {});
+    if (Array.isArray(parsed.criterionScores) && parsed.criterionScores.length > 0) {
+      const calculatedSum = parsed.criterionScores.reduce((acc: number, c: any) => acc + (Number(c.pointsAwarded) || 0), 0);
+      parsed.totalScore = calculatedSum;
+      if (!parsed.maxScore) parsed.maxScore = parsed.criterionScores.length * 5;
+    }
+    res.json(parsed);
   } catch (err: any) {
     res.json({
       totalScore: 8,

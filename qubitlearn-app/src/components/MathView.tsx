@@ -14,6 +14,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import katex from 'katex';
+import DOMPurify from 'dompurify';
 
 interface MathRendererProps {
   math: string;
@@ -63,12 +64,14 @@ function normalizeLatexSymbols(input: string): string {
 export const MathView: React.FC<MathRendererProps> = ({ math, block = false, className = '' }) => {
   const normalized = normalizeLatexSymbols(math);
   try {
-    const html = katex.renderToString(normalized, {
+    const rawHtml = katex.renderToString(normalized, {
       displayMode: block,
       throwOnError: false,
       output: 'htmlAndMathml',
       strict: false,
+      trust: false,
     });
+    const cleanHtml = DOMPurify.sanitize(rawHtml);
     return (
       <span
         className={`inline-math overflow-x-auto max-w-full break-words ${
@@ -76,7 +79,7 @@ export const MathView: React.FC<MathRendererProps> = ({ math, block = false, cla
             ? 'block my-3 text-center overflow-x-auto p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 shadow-2xs font-serif'
             : 'inline-block align-middle mx-1 text-slate-900 font-serif'
         } ${className}`}
-        dangerouslySetInnerHTML={{ __html: html }}
+        dangerouslySetInnerHTML={{ __html: cleanHtml }}
       />
     );
   } catch {
@@ -121,12 +124,14 @@ export const HtmlContentWithLatex: React.FC<HtmlContentWithLatexProps> = ({ html
             try {
               const katexSpan = document.createElement('span');
               katexSpan.className = 'block my-3 text-center overflow-x-auto p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 shadow-2xs font-serif';
-              katexSpan.innerHTML = katex.renderToString(math, {
+              const rawKatex = katex.renderToString(math, {
                 displayMode: true,
                 throwOnError: false,
                 output: 'htmlAndMathml',
                 strict: false,
+                trust: false,
               });
+              katexSpan.innerHTML = DOMPurify.sanitize(rawKatex);
               spanWrapper.appendChild(katexSpan);
             } catch {
               spanWrapper.appendChild(document.createTextNode(part));
@@ -136,12 +141,14 @@ export const HtmlContentWithLatex: React.FC<HtmlContentWithLatexProps> = ({ html
             try {
               const katexSpan = document.createElement('span');
               katexSpan.className = 'inline-block align-middle mx-1 text-slate-900 font-serif';
-              katexSpan.innerHTML = katex.renderToString(math, {
+              const rawKatex = katex.renderToString(math, {
                 displayMode: false,
                 throwOnError: false,
                 output: 'htmlAndMathml',
                 strict: false,
+                trust: false,
               });
+              katexSpan.innerHTML = DOMPurify.sanitize(rawKatex);
               spanWrapper.appendChild(katexSpan);
             } catch {
               spanWrapper.appendChild(document.createTextNode(part));
