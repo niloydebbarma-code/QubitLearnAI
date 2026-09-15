@@ -1,0 +1,9 @@
+{
+  "id": "p_c4_m1_l1",
+  "target_goal": "Apply the foundational gates for Entanglement & Multi-Qubit Systems",
+  "initial_circuit_json": "[]",
+  "hints": [
+    "Think about the statevector.",
+    "Check your unitary matrix."
+  ]
+}

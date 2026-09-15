@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+/* =========================================================================
+   ACADEMIC TIMES NEW ROMAN & CRISP SERIF TYPOGRAPHY SYSTEM
+   Primary Typography: "Times New Roman", Times, "Tinos", "Liberation Serif", serif
+   Code & Quantum Registers: "Fira Code", monospace
+   KaTeX Math Engine: Rich, high-contrast, perfectly aligned mathematical typesetting
+   ========================================================================= */
+
+:root {
+  --theme-bg-main: #f8fafc;
+  --theme-bg-surface: #ffffff;
+  --theme-bg-card: #ffffff;
+  --theme-bg-input: #f1f5f9;
+  --theme-bg-elevated: #ffffff;
+  --theme-border: #e2e8f0;
+  --theme-border-hover: #cbd5e1;
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #334155;
+  --theme-text-muted: #475569;
+  --theme-accent-blue: #2563eb;
+  --theme-accent-indigo: #4f46e5;
+  --theme-accent-cyan: #0284c7;
+  --theme-accent-emerald: #059669;
+  --theme-accent-purple: #7c3aed;
+  --theme-accent-amber: #d97706;
+  --theme-accent-rose: #e11d48;
+  --theme-katex-color: #0f172a;
+  --theme-katex-bg: #f8fafc;
+
+  color-scheme: light;
+  font-family: "Times New Roman", Times, "Tinos", "Liberation Serif", serif;
+}
+
+html {
+  font-size: 16px;
+  font-family: "Times New Roman", Times, "Tinos", "Liberation Serif", serif !important;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  font-family: "Times New Roman", Times, "Tinos", "Liberation Serif", serif !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure headings, buttons, inputs, selects default to Times New Roman serif font */
+h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, select, label, table, th, td {
+  font-family: "Times New Roman", Times, "Tinos", "Liberation Serif", serif;
+}
+
+/* Maintain monospace for code blocks, gates, and registers */
+pre, code, kbd, samp, .font-mono {
+  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
+}
+
+/* Font sizing hierarchy for readability */
+.text-\[9px\], .text-\[10px\] {
+  font-size: 0.8125rem !important; /* 13px */
+  line-height: 1.15rem !important;
+}
+
+.text-\[11px\] {
+  font-size: 0.875rem !important; /* 14px */
+  line-height: 1.25rem !important;
+}
+
+.text-xs {
+  font-size: 0.875rem !important; /* 14px */
+  line-height: 1.25rem !important;
+}
+
+.text-sm {
+  font-size: 0.96875rem !important; /* 15.5px */
+  line-height: 1.45rem !important;
+}
+
+.text-base {
+  font-size: 1.0625rem !important; /* 17px */
+  line-height: 1.65rem !important;
+}
+
+/* Ensure solid colored buttons and badges always have crisp white text */
+button.bg-blue-600,
+button.bg-blue-700,
+button.bg-indigo-600,
+button.bg-indigo-700,
+button.bg-emerald-600,
+button.bg-emerald-700,
+button.bg-purple-600,
+button.bg-purple-700,
+button.bg-rose-600,
+button.bg-rose-700,
+.btn-primary,
+.badge-solid-blue,
+.bg-blue-600 .text-white,
+.bg-blue-700 .text-white,
+.bg-indigo-600 .text-white,
+.bg-indigo-700 .text-white,
+.bg-emerald-600 .text-white,
+.bg-purple-600 .text-white,
+.bg-rose-600 .text-white {
+  color: #ffffff !important;
+}
+
+/* Clean Minimal Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* =========================================================================
+   KATEX MATHEMATICAL RENDERING & POLISHED TYPESETTING
+   ========================================================================= */
+
+.katex {
+  font-size: 1.18em !important;
+  color: #0f172a !important;
+  text-rendering: auto;
+  font-family: KaTeX_Main, "Times New Roman", Times, serif !important;
+}
+
+.katex-html {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.inline-math {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0.2em;
+  vertical-align: middle;
+}
+
+.katex-display {
+  margin: 1em 0 !important;
+  padding: 0.85em 1.25em !important;
+  background: #f8fafc !important;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0 !important;
+  overflow-x: auto;
+  text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+.katex-display > .katex {
+  display: inline-block;
+  white-space: nowrap;
+  text-align: initial;
+}
+
+/* Formula Highlight Blocks */
+.quantum-math-card {
+  font-family: "Times New Roman", Times, "Tinos", serif;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+}
+

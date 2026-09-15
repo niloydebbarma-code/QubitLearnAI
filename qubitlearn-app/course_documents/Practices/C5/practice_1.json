@@ -1,0 +1,9 @@
+{
+  "id": "p_c5_m1_l1",
+  "target_goal": "Apply the foundational gates for Quantum Measurements",
+  "initial_circuit_json": "[]",
+  "hints": [
+    "Think about the statevector.",
+    "Check your unitary matrix."
+  ]
+}

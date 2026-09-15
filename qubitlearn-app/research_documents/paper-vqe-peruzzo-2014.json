@@ -1,0 +1,21 @@
+{
+  "id": "paper-vqe-peruzzo-2014",
+  "title": "A Variational Eigenvalue Solver on a Photonic Quantum Processor",
+  "authors": "Alberto Peruzzo, Jarrod McClean, Peter Shadbolt et al.",
+  "year": 2014,
+  "venue": "Nature Communications",
+  "abstract": "We report the experimental simulation of molecular ground-state energies using a hybrid quantum-classical variational approach on a photonic quantum chip.",
+  "fullExcerpt": "Quantum chemistry calculations require computing ground-state energies of molecular Hamiltonians. The Variational Quantum Eigensolver (VQE) optimizes parameterized rotation angles theta using classical gradient descent while measuring expectation values <H> on a quantum processor.",
+  "precomputedClaims": [
+    {
+      "claim": "VQE executes shallow parameterized circuits resilient to NISQ decoherence.",
+      "evidenceStatus": "Available",
+      "sourceQuote": "A hybrid quantum-classical variational algorithm enables ground-state calculations on existing hardware.",
+      "notes": "Avoids deep circuits required by traditional Quantum Phase Estimation (QPE)."
+    }
+  ],
+  "openGaps": [
+    "Barren plateaus in parameter optimization landscapes for large molecular systems."
+  ],
+  "leanTheoremExample": "theorem vqe_variational_bound (H : Matrix n n ℂ) (ψ : n → ℂ) : ⟪ψ, H *ᵥ ψ⟫_ℂ ≥ ground_state_energy H := by sorry"
+}

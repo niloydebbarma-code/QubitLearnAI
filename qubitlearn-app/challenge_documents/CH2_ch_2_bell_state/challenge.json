@@ -1,0 +1,69 @@
+{
+  "id": "ch-2-bell-state",
+  "slug": "generate-bell-pair-phi-plus",
+  "title": "Challenge 2: Generate Bell State |Φ⁺⟩",
+  "difficulty": "Easy",
+  "rating": 800,
+  "category": "Entanglement",
+  "numQubits": 2,
+  "storyScenario": "Alice and Bob want to share a maximally entangled EPR pair to execute secure quantum teleportation.",
+  "description": "Entangle 2 qubits into the canonical Bell pair: |Φ⁺⟩ = (|00⟩ + |11⟩)/√2.",
+  "targetGoal": "50% probability of |00⟩ and 50% probability of |11⟩, with zero probability for |01⟩ and |10⟩.",
+  "expectedStateDescription": "0.7071|00⟩ + 0.7071|11⟩",
+  "constraints": {
+    "maxGates": 3,
+    "maxDepth": 2,
+    "allowedGates": [
+      "H",
+      "X",
+      "CX",
+      "CZ"
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(2)\n    # Your solution\n    qc.h(0)\n    qc.cx(0, 1)\n    return qc",
+    "pennylane": "import pennylane as qml\n\ndev = qml.device(\"default.qubit\", wires=2)\n@qml.qnode(dev)\ndef circuit():\n    qml.Hadamard(0)\n    qml.CNOT(wires=[0, 1])\n    return qml.state()",
+    "cirq": "import cirq\nq = cirq.LineQubit.range(2)\ncircuit = cirq.Circuit(cirq.H(q[0]), cirq.CNOT(q[0], q[1]))",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0], q[1];"
+  },
+  "testCases": [
+    {
+      "id": "tc1",
+      "name": "Sample: Equal Correlation P(00)=0.5, P(11)=0.5",
+      "type": "sample",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc2",
+      "name": "Hidden: Zero Separability Leakage P(01+10)=0.0",
+      "type": "hidden",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc3",
+      "name": "Hidden: Positive Bell Phase Alignment",
+      "type": "hidden",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc4",
+      "name": "Hidden: Gate Depth <= 2",
+      "type": "hidden"
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "Initial state |00⟩ -> H(q0) -> (|0⟩+|1⟩)/√2 ⊗ |0⟩ = (|00⟩+|10⟩)/√2 -> CX(0,1) -> (|00⟩+|11⟩)/√2.",
+    "algorithmicAnalysis": "Constructs bipartite Einstein-Podolsky-Rosen state violating CHSH Bell inequality (⟨CHSH⟩ = 2√2 > 2).",
+    "optimalSolutions": {
+      "qiskit": "qc.h(0)\nqc.cx(0, 1)"
+    },
+    "complexity": "Time: O(1). Space: O(1) 2 qubits."
+  },
+  "hints": [
+    "First apply Hadamard (H) to Qubit 0 to generate a superposition control.",
+    "Then apply CNOT (CX) with control on Qubit 0 and target on Qubit 1."
+  ],
+  "xpReward": 150
+}

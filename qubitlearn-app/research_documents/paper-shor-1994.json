@@ -1,0 +1,21 @@
+{
+  "id": "paper-shor-1994",
+  "title": "Algorithms for Quantum Computation: Discrete Logarithms and Factoring",
+  "authors": "Peter W. Shor",
+  "year": 1994,
+  "venue": "IEEE FOCS (35th Annual Symposium on Foundations of Computer Science)",
+  "abstract": "A digital computer running quantum algorithms can factor integers and find discrete logarithms in polynomial time O((log N)^3), breaking RSA and Diffie-Hellman cryptosystems.",
+  "fullExcerpt": "Quantum computers can solve prime factorization in polynomial time by finding the period of modular exponentiation using the Quantum Fourier Transform (QFT). Classical factoring requires sub-exponential time via the Number Field Sieve.",
+  "precomputedClaims": [
+    {
+      "claim": "Shor's algorithm achieves polynomial time factoring O((log N)^3).",
+      "evidenceStatus": "Available",
+      "sourceQuote": "A quantum computer can factor integers in polynomial time.",
+      "notes": "Relies on Quantum Fourier Transform for phase estimation."
+    }
+  ],
+  "openGaps": [
+    "Requires thousands of logical qubits with fault-tolerant surface codes to factor 2048-bit RSA."
+  ],
+  "leanTheoremExample": "theorem shor_period_finding (a N : ℕ) (h : Nat.Coprime a N) : ∃ r > 0, a^r ≡ 1 [MOD N] := by sorry"
+}

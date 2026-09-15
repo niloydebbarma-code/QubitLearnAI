@@ -1,0 +1,40 @@
+{
+  "name": "qubitlearn-ai",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "tsx server.ts",
+    "test": "tsx tests/run_all_tests.ts"
+  },
+  "dependencies": {
+    "@google/genai": "^0.2.0",
+    "@supabase/supabase-js": "^2.49.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "katex": "^0.16.21",
+    "lucide-react": "^0.475.0",
+    "pg": "^8.13.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/express": "^5.0.0",
+    "@types/katex": "^0.16.7",
+    "@types/node": "^22.13.8",
+    "@types/pg": "^8.11.11",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.19.3",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

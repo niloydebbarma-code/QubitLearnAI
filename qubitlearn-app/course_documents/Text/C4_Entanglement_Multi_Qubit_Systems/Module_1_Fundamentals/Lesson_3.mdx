@@ -1,0 +1,44 @@
+---
+title: "Multi-Qubit Entanglers (CNOT, CZ, SWAP)"
+author: "Quantum Science Faculty"
+level: "Beginner"
+duration_minutes: 15
+video_url: "https://www.youtube.com/embed/rqmIVeheTVU"
+image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bloch_sphere.svg/500px-Bloch_sphere.svg.png"
+---
+
+# Multi-Qubit Entanglers (CNOT, CZ, SWAP)
+
+Welcome to **Multi-Qubit Entanglers (CNOT, CZ, SWAP)** in the **Entanglement & Multi-Qubit Systems** track. This curriculum module is designed for **Beginner** level quantum computing scholars.
+
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/rqmIVeheTVU" title="Lecture 1: Core Physical Theory" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+## Theoretical Architecture & Physical Principles
+
+Controlled operations entangle quantum registers conditioned on control qubit states.
+
+$$
+CX = |0\rangle\langle 0| \otimes I + |1\rangle\langle 1| \otimes X
+$$
+
+<MathView math="CX = |0\rangle\langle 0| \otimes I + |1\rangle\langle 1| \otimes X" block={true} />
+
+### Geometric State Representation
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bloch_sphere.svg/500px-Bloch_sphere.svg.png" alt="Statevector Bloch Sphere Representation" />
+
+## Multi-SDK Implementation & Laboratory Synthesis
+
+Study the multi-framework code walkthrough below to implement and execute this quantum state across Qiskit, PennyLane, and Google Cirq.
+
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/Is_QH3evpXw" title="Lecture 2: Laboratory Synthesis & Multi-SDK Walkthrough" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+## Interactive Practice Exercise
+
+Use the Circuit Studio below to construct the target state and verify its probability amplitudes against exact statevector simulation.
+
+<PracticeCircuit 
+  targetGoal="Synthesize and verify the quantum state for Multi-Qubit Entanglers (CNOT, CZ, SWAP)"
+  initialGates={[]}
+  expectedStatevector={[]}
+/>

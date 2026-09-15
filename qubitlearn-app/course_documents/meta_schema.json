@@ -1,0 +1,193 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Comprehensive Multi-Perspective Quantum Curriculum Schema",
+  "description": "Enterprise-grade schema covering Learner, Instructor, Researcher, Accessibility, and Verification perspectives.",
+  "type": "object",
+  "properties": {
+    "courses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "courseCode", "title", "level", "instructor", "learnerPerspective"],
+        "properties": {
+          "id": { "type": "string" },
+          "courseCode": { "type": "string", "example": "QC-101" },
+          "title": { "type": "string" },
+          "subtitle": { "type": "string" },
+          "level": { "enum": ["Beginner", "Intermediate", "Advanced", "Expert"] },
+          "category": { "type": "string", "example": "Quantum Algorithms & Foundations" },
+          
+          "instructorPerspective": {
+            "type": "object",
+            "properties": {
+              "instructor": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "title": { "type": "string" },
+                  "institution": { "type": "string" },
+                  "avatarUrl": { "type": "string" },
+                  "bio": { "type": "string" }
+                }
+              },
+              "accreditationMapping": { "type": "string", "example": "IEEE Quantum Education Standards / QED-C Competencies" },
+              "pedagogyNotes": { "type": "string" },
+              "conceptTaxonomy": {
+                "type": "object",
+                "properties": {
+                  "domain": { "type": "string" },
+                  "subDomain": { "type": "string" },
+                  "bloomsTaxonomyLevel": { "enum": ["Remember", "Understand", "Apply", "Analyze", "Evaluate", "Create"] }
+                }
+              }
+            }
+          },
+
+          "learnerPerspective": {
+            "type": "object",
+            "properties": {
+              "prerequisites": { "type": "array", "items": { "type": "string" } },
+              "learningObjectives": { "type": "array", "items": { "type": "string" } },
+              "estimatedTime": {
+                "type": "object",
+                "properties": {
+                  "readingMin": { "type": "integer" },
+                  "labMin": { "type": "integer" },
+                  "quizMin": { "type": "integer" },
+                  "totalMin": { "type": "integer" }
+                }
+              },
+              "gamification": {
+                "type": "object",
+                "properties": {
+                  "xpReward": { "type": "integer" },
+                  "badge": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "name": { "type": "string" },
+                      "icon": { "type": "string" },
+                      "description": { "type": "string" }
+                    }
+                  }
+                }
+              },
+              "realWorldUseCases": { "type": "array", "items": { "type": "string" } },
+              "commonPitfalls": { "type": "array", "items": { "type": "string" } },
+              "keyFormulas": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "latex": { "type": "string" },
+                    "description": { "type": "string" }
+                  }
+                }
+              },
+              "communityStats": {
+                "type": "object",
+                "properties": {
+                  "enrolledCount": { "type": "integer" },
+                  "rating": { "type": "number" },
+                  "reviewCount": { "type": "integer" }
+                }
+              }
+            }
+          },
+
+          "researcherPerspective": {
+            "type": "object",
+            "properties": {
+              "hardwareTargets": { "type": "array", "items": { "type": "string" } },
+              "noiseResilience": { "enum": ["Low", "Medium", "High", "Fault-Tolerant"] },
+              "quantumComplexity": {
+                "type": "object",
+                "properties": {
+                  "timeComplexity": { "type": "string" },
+                  "spaceComplexity": { "type": "string" },
+                  "speedupType": { "enum": ["Exponential", "Quadratic", "Polynomial", "Constant", "None"] }
+                }
+              },
+              "academicCitations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "authors": { "type": "string" },
+                    "title": { "type": "string" },
+                    "journal": { "type": "string" },
+                    "year": { "type": "integer" },
+                    "doiOrArxiv": { "type": "string" }
+                  }
+                }
+              },
+              "formalProof": {
+                "type": "object",
+                "properties": {
+                  "theoremName": { "type": "string" },
+                  "lean4File": { "type": "string" }
+                }
+              }
+            }
+          },
+
+          "accessibilityPerspective": {
+            "type": "object",
+            "properties": {
+              "wcagComplianceLevel": { "type": "string", "default": "WCAG 2.1 AAA" },
+              "voiceCommandAliases": { "type": "array", "items": { "type": "string" } },
+              "closedCaptionsAvailable": { "type": "boolean" },
+              "screenReaderOptimized": { "type": "boolean" },
+              "transcriptDownloadUrl": { "type": "string" }
+            }
+          },
+
+          "modules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "title": { "type": "string" },
+                "sequenceOrder": { "type": "integer" },
+                "lessons": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "title": { "type": "string" },
+                      "contentMdx": { "type": "string" },
+                      "videoUrl": { "type": "string" },
+                      "imageUrl": { "type": "string" },
+                      "interactiveCircuitPresetId": { "type": "string" },
+                      "sdkCodeSnippets": {
+                        "type": "object",
+                        "properties": {
+                          "qiskit": { "type": "string" },
+                          "cirq": { "type": "string" },
+                          "pennylane": { "type": "string" },
+                          "openqasm": { "type": "string" }
+                        }
+                      },
+                      "practice": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "targetGoal": { "type": "string" },
+                          "initialGates": { "type": "array" },
+                          "hints": { "type": "array", "items": { "type": "string" } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

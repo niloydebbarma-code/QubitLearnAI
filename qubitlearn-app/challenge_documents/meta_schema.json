@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Quantum Coding Challenge Schema (CodeChef / LeetCode Grade)",
+  "description": "Enterprise schema for interactive quantum algorithmic coding challenges with multi-test cases, constraints, editorials, and multi-SDK starter code.",
+  "type": "object",
+  "required": ["id", "title", "difficulty", "rating", "numQubits", "targetGoal", "testCases"],
+  "properties": {
+    "id": { "type": "string" },
+    "slug": { "type": "string" },
+    "title": { "type": "string" },
+    "difficulty": { "enum": ["Cakewalk", "Easy", "Medium", "Hard", "Expert"] },
+    "rating": { "type": "integer", "minimum": 500, "maximum": 3000 },
+    "category": { "type": "string" },
+    "numQubits": { "type": "integer", "minimum": 1, "maximum": 8 },
+    "description": { "type": "string" },
+    "storyScenario": { "type": "string" },
+    "targetGoal": { "type": "string" },
+    "expectedStateDescription": { "type": "string" },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "maxGates": { "type": "integer" },
+        "maxDepth": { "type": "integer" },
+        "allowedGates": { "type": "array", "items": { "type": "string" } },
+        "forbiddenGates": { "type": "array", "items": { "type": "string" } },
+        "timeLimitMs": { "type": "integer" },
+        "memoryLimitMb": { "type": "integer" }
+      }
+    },
+    "starterCode": {
+      "type": "object",
+      "properties": {
+        "qiskit": { "type": "string" },
+        "pennylane": { "type": "string" },
+        "cirq": { "type": "string" },
+        "openqasm": { "type": "string" }
+      }
+    },
+    "testCases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "enum": ["sample", "hidden"] },
+          "assertion": { "type": "string" },
+          "minFidelity": { "type": "number" },
+          "expectedProbabilities": { "type": "object" }
+        }
+      }
+    },
+    "editorial": {
+      "type": "object",
+      "properties": {
+        "mathematicalProof": { "type": "string" },
+        "algorithmicAnalysis": { "type": "string" },
+        "optimalSolutions": { "type": "object" },
+        "complexity": { "type": "string" }
+      }
+    },
+    "hints": { "type": "array", "items": { "type": "string" } },
+    "xpReward": { "type": "integer" }
+  }
+}

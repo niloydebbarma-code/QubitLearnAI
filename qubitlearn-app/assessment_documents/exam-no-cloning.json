@@ -1,0 +1,20 @@
+{
+  "id": "exam-no-cloning",
+  "title": "No-Cloning Theorem & Linearity",
+  "question": "Prove why the linearity of quantum mechanics strictly forbids the construction of a universal cloning unitary operator.",
+  "rubricCriteria": [
+    {
+      "criterion": "Formulation of universal cloning condition U|ψ⟩|0⟩ = |ψ⟩|ψ⟩",
+      "maxPoints": 3
+    },
+    {
+      "criterion": "Linearity contradiction on superposition state |+⟩",
+      "maxPoints": 4
+    },
+    {
+      "criterion": "Inner product preservation violation ⟨ψ|φ⟩ = ⟨ψ|φ⟩²",
+      "maxPoints": 3
+    }
+  ],
+  "sampleSolution": "If U clones |0> and |1>, applying U to (|0>+|1>)/sqrt(2) linearly yields (|00>+|11>)/sqrt(2), which is not the cloned state |++> = (|00>+|01>+|10>+|11>)/2."
+}

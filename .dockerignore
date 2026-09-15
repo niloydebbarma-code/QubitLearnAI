@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.npm-render-cache
+dist
+media
+video_assets/log_snap
+presentation copy
+*.pyc
+__pycache__

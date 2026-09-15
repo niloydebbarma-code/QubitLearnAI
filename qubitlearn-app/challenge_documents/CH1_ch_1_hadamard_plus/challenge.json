@@ -1,0 +1,63 @@
+{
+  "id": "ch-1-hadamard-plus",
+  "slug": "create-superposition-plus-state",
+  "title": "Challenge 1: Create Superposition |+⟩",
+  "difficulty": "Cakewalk",
+  "rating": 500,
+  "category": "Superposition",
+  "numQubits": 1,
+  "storyScenario": "Chef Quantum needs to initialize a single photon qubit into an equal superposition coin flip to generate unbiased random numbers.",
+  "description": "Transform Qubit 0 from ground state |0⟩ into equal superposition state |+⟩ = (|0⟩ + |1⟩)/√2 under strict gate bounds.",
+  "targetGoal": "Statevector |ψ⟩ = 1/√2|0⟩ + 1/√2|1⟩ with P(0)=50% and P(1)=50%.",
+  "expectedStateDescription": "0.7071|0⟩ + 0.7071|1⟩",
+  "constraints": {
+    "maxGates": 1,
+    "maxDepth": 1,
+    "allowedGates": [
+      "H"
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(1)\n    # Place your gate here\n    qc.h(0)\n    return qc",
+    "pennylane": "import pennylane as qml\n\ndev = qml.device(\"default.qubit\", wires=1)\n@qml.qnode(dev)\ndef circuit():\n    qml.Hadamard(wires=0)\n    return qml.state()",
+    "cirq": "import cirq\n\nq = cirq.LineQubit(0)\ncircuit = cirq.Circuit(cirq.H(q))",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];"
+  },
+  "testCases": [
+    {
+      "id": "tc1",
+      "name": "Sample: P(0) & P(1) Balance",
+      "type": "sample",
+      "assertion": "P(0)=0.50, P(1)=0.50",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc2",
+      "name": "Hidden: Positive Phase Re(α) = Re(β)",
+      "type": "hidden",
+      "assertion": "Phase angle θ = 0 (Plus state, not Minus state)",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc3",
+      "name": "Hidden: Gate Resource Budget <= 1",
+      "type": "hidden",
+      "assertion": "Total gate count == 1"
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "The Hadamard matrix H = (1/√2)[[1, 1], [1, -1]] transforms basis vector [1, 0]ᵀ into [1/√2, 1/√2]ᵀ = |+⟩.",
+    "algorithmicAnalysis": "A single elementary unitary gate creates continuous quantum superposition in O(1) time.",
+    "optimalSolutions": {
+      "qiskit": "qc.h(0)"
+    },
+    "complexity": "Time: O(1). Space: O(1) 1 qubit."
+  },
+  "hints": [
+    "Apply a single Hadamard (H) gate to Qubit 0.",
+    "The Hadamard gate rotates the state vector 90 degrees around the Y+Z diagonal on the Bloch sphere."
+  ],
+  "xpReward": 100
+}

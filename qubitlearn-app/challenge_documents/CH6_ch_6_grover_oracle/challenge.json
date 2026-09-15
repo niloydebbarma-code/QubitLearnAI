@@ -1,0 +1,64 @@
+{
+  "id": "ch-6-grover-oracle",
+  "slug": "grover-phase-oracle-target-11",
+  "title": "Challenge 6: Grover Oracle for |11⟩",
+  "difficulty": "Hard",
+  "rating": 1800,
+  "category": "Quantum Oracles",
+  "numQubits": 2,
+  "storyScenario": "In an unstructured database of 4 items, item |11⟩ contains the winning cryptographic secret. You must design the Phase Oracle that marks this state.",
+  "description": "Starting with 2 qubits in equal superposition, implement the phase oracle marking |11⟩ with a -1 phase factor without altering other states.",
+  "targetGoal": "|ψ⟩ = 1/2 |00⟩ + 1/2 |01⟩ + 1/2 |10⟩ - 1/2 |11⟩.",
+  "expectedStateDescription": "0.5|00⟩ + 0.5|01⟩ + 0.5|10⟩ - 0.5|11⟩",
+  "constraints": {
+    "maxGates": 4,
+    "maxDepth": 3,
+    "allowedGates": [
+      "H",
+      "CZ",
+      "Z",
+      "CX"
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(2)\n    qc.h(0)\n    qc.h(1)\n    # Mark |11>\n    qc.cz(0, 1)\n    return qc",
+    "pennylane": "import pennylane as qml\ndev = qml.device(\"default.qubit\", wires=2)\n@qml.qnode(dev)\ndef circuit():\n    qml.Hadamard(0)\n    qml.Hadamard(1)\n    qml.CZ(wires=[0, 1])\n    return qml.state()",
+    "cirq": "import cirq\nq = cirq.LineQubit.range(2)\ncircuit = cirq.Circuit(cirq.H(q[0]), cirq.H(q[1]), cirq.CZ(q[0], q[1]))",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nh q[1];\ncz q[0], q[1];"
+  },
+  "testCases": [
+    {
+      "id": "tc1",
+      "name": "Sample: Marked Negative Phase on |11⟩ (α_11 = -0.50)",
+      "type": "sample",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc2",
+      "name": "Hidden: Positive Phase Preservation on |00⟩, |01⟩, |10⟩",
+      "type": "hidden",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc3",
+      "name": "Hidden: Amplitude Conservation (Norm = 1.0)",
+      "type": "hidden",
+      "minFidelity": 0.99
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "Controlled-Z matrix diag(1, 1, 1, -1) applies phase factor e^{iπ} = -1 strictly when both qubits are |1⟩.",
+    "algorithmicAnalysis": "Phase inversion is the critical first step of Grover amplitude amplification, followed by inversion about the mean.",
+    "optimalSolutions": {
+      "qiskit": "qc.cz(0, 1)"
+    },
+    "complexity": "Time: O(1). Space: O(1) 2 qubits."
+  },
+  "hints": [
+    "A Controlled-Z (CZ) gate flips the phase of |11⟩ only, leaving |00⟩, |01⟩, and |10⟩ positive.",
+    "Alternatively, use (I ⊗ H) · CX · (I ⊗ H)."
+  ],
+  "xpReward": 300
+}

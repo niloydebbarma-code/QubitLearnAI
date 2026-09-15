@@ -1,0 +1,21 @@
+{
+  "id": "paper-qaoa-farhi-2014",
+  "title": "A Quantum Approximate Optimization Algorithm",
+  "authors": "Edward Farhi, Jeffrey Goldstone, Sam Gutmann",
+  "year": 2014,
+  "venue": "MIT Technical Report / arXiv:1411.4028",
+  "abstract": "We introduce QAOA, a shallow-depth quantum algorithm for finding approximate solutions to combinatorial optimization problems on NISQ quantum processors.",
+  "fullExcerpt": "QAOA applies alternating layers of a problem Hamiltonian and a transverse mixer Hamiltonian to an initial equal superposition state. As the number of layers p increases, the approximation ratio converges to 1.",
+  "precomputedClaims": [
+    {
+      "claim": "QAOA achieves provable approximation bounds on Max-Cut graphs.",
+      "evidenceStatus": "Available",
+      "sourceQuote": "A quantum approximate optimization algorithm produces good approximate solutions.",
+      "notes": "NISQ-friendly hybrid algorithm."
+    }
+  ],
+  "openGaps": [
+    "Classical optimizer parameter landscape can suffer from non-convex local minima."
+  ],
+  "leanTheoremExample": "theorem qaoa_energy_bound (C : Matrix n n ℂ) (γ β : ℝ) : ∃ E, E ≤ max_cut_cost := by sorry"
+}

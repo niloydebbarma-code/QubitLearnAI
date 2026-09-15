@@ -1,0 +1,39 @@
+---
+title: "Lesson Title"
+author: "QubitLearn Authors"
+level: "Beginner | Intermediate | Advanced"
+duration_minutes: 15
+video_url: "/videos/lesson_1_intro.mp4"
+image_url: "https://example.com/quantum_states.png"
+---
+
+# {frontmatter.title}
+
+Welcome to the lesson on **{frontmatter.title}**. In classical computing, a bit is either $0$ or $1$. In quantum computing, we use a *qubit*, which can exist in a superposition of states:
+
+$$
+|\psi\rangle = \alpha|0\rangle + \beta|1\rangle
+$$
+
+<MathView math="|\alpha|^2 + |\beta|^2 = 1" block={true} />
+
+## Visualizing the Qubit
+
+Below is the Bloch Sphere representation of our current qubit state. Notice how the vector points on the surface of the sphere.
+
+<BlochSphere 
+  coordinates={{ theta: Math.PI/2, phi: 0 }} 
+  interactive={true} 
+/>
+
+## Practice: Build Your First Superposition
+
+Now it's your turn. Use the Circuit Editor below to place a **Hadamard (H) Gate** on `q[0]`.
+
+<PracticeCircuit 
+  targetGoal="Create Superposition (|+⟩)"
+  initialGates={[]}
+  expectedStatevector={[0.70710678, 0.70710678, 0, 0]}
+/>
+
+Once you've built the circuit, click **Simulate** to verify your answer against the real quantum backend!

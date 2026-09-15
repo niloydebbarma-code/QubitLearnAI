@@ -1,0 +1,62 @@
+{
+  "id": "ch-4-ghz-state",
+  "slug": "tripartite-ghz-entanglement",
+  "title": "Challenge 4: 3-Qubit GHZ State",
+  "difficulty": "Medium",
+  "rating": 1200,
+  "category": "Entanglement",
+  "numQubits": 3,
+  "storyScenario": "A distributed quantum computing cluster requires a 3-party entangled state for non-local consensus.",
+  "description": "Create the tripartite Greenberger–Horne–Zeilinger state: |GHZ⟩ = (|000⟩ + |111⟩)/√2.",
+  "targetGoal": "50% probability of |000⟩ and 50% probability of |111⟩ across 3 qubits.",
+  "expectedStateDescription": "0.7071|000⟩ + 0.7071|111⟩",
+  "constraints": {
+    "maxGates": 4,
+    "maxDepth": 3,
+    "allowedGates": [
+      "H",
+      "CX",
+      "CZ"
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(3)\n    qc.h(0)\n    qc.cx(0, 1)\n    qc.cx(1, 2)\n    return qc",
+    "pennylane": "import pennylane as qml\ndev = qml.device(\"default.qubit\", wires=3)\n@qml.qnode(dev)\ndef circuit():\n    qml.Hadamard(0)\n    qml.CNOT(wires=[0, 1])\n    qml.CNOT(wires=[1, 2])\n    return qml.state()",
+    "cirq": "import cirq\nq = cirq.LineQubit.range(3)\ncircuit = cirq.Circuit(cirq.H(q[0]), cirq.CNOT(q[0], q[1]), cirq.CNOT(q[1], q[2]))",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\ncx q[0], q[1];\ncx q[1], q[2];"
+  },
+  "testCases": [
+    {
+      "id": "tc1",
+      "name": "Sample: Equal Amplitude P(000)=0.5, P(111)=0.5",
+      "type": "sample",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc2",
+      "name": "Hidden: Zero Leakage on Other 6 Basis States",
+      "type": "hidden",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc3",
+      "name": "Hidden: Multi-Party Non-Locality Assertion",
+      "type": "hidden",
+      "minFidelity": 0.99
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "|000⟩ -> H(q0) -> (|000⟩+|100⟩)/√2 -> CX(0,1) -> (|000⟩+|110⟩)/√2 -> CX(1,2) -> (|000⟩+|111⟩)/√2.",
+    "algorithmicAnalysis": "GHZ states demonstrate non-statistical quantum non-locality (Mermin-Peres magic square game).",
+    "optimalSolutions": {
+      "qiskit": "qc.h(0)\nqc.cx(0, 1)\nqc.cx(1, 2)"
+    },
+    "complexity": "Time: O(1). Space: O(1) 3 qubits."
+  },
+  "hints": [
+    "Start with H on Qubit 0, then CNOT from Q0 to Q1, then CNOT from Q1 to Q2."
+  ],
+  "xpReward": 200
+}
