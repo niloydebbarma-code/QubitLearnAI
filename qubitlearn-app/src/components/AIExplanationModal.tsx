@@ -146,6 +146,13 @@ export const AIExplanationModal: React.FC<AIExplanationModalProps> = ({
     window.removeEventListener('mouseup', handleMouseUp);
   };
 
+  useEffect(() => {
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
   // Touch drag support for mobile/tablets
   const handleTouchStart = (e: React.TouchEvent) => {
     if (layoutMode !== 'floating') return;
