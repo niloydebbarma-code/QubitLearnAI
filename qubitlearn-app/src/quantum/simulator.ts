@@ -134,10 +134,15 @@ export class QuantumSimulator {
    * Apply a single gate to the current statevector
    */
   private static applyGate(state: Complex[], n: number, gate: GatePlacement): Complex[] {
+    if (!gate || !state || state.length !== (1 << n)) return state;
+
     const dim = 1 << n;
     const nextState: Complex[] = new Array(dim).fill(null).map(() => Complex.zero());
 
     const { type, qubit, controlQubit, controlQubit2, targetQubit, param = 0 } = gate;
+
+    // Safety: ensure target qubit is within valid range [0, n-1]
+    if (qubit < 0 || qubit >= n) return state;
 
     // Single-qubit gates
     if (
@@ -153,7 +158,8 @@ export class QuantumSimulator {
       type === 'Ry' ||
       type === 'Rz'
     ) {
-      const u = this.getSingleQubitMatrix(type, param);
+      const safeParam = isNaN(param) ? 0 : param;
+      const u = this.getSingleQubitMatrix(type, safeParam);
       const targetBit = n - 1 - qubit; // Little-endian representation
 
       for (let i = 0; i < dim; i++) {
@@ -176,6 +182,9 @@ export class QuantumSimulator {
 
     // 2-Qubit Controlled Gates (CX, CZ)
     if (type === 'CX' && controlQubit !== undefined) {
+      // Physical check: control and target cannot be the same qubit
+      if (controlQubit === qubit || controlQubit < 0 || controlQubit >= n) return state;
+
       const cBit = n - 1 - controlQubit;
       const tBit = n - 1 - qubit;
 
@@ -192,6 +201,8 @@ export class QuantumSimulator {
     }
 
     if (type === 'CZ' && controlQubit !== undefined) {
+      if (controlQubit === qubit || controlQubit < 0 || controlQubit >= n) return state;
+
       const cBit = n - 1 - controlQubit;
       const tBit = n - 1 - qubit;
 
@@ -208,9 +219,12 @@ export class QuantumSimulator {
     }
 
     // SWAP Gate
-    if (type === 'SWAP' && targetQubit !== undefined) {
+    if (type === 'SWAP') {
+      const tQ = targetQubit !== undefined ? targetQubit : (qubit === 0 ? 1 : 0);
+      if (tQ === qubit || tQ < 0 || tQ >= n) return state;
+
       const q1Bit = n - 1 - qubit;
-      const q2Bit = n - 1 - targetQubit;
+      const q2Bit = n - 1 - tQ;
 
       for (let i = 0; i < dim; i++) {
         const b1 = (i >> q1Bit) & 1;
@@ -227,6 +241,14 @@ export class QuantumSimulator {
 
     // 3-Qubit Toffoli (CCX)
     if (type === 'CCX' && controlQubit !== undefined && controlQubit2 !== undefined) {
+      if (
+        controlQubit === qubit ||
+        controlQubit2 === qubit ||
+        controlQubit === controlQubit2 ||
+        controlQubit < 0 || controlQubit >= n ||
+        controlQubit2 < 0 || controlQubit2 >= n
+      ) return state;
+
       const c1Bit = n - 1 - controlQubit;
       const c2Bit = n - 1 - controlQubit2;
       const tBit = n - 1 - qubit;

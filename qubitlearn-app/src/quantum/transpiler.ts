@@ -56,6 +56,11 @@ export class CircuitTranspiler {
 
   private static gateToQiskit(g: GatePlacement): string {
     const { type, qubit, controlQubit, controlQubit2, targetQubit, param = 0 } = g;
+    const cQ = controlQubit !== undefined ? controlQubit : (qubit === 0 ? 1 : 0);
+    const tQ = targetQubit !== undefined ? targetQubit : (qubit === 0 ? 1 : 0);
+    const c2Q = controlQubit2 !== undefined ? controlQubit2 : (qubit <= 1 ? 2 : 0);
+    const safeParam = isNaN(param) ? 0 : param;
+
     switch (type) {
       case 'H':
         return `qc.h(${qubit})`;
@@ -74,19 +79,19 @@ export class CircuitTranspiler {
       case 'Tdg':
         return `qc.tdg(${qubit})`;
       case 'Rx':
-        return `qc.rx(${param.toFixed(4)}, ${qubit})`;
+        return `qc.rx(${safeParam.toFixed(4)}, ${qubit})`;
       case 'Ry':
-        return `qc.ry(${param.toFixed(4)}, ${qubit})`;
+        return `qc.ry(${safeParam.toFixed(4)}, ${qubit})`;
       case 'Rz':
-        return `qc.rz(${param.toFixed(4)}, ${qubit})`;
+        return `qc.rz(${safeParam.toFixed(4)}, ${qubit})`;
       case 'CX':
-        return `qc.cx(${controlQubit}, ${qubit})`;
+        return `qc.cx(${cQ}, ${qubit})`;
       case 'CZ':
-        return `qc.cz(${controlQubit}, ${qubit})`;
+        return `qc.cz(${cQ}, ${qubit})`;
       case 'SWAP':
-        return `qc.swap(${qubit}, ${targetQubit})`;
+        return `qc.swap(${qubit}, ${tQ})`;
       case 'CCX':
-        return `qc.ccx(${controlQubit}, ${controlQubit2}, ${qubit})`;
+        return `qc.ccx(${cQ}, ${c2Q}, ${qubit})`;
       case 'M':
         return `qc.measure(${qubit}, ${qubit})`;
       default:
@@ -126,6 +131,11 @@ export class CircuitTranspiler {
 
   private static gateToCirq(g: GatePlacement): string {
     const { type, qubit, controlQubit, controlQubit2, targetQubit, param = 0 } = g;
+    const cQ = controlQubit !== undefined ? controlQubit : (qubit === 0 ? 1 : 0);
+    const tQ = targetQubit !== undefined ? targetQubit : (qubit === 0 ? 1 : 0);
+    const c2Q = controlQubit2 !== undefined ? controlQubit2 : (qubit <= 1 ? 2 : 0);
+    const safeParam = isNaN(param) ? 0 : param;
+
     switch (type) {
       case 'H':
         return `circuit.append(cirq.H(qubits[${qubit}]))`;
@@ -140,19 +150,19 @@ export class CircuitTranspiler {
       case 'T':
         return `circuit.append(cirq.T(qubits[${qubit}]))`;
       case 'Rx':
-        return `circuit.append(cirq.rx(${param.toFixed(4)})(qubits[${qubit}]))`;
+        return `circuit.append(cirq.rx(${safeParam.toFixed(4)})(qubits[${qubit}]))`;
       case 'Ry':
-        return `circuit.append(cirq.ry(${param.toFixed(4)})(qubits[${qubit}]))`;
+        return `circuit.append(cirq.ry(${safeParam.toFixed(4)})(qubits[${qubit}]))`;
       case 'Rz':
-        return `circuit.append(cirq.rz(${param.toFixed(4)})(qubits[${qubit}]))`;
+        return `circuit.append(cirq.rz(${safeParam.toFixed(4)})(qubits[${qubit}]))`;
       case 'CX':
-        return `circuit.append(cirq.CNOT(qubits[${controlQubit}], qubits[${qubit}]))`;
+        return `circuit.append(cirq.CNOT(qubits[${cQ}], qubits[${qubit}]))`;
       case 'CZ':
-        return `circuit.append(cirq.CZ(qubits[${controlQubit}], qubits[${qubit}]))`;
+        return `circuit.append(cirq.CZ(qubits[${cQ}], qubits[${qubit}]))`;
       case 'SWAP':
-        return `circuit.append(cirq.SWAP(qubits[${qubit}], qubits[${targetQubit}]))`;
+        return `circuit.append(cirq.SWAP(qubits[${qubit}], qubits[${tQ}]))`;
       case 'CCX':
-        return `circuit.append(cirq.TOFFOLI(qubits[${controlQubit}], qubits[${controlQubit2}], qubits[${qubit}]))`;
+        return `circuit.append(cirq.TOFFOLI(qubits[${cQ}], qubits[${c2Q}], qubits[${qubit}]))`;
       case 'M':
         return `circuit.append(cirq.measure(qubits[${qubit}], key='m_${qubit}'))`;
       default:
@@ -197,6 +207,11 @@ export class CircuitTranspiler {
 
   private static gateToPennyLane(g: GatePlacement): string {
     const { type, qubit, controlQubit, controlQubit2, targetQubit, param = 0 } = g;
+    const cQ = controlQubit !== undefined ? controlQubit : (qubit === 0 ? 1 : 0);
+    const tQ = targetQubit !== undefined ? targetQubit : (qubit === 0 ? 1 : 0);
+    const c2Q = controlQubit2 !== undefined ? controlQubit2 : (qubit <= 1 ? 2 : 0);
+    const safeParam = isNaN(param) ? 0 : param;
+
     switch (type) {
       case 'H':
         return `qml.Hadamard(wires=${qubit})`;
@@ -215,19 +230,19 @@ export class CircuitTranspiler {
       case 'Tdg':
         return `qml.adjoint(qml.T(wires=${qubit}))`;
       case 'Rx':
-        return `qml.RX(${param.toFixed(4)}, wires=${qubit})`;
+        return `qml.RX(${safeParam.toFixed(4)}, wires=${qubit})`;
       case 'Ry':
-        return `qml.RY(${param.toFixed(4)}, wires=${qubit})`;
+        return `qml.RY(${safeParam.toFixed(4)}, wires=${qubit})`;
       case 'Rz':
-        return `qml.RZ(${param.toFixed(4)}, wires=${qubit})`;
+        return `qml.RZ(${safeParam.toFixed(4)}, wires=${qubit})`;
       case 'CX':
-        return `qml.CNOT(wires=[${controlQubit}, ${qubit}])`;
+        return `qml.CNOT(wires=[${cQ}, ${qubit}])`;
       case 'CZ':
-        return `qml.CZ(wires=[${controlQubit}, ${qubit}])`;
+        return `qml.CZ(wires=[${cQ}, ${qubit}])`;
       case 'SWAP':
-        return `qml.SWAP(wires=[${qubit}, ${targetQubit}])`;
+        return `qml.SWAP(wires=[${qubit}, ${tQ}])`;
       case 'CCX':
-        return `qml.Toffoli(wires=[${controlQubit}, ${controlQubit2}, ${qubit}])`;
+        return `qml.Toffoli(wires=[${cQ}, ${c2Q}, ${qubit}])`;
       case 'M':
         return `# Measurement on wire ${qubit}`;
       default:
