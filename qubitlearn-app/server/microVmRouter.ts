@@ -18,6 +18,7 @@
 
 import { SimulationLabResult } from '../src/types';
 import { QuantumEngine } from './quantumEngine';
+import { firecrackerSandbox } from './firecrackerSandbox';
 
 export type MicroVmSdk =
   | 'qiskit'
@@ -47,6 +48,11 @@ export interface MicroVmExecutionResponse {
     vmMemoryMb: number;
     executionTimeMs: number;
     coldStartType: 'snapshot_resume' | 'in_memory_ipc';
+    isolationMode?: string;
+    vmProvider?: string;
+    executionMode?: string;
+    hypervisor?: string;
+    snapshotName?: string;
   };
   results: SimulationLabResult;
   verificationAudit: {
@@ -83,6 +89,7 @@ export class MicroVMSandboxRouter {
     const startTime = performance.now();
     const sdkKey = (options.sdk || 'qiskit').toLowerCase() as MicroVmSdk;
     const targetSdk = this.SDK_REGISTRY[sdkKey] || this.SDK_REGISTRY.qiskit;
+    const sandboxStatus = firecrackerSandbox.getStatus();
 
     // Run exact numerical Hilbert space transformation
     const simResult = await QuantumEngine.runSimulationAsync(circuitJson, {
@@ -115,6 +122,11 @@ export class MicroVMSandboxRouter {
         vmMemoryMb: targetSdk.maxMemoryMb,
         executionTimeMs: Math.max(1.2, execDurationMs),
         coldStartType: 'snapshot_resume',
+        isolationMode: sandboxStatus.isolationMode,
+        vmProvider: sandboxStatus.vmProvider,
+        executionMode: sandboxStatus.executionMode,
+        hypervisor: sandboxStatus.hypervisor,
+        snapshotName: targetSdk.snapshotName,
       },
       results: simResult,
       verificationAudit: {
