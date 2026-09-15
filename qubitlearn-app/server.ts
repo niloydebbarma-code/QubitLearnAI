@@ -57,6 +57,9 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+// 1. Trust proxy for Cloud Run, Render, Cloudflare & Nginx client IP resolution
+app.set("trust proxy", 1);
+
 app.use(express.json({ limit: "20mb" }));
 
 import { getVertexAIClient, generateContentResilient } from "./server/vertexAiClient";
@@ -64,6 +67,27 @@ import { apiCatalogRouter } from "./server/apiCatalogRouter";
 import { firecrackerSandbox } from "./server/firecrackerSandbox";
 import { GiallarCompilerVerifier } from "./src/quantum/giallarVerifier";
 import * as Prompts from "./server/exactPrompts";
+import { globalApiLimiter, aiEndpointLimiter, payloadSecurityGuard } from "./server/rateLimiter";
+
+// 2. Global DDoS & Abuse Limiter (120 req/min per IP)
+app.use(globalApiLimiter);
+
+// 3. Payload Size & Prompt Length Security Guard
+app.use(payloadSecurityGuard);
+
+// 4. Rate limit expensive Vertex AI / Gemini LLM endpoints (15 req/10 min per IP)
+app.use([
+  "/api/ai",
+  "/api/agents",
+  "/api/v1/agents",
+  "/v1/agents",
+  "/api/vertex-ai",
+  "/api/solve",
+  "/api/explain",
+  "/api/vision",
+  "/api/debugger",
+  "/api/optimize"
+], aiEndpointLimiter);
 
 function getAI(): GoogleGenAI | null {
   return getVertexAIClient();
