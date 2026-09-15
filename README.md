@@ -24,6 +24,7 @@
 | 🌐 **Live Deployed MVP** | Production Web Application deployed on cloud infrastructure | *[Evaluator Access Provided via Official Portal]* |
 | 🎬 **Pitch Video Demo** | 54-Second Motion-Graphics & Working Prototype Showcase | *[Evaluator Access Provided via Official Portal]* |
 | 📑 **Architecture & Verification Report** | Formal System Specifications & Proof Bounds (Vector PDF) | [`project_documents/System_Architecture_and_Verification_Report.pdf`](project_documents/System_Architecture_and_Verification_Report.pdf) |
+| ☁️ **Cloud VM & Runtime Specification** | Multi-VM Topology, Hardware KVM, Cost & Sizing Analysis | [`project_documents/Cloud_VM_and_Runtime_Architecture.md`](project_documents/Cloud_VM_and_Runtime_Architecture.md) |
 | 🔬 **System Audit & Test Suite** | 24-Module Automated Verification Report ($F \ge 0.999$, Latency Benchmark) | [`project_documents/Test_Results.md`](project_documents/Test_Results.md) |
 | 🐳 **Dockerized Deployment** | Reproducible multi-stage Dockerfile & Compose stack | [`Dockerfile`](Dockerfile) • [`docker-compose.yml`](docker-compose.yml) |
 
@@ -190,7 +191,15 @@ npm run dev
 npm run build
 ```
 
-### Option C: Run the Complete Verification Test Suite
+### Option C: Interactive Runtime & VM Configurator CLI
+
+```bash
+cd qubitlearn-app
+npm run setup:runtime
+# Interactive scan of WSL2, /dev/kvm, Firecracker, Python & target VM mode selection
+```
+
+### Option D: Run the Complete Verification Test Suite
 
 ```bash
 cd qubitlearn-app
@@ -216,6 +225,7 @@ QubitLearnAI/
 │   │   ├── App.tsx                        # Application Root
 │   │   └── types.ts                       # TypeScript Data Contracts & Interfaces
 │   ├── server/                            # Express Backend, Vertex AI, MicroVM Router
+│   ├── scripts/                           # Runtime & VM Setup Configurator CLI
 │   ├── server.ts                          # Production Entry Point & WebSocket Gateway
 │   ├── tests/                             # 24 Automated Test Suites
 │   ├── package.json                       # Dependencies & build scripts
@@ -224,6 +234,7 @@ QubitLearnAI/
 └── project_documents/                     # Technical Specifications & Audits
     ├── readme_banner.svg                  # Brand Architecture Banner Graphic
     ├── System_Architecture_and_Verification_Report.pdf # Formal Architecture & Invariant Bounds (PDF)
+    ├── Cloud_VM_and_Runtime_Architecture.md # Multi-VM Topology, Hardware KVM & Cost Analysis
     ├── Test_Results.md                    # 24-Module Verification Test Suite Report
     └── Browser_Quantum_Simulation_Memory_Limits.md # V8 & WASM 14 vs 28 Qubit Bounds
 ```
