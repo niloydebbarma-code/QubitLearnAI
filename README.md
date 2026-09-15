@@ -152,6 +152,19 @@ Comprehensive system audits verified across 24 core modules (detailed in `projec
 
 ---
 
+## ☁️ Execution Modes & Cloud VM Topology
+
+QubitLearn AI dynamically routes quantum execution across four interchangeable runtime modes based on environment configuration (`.env`):
+
+| Mode (`QUANTUM_EXECUTION_MODE`) | Target Infrastructure | Nested KVM Required? | Typical Cost | Security Boundary |
+| :--- | :--- | :---: | :---: | :--- |
+| **`IN_MEMORY_V8`** *(Default)* | Google Cloud Run / Local Node | **No** | **$0.00** (Free Tier) | Fast in-memory V8 sandbox with deterministic Hilbert space simulation ($<2\text{ ms}$). |
+| **`FIRECRACKER_KVM`** | GCP Compute Engine N2 (`n2-standard-2`) or Local WSL2 | **Yes** (`/dev/kvm`) | ~$0.097/hr (~$5–7 for judging) | Hardware-level microVM jail (5ms cold start, zero network access, ephemeral cleanup). |
+| **`CLOUD_RUN_SANDBOX`** | Google Cloud Run Container Sandbox | **No** | Free tier / Pay-per-req | Managed container isolation for executing sandboxed Python code. |
+| **`BINARY_RUNTIME`** | GCP Compute Engine E2 (`e2-micro` / `e2-medium`) | **No** | $0 to ~$7/month | Standalone precompiled SDK binary execution on standard VMs. |
+
+---
+
 ## 🐳 Docker Quickstart & Local Deployment
 
 ### Prerequisites
@@ -191,12 +204,17 @@ npm run dev
 npm run build
 ```
 
-### Option C: Interactive Runtime & VM Configurator CLI
+### Option C: 1-Click Firecracker & KVM Setup (Local WSL2 / Linux)
 
 ```bash
 cd qubitlearn-app
+
+# 1. Install Firecracker v1.7.0 & configure /dev/kvm permissions
+npm run setup:firecracker
+
+# 2. Launch the interactive runtime selector & diagnostic scanner
 npm run setup:runtime
-# Interactive scan of WSL2, /dev/kvm, Firecracker, Python & target VM mode selection
+# Automatically detects WSL2, /dev/kvm, Firecracker, Python & configures .env
 ```
 
 ### Option D: Run the Complete Verification Test Suite
@@ -204,6 +222,60 @@ npm run setup:runtime
 ```bash
 cd qubitlearn-app
 npx tsx tests/run_all_tests.ts
+```
+
+---
+
+## 🚀 Google Cloud Production Deployment (`gcloud` CLI)
+
+### 1. Deploy Main Application to Google Cloud Run
+
+```bash
+# Set your active Google Cloud project
+gcloud config set project YOUR_PROJECT_ID
+
+# Enable required Google Cloud services
+gcloud services enable run.googleapis.com aiplatform.googleapis.com compute.googleapis.com
+
+# Deploy qubitlearn-app container directly to Cloud Run
+gcloud run deploy qubitlearn-app \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --memory 1Gi \
+  --cpu 1 \
+  --concurrency 20 \
+  --max-instances 3 \
+  --set-env-vars="NODE_ENV=production,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=global,QUANTUM_EXECUTION_MODE=IN_MEMORY_V8,VM_PROVIDER=CLOUD_RUN"
+```
+
+### 2. (Optional) Deploy Dedicated Compute Engine N2 VM for Firecracker MicroVMs
+
+```bash
+# Create base disk with Ubuntu 22.04 LTS
+gcloud compute disks create disk-base \
+  --image-family=ubuntu-2204-lts \
+  --image-project=ubuntu-os-cloud \
+  --zone=us-central1-a
+
+# Create custom image with Nested Virtualization (Intel VMX) enabled
+gcloud compute images create nested-ubuntu-2204 \
+  --source-disk=disk-base \
+  --source-disk-zone=us-central1-a \
+  --licenses="https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
+
+# Launch n2-standard-2 instance with hardware KVM support
+gcloud compute instances create firecracker-sandbox-host \
+  --zone=us-central1-a \
+  --machine-type=n2-standard-2 \
+  --image=nested-ubuntu-2204 \
+  --tags=firecracker-sandbox
+
+# Update Cloud Run to route sandboxed execution to the N2 host over private VPC
+gcloud run services update qubitlearn-app \
+  --region us-central1 \
+  --update-env-vars="QUANTUM_EXECUTION_MODE=FIRECRACKER_KVM,VM_PROVIDER=GCP_N2_KVM,FIRECRACKER_SERVICE_URL=http://<INTERNAL_N2_IP>:8080"
 ```
 
 ---
