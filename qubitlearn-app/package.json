@@ -15,6 +15,7 @@
     "@supabase/supabase-js": "^2.49.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonrepair": "^3.15.0",
     "katex": "^0.16.21",
     "lucide-react": "^0.475.0",
     "pg": "^8.13.3",

@@ -68,6 +68,7 @@ import { firecrackerSandbox } from "./server/firecrackerSandbox";
 import { GiallarCompilerVerifier } from "./src/quantum/giallarVerifier";
 import * as Prompts from "./server/exactPrompts";
 import { globalApiLimiter, aiEndpointLimiter, payloadSecurityGuard } from "./server/rateLimiter";
+import { safeExtractJson } from "./server/jsonHelper";
 
 // 2. Global DDoS & Abuse Limiter (120 req/min per IP)
 app.use(globalApiLimiter);
@@ -790,7 +791,7 @@ Return valid JSON adhering strictly to Section 6.1 schema:
     }
 
     circuitBreakers.geminiService.recordSuccess();
-    const result = JSON.parse(responseText || "{}");
+    const result = safeExtractJson(responseText, {});
     result.inputMode = inputMode;
 
     if (!result.problems) {
@@ -1331,7 +1332,7 @@ Return valid JSON:
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(JSON.parse(response.text || "{}"));
+    res.json(safeExtractJson(response.text, {}));
   } catch (err: any) {
     const timeString = new Date((req.body.timestamp || 142) * 1000).toISOString().substr(11, 8);
     res.json({
@@ -1417,7 +1418,7 @@ Return valid JSON:
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(JSON.parse(response.text || "{}"));
+    res.json(safeExtractJson(response.text, {}));
   } catch (err: any) {
     res.json({
       totalScore: 8,
@@ -1551,7 +1552,7 @@ Return structured JSON adhering strictly to Section 6.3 schema.`;
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(JSON.parse(response.text || "{}"));
+    res.json(safeExtractJson(response.text, {}));
   } catch (err: any) {
     res.json({
       paperMetadata: { title: req.body.paperTitle || "Quantum Research Paper", authors: ["Quantum Research Consortium"], publicationDate: "2024", userRole: "researcher" },
@@ -1683,7 +1684,7 @@ Return valid JSON adhering to Section 6.5 schema:
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(JSON.parse(response.text || "{}"));
+    res.json(safeExtractJson(response.text, {}));
   } catch (err: any) {
     res.json({
       claimId: `claim_${Date.now()}`,
@@ -1782,7 +1783,7 @@ Return valid JSON conforming to Section 6.6 schema:
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(JSON.parse(response.text || "{}"));
+    res.json(safeExtractJson(response.text, {}));
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -1872,7 +1873,7 @@ Return valid JSON: { "explanation": string }`;
         config: { responseMimeType: "application/json" },
       });
 
-      const parsed = JSON.parse(response.text || "{}");
+    const parsed = safeExtractJson(response.text, {});
       if (parsed.explanation) aiExplanation = parsed.explanation;
     } catch (_) {}
 
@@ -1996,7 +1997,7 @@ Return valid JSON conforming to Section 6.8 schema:
       config: { responseMimeType: "application/json" },
     });
 
-    res.json(JSON.parse(response.text || "{}"));
+    res.json(safeExtractJson(response.text, {}));
   } catch (err: any) {
     res.json({
       studentId: req.body.userId || "default_student",
