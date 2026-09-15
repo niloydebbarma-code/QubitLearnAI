@@ -32,8 +32,8 @@ function runCommand(cmd: string): string {
 function inspectHost(): HostDiagnostics {
   // 1. Check WSL
   let wslInstalled = false;
-  const wslCheck = runCommand('wsl.exe --version');
-  if (wslCheck.includes('WSL version') || wslCheck.includes('Kernel version')) {
+  const wslUname = runCommand('wsl.exe -e uname -s');
+  if (wslUname.toLowerCase().includes('linux') || process.platform === 'linux') {
     wslInstalled = true;
   }
 
@@ -43,8 +43,8 @@ function inspectHost(): HostDiagnostics {
     const kvm = runCommand('ls -la /dev/kvm');
     kvmActive = kvm.includes('/dev/kvm');
   } else if (wslInstalled) {
-    const kvm = runCommand('wsl.exe -e sh -c "ls -la /dev/kvm"');
-    kvmActive = kvm.includes('/dev/kvm');
+    const kvm = runCommand('wsl.exe -e sh -c "test -e /dev/kvm && echo KVM_OK"');
+    kvmActive = kvm.includes('KVM_OK');
   }
 
   // 3. Check Firecracker binary
@@ -52,7 +52,7 @@ function inspectHost(): HostDiagnostics {
   let firecrackerVersion: string | null = null;
   let fcCheck = runCommand('firecracker --version');
   if (!fcCheck && wslInstalled) {
-    fcCheck = runCommand('wsl.exe -e sh -c "firecracker --version 2>/dev/null || $HOME/firecracker/firecracker --version 2>/dev/null"');
+    fcCheck = runCommand('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version 2>/dev/null || firecracker --version 2>/dev/null"');
   }
   if (fcCheck.includes('Firecracker v')) {
     firecrackerInstalled = true;
