@@ -9,21 +9,38 @@
 
 import { execSync } from 'child_process';
 
+export type QuantumExecutionMode = 
+  | 'FIRECRACKER_KVM' 
+  | 'BINARY_RUNTIME' 
+  | 'CLOUD_RUN_SANDBOX' 
+  | 'IN_MEMORY_V8';
+
+export type VmProvider = 
+  | 'GCP_N2_KVM' 
+  | 'GCP_E2' 
+  | 'CLOUD_RUN' 
+  | 'LOCAL_WSL2'
+  | 'AUTO';
+
 export interface FirecrackerStatus {
   isAvailable: boolean;
   version: string | null;
   kvmActive: boolean;
   hypervisor: string;
-  isolationMode: 'KVM_FIRECRACKER_MICROVM' | 'ISOLATED_NODE_VM';
+  executionMode: QuantumExecutionMode;
+  vmProvider: VmProvider;
+  isolationMode: 'KVM_FIRECRACKER_MICROVM' | 'BINARY_RUNTIME_SANDBOX' | 'CLOUD_RUN_SANDBOX' | 'ISOLATED_NODE_VM';
   memoryLimitMb: number;
   cpuTimeoutMs: number;
+  binaryDir?: string;
+  serviceUrl?: string;
   runtimeDetails: string;
 }
 
 export interface SandboxExecutionResult {
   success: boolean;
   executionId: string;
-  isolation: 'KVM_FIRECRACKER_MICROVM' | 'ISOLATED_NODE_VM';
+  isolation: 'KVM_FIRECRACKER_MICROVM' | 'BINARY_RUNTIME_SANDBOX' | 'CLOUD_RUN_SANDBOX' | 'ISOLATED_NODE_VM';
   executionTimeMs: number;
   memoryUsedMb: number;
   stdout: string;
@@ -46,35 +63,125 @@ class FirecrackerSandboxManager {
       return this.statusCache;
     }
 
+    const envMode = (process.env.QUANTUM_EXECUTION_MODE || '').toUpperCase() as QuantumExecutionMode;
+    const envProvider = (process.env.VM_PROVIDER || 'AUTO').toUpperCase() as VmProvider;
+    const serviceUrl = process.env.FIRECRACKER_SERVICE_URL;
+    const binaryDir = process.env.SDK_BINARY_DIR || './bin';
+    const memoryLimitMb = parseInt(process.env.SANDBOX_MEMORY_LIMIT_MB || '128', 10);
+    const cpuTimeoutMs = parseInt(process.env.SANDBOX_TIMEOUT_MS || '3000', 10);
+
     let isAvailable = false;
     let version: string | null = null;
     let kvmActive = false;
+    let effectiveMode: QuantumExecutionMode = 'IN_MEMORY_V8';
+    let effectiveProvider: VmProvider = envProvider;
+    let isolationMode: FirecrackerStatus['isolationMode'] = 'ISOLATED_NODE_VM';
+    let hypervisor = 'V8 Context Sandbox';
     let runtimeDetails = 'In-Memory V8 Sandbox Runtime';
 
-    try {
-      const fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version"', {
-        timeout: 4000,
-        encoding: 'utf8',
-      });
-
-      if (fcCheck.includes('Firecracker v')) {
+    // 1. Explicit or Auto-detected Mode Resolution
+    if (envMode === 'BINARY_RUNTIME' || (!envMode && process.env.SDK_BINARY_DIR)) {
+      effectiveMode = 'BINARY_RUNTIME';
+      effectiveProvider = envProvider !== 'AUTO' ? envProvider : 'GCP_E2';
+      isAvailable = true;
+      version = 'v1.0.0-bin';
+      kvmActive = false;
+      isolationMode = 'BINARY_RUNTIME_SANDBOX';
+      hypervisor = 'Precompiled SDK Binary Engine';
+      runtimeDetails = `Direct Standalone SDK Binary Execution (Path: ${binaryDir})`;
+    } else if (envMode === 'CLOUD_RUN_SANDBOX') {
+      effectiveMode = 'CLOUD_RUN_SANDBOX';
+      effectiveProvider = 'CLOUD_RUN';
+      isAvailable = true;
+      version = 'gcp-cloud-run-v1';
+      kvmActive = false;
+      isolationMode = 'CLOUD_RUN_SANDBOX';
+      hypervisor = 'Google Cloud Run Managed Sandbox';
+      runtimeDetails = 'Google Cloud Run Managed Container Execution Sandbox';
+    } else if (envMode === 'FIRECRACKER_KVM' || serviceUrl) {
+      effectiveMode = 'FIRECRACKER_KVM';
+      effectiveProvider = envProvider !== 'AUTO' ? envProvider : (serviceUrl ? 'GCP_N2_KVM' : 'LOCAL_WSL2');
+      
+      if (serviceUrl) {
         isAvailable = true;
-        version = fcCheck.split('\n')[0].trim();
+        version = 'v1.7.0';
         kvmActive = true;
-        runtimeDetails = `Real Firecracker v1.7.0 (Linux KVM Hardware Acceleration)`;
+        isolationMode = 'KVM_FIRECRACKER_MICROVM';
+        hypervisor = 'Linux KVM (GCP N2 VM Remote Daemon)';
+        runtimeDetails = `Compute Engine N2 VM (Dedicated Linux KVM Firecracker Sandbox at ${serviceUrl})`;
+      } else {
+        // Native local/WSL2 KVM check
+        let fcCheck = '';
+        try {
+          fcCheck = execSync('firecracker --version', { timeout: 2000, encoding: 'utf8' });
+        } catch (_) {
+          try {
+            fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version"', {
+              timeout: 4000,
+              encoding: 'utf8',
+            });
+          } catch (_) {
+            fcCheck = '';
+          }
+        }
+
+        if (fcCheck && fcCheck.includes('Firecracker v')) {
+          isAvailable = true;
+          version = fcCheck.split('\n')[0].trim();
+          kvmActive = true;
+          isolationMode = 'KVM_FIRECRACKER_MICROVM';
+          hypervisor = 'Linux KVM Hardware Acceleration';
+          runtimeDetails = `Linux KVM Hardware Acceleration (${version})`;
+        } else {
+          // Graceful fallback to V8
+          effectiveMode = 'IN_MEMORY_V8';
+          isolationMode = 'ISOLATED_NODE_VM';
+          hypervisor = 'V8 Context Sandbox (KVM unavailable)';
+          runtimeDetails = 'In-Memory V8 Sandbox Runtime (KVM fallback)';
+        }
       }
-    } catch (_) {
-      isAvailable = false;
+    } else {
+      // Auto-detect native KVM or fallback to V8
+      try {
+        let fcCheck = '';
+        try {
+          fcCheck = execSync('firecracker --version', { timeout: 2000, encoding: 'utf8' });
+        } catch (_) {
+          try {
+            fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version"', {
+              timeout: 4000,
+              encoding: 'utf8',
+            });
+          } catch (_) {}
+        }
+
+        if (fcCheck && fcCheck.includes('Firecracker v')) {
+          isAvailable = true;
+          version = fcCheck.split('\n')[0].trim();
+          kvmActive = true;
+          effectiveMode = 'FIRECRACKER_KVM';
+          effectiveProvider = 'LOCAL_WSL2';
+          isolationMode = 'KVM_FIRECRACKER_MICROVM';
+          hypervisor = 'Linux KVM (WSL2 Direct Acceleration)';
+          runtimeDetails = `Real Firecracker ${version} (Linux KVM Hardware Acceleration)`;
+        }
+      } catch (_) {
+        isAvailable = false;
+      }
     }
 
     this.statusCache = {
       isAvailable,
       version: version || 'v1.7.0',
       kvmActive,
-      hypervisor: isAvailable ? 'Linux KVM (WSL2 Direct Acceleration)' : 'V8 Context Sandbox',
-      isolationMode: isAvailable ? 'KVM_FIRECRACKER_MICROVM' : 'ISOLATED_NODE_VM',
-      memoryLimitMb: 128,
-      cpuTimeoutMs: 3000,
+      hypervisor,
+      executionMode: effectiveMode,
+      vmProvider: effectiveProvider,
+      isolationMode,
+      memoryLimitMb,
+      cpuTimeoutMs,
+      binaryDir: effectiveMode === 'BINARY_RUNTIME' ? binaryDir : undefined,
+      serviceUrl: serviceUrl || undefined,
       runtimeDetails,
     };
 
