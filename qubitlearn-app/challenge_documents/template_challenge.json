@@ -1,0 +1,73 @@
+{
+  "id": "ch-template",
+  "slug": "quantum-challenge-template",
+  "title": "Challenge Template: Algorithmic Quantum Challenge",
+  "difficulty": "Easy",
+  "rating": 800,
+  "category": "Foundations",
+  "numQubits": 2,
+  "storyScenario": "A quantum communication station needs to initialize a register in an entangled state to transmit encrypted keys.",
+  "description": "Construct a quantum circuit that prepares the state |ψ⟩ from ground state |00⟩ under strict gate constraints.",
+  "targetGoal": "Prepare state |ψ⟩ = (|00⟩ + |11⟩)/√2 with 50% probability on |00⟩ and 50% on |11⟩.",
+  "expectedStateDescription": "0.7071|00⟩ + 0.7071|11⟩",
+  "constraints": {
+    "maxGates": 5,
+    "maxDepth": 3,
+    "allowedGates": ["H", "X", "Y", "Z", "CX", "CZ"],
+    "forbiddenGates": ["SWAP"],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(2)\n    # Your solution here\n    qc.h(0)\n    qc.cx(0, 1)\n    return qc",
+    "pennylane": "import pennylane as qml\n\ndev = qml.device('default.qubit', wires=2)\n@qml.qnode(dev)\ndef circuit():\n    qml.Hadamard(wires=0)\n    qml.CNOT(wires=[0, 1])\n    return qml.state()",
+    "cirq": "import cirq\n\nq = cirq.LineQubit.range(2)\ncircuit = cirq.Circuit(\n    cirq.H(q[0]),\n    cirq.CNOT(q[0], q[1])\n)",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0], q[1];"
+  },
+  "testCases": [
+    {
+      "id": "tc_1",
+      "name": "Sample Test: Superposition Balance",
+      "type": "sample",
+      "assertion": "P(00) ≈ 0.50 and P(11) ≈ 0.50",
+      "minFidelity": 0.99,
+      "expectedProbabilities": { "00": 0.5, "11": 0.5, "01": 0.0, "10": 0.0 }
+    },
+    {
+      "id": "tc_2",
+      "name": "Hidden Test: Zero Leakage into |01⟩ and |10⟩",
+      "type": "hidden",
+      "assertion": "P(01) < 0.01 and P(10) < 0.01",
+      "minFidelity": 0.99,
+      "expectedProbabilities": { "01": 0.0, "10": 0.0 }
+    },
+    {
+      "id": "tc_3",
+      "name": "Hidden Test: Relative Phase Alignment",
+      "type": "hidden",
+      "assertion": "Re(α) > 0 and Re(β) > 0 with zero imaginary phase",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc_4",
+      "name": "Hidden Test: Gate Budget Compliance",
+      "type": "hidden",
+      "assertion": "Total gates <= 5 and Depth <= 3"
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "Applying H to qubit 0 produces (|0⟩+|1⟩)/√2 ⊗ |0⟩ = (|00⟩+|10⟩)/√2. The subsequent CNOT conditionally flips qubit 1, producing (|00⟩+|11⟩)/√2 with Einstein-Podolsky-Rosen (EPR) entanglement.",
+    "algorithmicAnalysis": "The circuit creates maximum 2-qubit entanglement in O(1) circuit depth and requires only 2 elementary unitary gates.",
+    "optimalSolutions": {
+      "qiskit": "qc = QuantumCircuit(2)\nqc.h(0)\nqc.cx(0, 1)",
+      "pennylane": "qml.Hadamard(0)\nqml.CNOT(wires=[0, 1])"
+    },
+    "complexity": "Time Complexity: O(1) gate time. Space Complexity: O(1) 2 qubits."
+  },
+  "hints": [
+    "Step 1: Put the control qubit into equal superposition using a Hadamard (H) gate.",
+    "Step 2: Entangle the target qubit using a CNOT gate with control on Q0 and target on Q1.",
+    "Step 3: Verify that the relative phase is positive to match |Φ⁺⟩ rather than |Φ⁻⟩."
+  ],
+  "xpReward": 150
+}

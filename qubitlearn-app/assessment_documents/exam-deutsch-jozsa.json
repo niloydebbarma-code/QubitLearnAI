@@ -1,0 +1,20 @@
+{
+  "id": "exam-deutsch-jozsa",
+  "title": "Deutsch-Jozsa Global Property Evaluation",
+  "question": "Explain how phase kickback allows the Deutsch-Jozsa algorithm to evaluate global properties of f(x) in a single quantum query.",
+  "rubricCriteria": [
+    {
+      "criterion": "Quantum superposition & target qubit initialization in |−⟩",
+      "maxPoints": 3
+    },
+    {
+      "criterion": "Unitary transformation |x⟩|y ⊕ f(x)⟩ mapping",
+      "maxPoints": 4
+    },
+    {
+      "criterion": "Phase factor (-1)^f(x) induction explanation",
+      "maxPoints": 3
+    }
+  ],
+  "sampleSolution": "By placing the target ancillary qubit in the minus state |-> = (|0> - |1>)/sqrt(2), evaluating the oracle U_f |x>|-> yields (-1)^f(x) |x>|->, kicking the function value into the relative phase of the input register."
+}

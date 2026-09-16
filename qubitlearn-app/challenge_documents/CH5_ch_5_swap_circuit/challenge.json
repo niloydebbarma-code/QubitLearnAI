@@ -1,0 +1,63 @@
+{
+  "id": "ch-5-swap-circuit",
+  "slug": "three-cnot-swap-reversal",
+  "title": "Challenge 5: Swap without SWAP Gate",
+  "difficulty": "Medium",
+  "rating": 1400,
+  "category": "Algorithms",
+  "numQubits": 2,
+  "storyScenario": "Due to hardware architecture constraints on a superconducting chip, direct SWAP couplers are unavailable. You must swap registers using standard CNOT couplers.",
+  "description": "Swap the states of Qubit 0 and Qubit 1 using ONLY three CNOT gates (no SWAP gate permitted).",
+  "targetGoal": "If Q0=1, state becomes |01⟩. If Q1=1, state becomes |10⟩.",
+  "expectedStateDescription": "|01⟩ (Qubit 0 state successfully moved to Qubit 1)",
+  "constraints": {
+    "maxGates": 4,
+    "maxDepth": 4,
+    "allowedGates": [
+      "X",
+      "CX"
+    ],
+    "forbiddenGates": [
+      "SWAP"
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(2)\n    qc.x(0) # Initial state |01>\n    # TODO: Three CNOT ladder\n    qc.cx(0, 1)\n    qc.cx(1, 0)\n    qc.cx(0, 1)\n    return qc",
+    "pennylane": "import pennylane as qml\ndev = qml.device(\"default.qubit\", wires=2)\n@qml.qnode(dev)\ndef circuit():\n    qml.PauliX(0)\n    qml.CNOT(wires=[0, 1])\n    qml.CNOT(wires=[1, 0])\n    qml.CNOT(wires=[0, 1])\n    return qml.state()",
+    "cirq": "import cirq\nq = cirq.LineQubit.range(2)\ncircuit = cirq.Circuit(cirq.X(q[0]), cirq.CNOT(q[0], q[1]), cirq.CNOT(q[1], q[0]), cirq.CNOT(q[0], q[1]))",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nx q[0];\ncx q[0], q[1];\ncx q[1], q[0];\ncx q[0], q[1];"
+  },
+  "testCases": [
+    {
+      "id": "tc1",
+      "name": "Sample: Initial State |10⟩ Swapped to |01⟩ (P(01)=1.0)",
+      "type": "sample",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc2",
+      "name": "Hidden: Involutive Reversal Check",
+      "type": "hidden",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc3",
+      "name": "Hidden: Prohibition of Native SWAP Gate",
+      "type": "hidden"
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "Three alternating CNOTs implement the boolean XOR swap algorithm: a=a⊕b, b=b⊕a, a=a⊕b, resulting in b and a exchanged.",
+    "algorithmicAnalysis": "Giallar Rule R7 proves CX(0,1)·CX(1,0)·CX(0,1) ≡ SWAP(0,1) in universal unitary matrix algebra.",
+    "optimalSolutions": {
+      "qiskit": "qc.cx(0, 1)\nqc.cx(1, 0)\nqc.cx(0, 1)"
+    },
+    "complexity": "Time: O(1). Space: O(1) 2 qubits."
+  },
+  "hints": [
+    "Use the alternating control/target CNOT ladder: CX(0->1), CX(1->0), CX(0->1)."
+  ],
+  "xpReward": 250
+}

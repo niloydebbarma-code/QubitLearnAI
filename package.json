@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "dom-to-pptx": "^2.1.1",
+    "sql.js": "^1.14.2"
+  }
+}

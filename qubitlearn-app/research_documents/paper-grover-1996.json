@@ -1,0 +1,21 @@
+{
+  "id": "paper-grover-1996",
+  "title": "A Fast Quantum Mechanical Algorithm for Database Search",
+  "authors": "Lov K. Grover",
+  "year": 1996,
+  "venue": "ACM STOC (28th Annual ACM Symposium on Theory of Computing)",
+  "abstract": "A database of N items can be searched in O(sqrt(N)) quantum steps, proving a quadratic speedup over classical algorithms.",
+  "fullExcerpt": "Consider an unsorted database containing N items. Classical search requires searching N/2 items on average. Quantum superposition allows evaluating all N states simultaneously, and amplitude amplification boosts the probability amplitude of the target state.",
+  "precomputedClaims": [
+    {
+      "claim": "Quantum search achieves quadratic speedup O(sqrt(N)) over classical O(N).",
+      "evidenceStatus": "Available",
+      "sourceQuote": "A database of N items can be searched in O(sqrt(N)) quantum steps.",
+      "notes": "Fundamental lower bound proven optimal by Bennett et al. (BBBV theorem)."
+    }
+  ],
+  "openGaps": [
+    "Requires fault-tolerant logical qubits to maintain coherence over O(sqrt(N)) steps."
+  ],
+  "leanTheoremExample": "theorem grover_quantum_speedup (N : ℕ) : Real.sqrt N ≤ N := by sorry"
+}

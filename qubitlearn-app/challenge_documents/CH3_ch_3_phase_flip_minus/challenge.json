@@ -1,0 +1,57 @@
+{
+  "id": "ch-3-phase-flip-minus",
+  "slug": "prepare-minus-state",
+  "title": "Challenge 3: Prepare the |−⟩ State",
+  "difficulty": "Easy",
+  "rating": 900,
+  "category": "Superposition",
+  "numQubits": 1,
+  "storyScenario": "An oracle query requires preparing the target ancillary qubit in the minus state to activate the Phase Kickback mechanism.",
+  "description": "Transform ground state |0⟩ into anti-phase superposition state: |−⟩ = (|0⟩ − |1⟩)/√2.",
+  "targetGoal": "Amplitudes α = +1/√2 and β = -1/√2.",
+  "expectedStateDescription": "0.7071|0⟩ - 0.7071|1⟩",
+  "constraints": {
+    "maxGates": 2,
+    "maxDepth": 2,
+    "allowedGates": [
+      "H",
+      "X",
+      "Z"
+    ],
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 64
+  },
+  "starterCode": {
+    "qiskit": "from qiskit import QuantumCircuit\n\ndef build_circuit():\n    qc = QuantumCircuit(1)\n    qc.x(0)\n    qc.h(0)\n    return qc",
+    "pennylane": "import pennylane as qml\ndev = qml.device(\"default.qubit\", wires=1)\n@qml.qnode(dev)\ndef circuit():\n    qml.PauliX(0)\n    qml.Hadamard(0)\n    return qml.state()",
+    "cirq": "import cirq\nq = cirq.LineQubit(0)\ncircuit = cirq.Circuit(cirq.X(q), cirq.H(q))",
+    "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nx q[0];\nh q[0];"
+  },
+  "testCases": [
+    {
+      "id": "tc1",
+      "name": "Sample: Probability Symmetry P(0)=0.5, P(1)=0.5",
+      "type": "sample",
+      "minFidelity": 0.99
+    },
+    {
+      "id": "tc2",
+      "name": "Hidden: Negative Relative Phase on |1⟩ (β = -0.7071)",
+      "type": "hidden",
+      "minFidelity": 0.99
+    }
+  ],
+  "editorial": {
+    "mathematicalProof": "|0⟩ -> X -> |1⟩ -> H -> (|0⟩ - |1⟩)/√2 = |−⟩.",
+    "algorithmicAnalysis": "The state |−⟩ is an eigenstate of the Pauli-X operator with eigenvalue -1, making it the canonical phase kickback target.",
+    "optimalSolutions": {
+      "qiskit": "qc.x(0)\nqc.h(0)"
+    },
+    "complexity": "Time: O(1). Space: O(1) 1 qubit."
+  },
+  "hints": [
+    "Try applying an X gate first to reach |1⟩, then an H gate.",
+    "Alternatively, apply H followed by Pauli-Z."
+  ],
+  "xpReward": 150
+}
