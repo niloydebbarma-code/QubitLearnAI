@@ -126,3 +126,66 @@ Every sandboxed execution enforces three strict security invariant boundaries:
 1. **Network Isolation (`noNetwork: true`)**: Untrusted user code runs in a sandbox with zero external internet connectivity.
 2. **Wall-Clock Timeout (`wallClockBounded: true`)**: CPU execution is strictly bounded to `SANDBOX_TIMEOUT_MS` (default: 3000ms).
 3. **Ephemeral Cleanup (`ephemeralCleaned: true`)**: Guest microVM instances and execution contexts are discarded after every run, preventing state leakage across user sessions.
+
+---
+
+## 🚀 7. End-to-End Google Cloud CLI (`gcloud`) Deployment Reference
+
+### Step 1: Local Vertex AI Authentication (Application Default Credentials)
+```bash
+# Authenticate gcloud user credentials for local development
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+gcloud auth application-default login
+gcloud auth application-default set-quota-project YOUR_PROJECT_ID
+
+# Enable required Google Cloud APIs
+gcloud services enable aiplatform.googleapis.com run.googleapis.com compute.googleapis.com
+```
+
+### Step 2: Create Dedicated Cloud Run Runtime Service Account (Zero Secret Keys in Container)
+```bash
+# Create service account
+gcloud iam service-accounts create qubitlearn-runner \
+  --display-name="QubitLearn AI Cloud Run Runtime" \
+  --project=YOUR_PROJECT_ID
+
+# Bind roles/aiplatform.user for Vertex AI Gemini 3.7 Flash inference
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+  --member="serviceAccount:qubitlearn-runner@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/aiplatform.user"
+```
+
+### Step 3: Deploy Application Container to Google Cloud Run
+```bash
+gcloud run deploy qubitlearn-app \
+  --source . \
+  --region us-central1 \
+  --project YOUR_PROJECT_ID \
+  --service-account=qubitlearn-runner@YOUR_PROJECT_ID.iam.gserviceaccount.com \
+  --allow-unauthenticated \
+  --memory 1Gi \
+  --cpu 1 \
+  --concurrency 20 \
+  --max-instances 3 \
+  --set-env-vars="NODE_ENV=production,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=global,QUANTUM_EXECUTION_MODE=IN_MEMORY_V8,VM_PROVIDER=CLOUD_RUN"
+```
+
+### Step 4: (Optional) Deploy Dedicated N2 VM for Hardware MicroVMs & Connect via VPC
+```bash
+# 1. Create nested virtualization Ubuntu image
+gcloud compute disks create disk-base --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --zone=us-central1-a
+gcloud compute images create nested-ubuntu-2204 --source-disk=disk-base --source-disk-zone=us-central1-a --licenses="https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
+
+# 2. Launch N2 instance with KVM
+gcloud compute instances create firecracker-sandbox-host \
+  --zone=us-central1-a \
+  --machine-type=n2-standard-2 \
+  --image=nested-ubuntu-2204 \
+  --tags=firecracker-sandbox
+
+# 3. Update Cloud Run to route sandboxed execution to the N2 host
+gcloud run services update qubitlearn-app \
+  --region us-central1 \
+  --update-env-vars="QUANTUM_EXECUTION_MODE=FIRECRACKER_KVM,VM_PROVIDER=GCP_N2_KVM,FIRECRACKER_SERVICE_URL=http://<INTERNAL_N2_IP>:8080"
+```

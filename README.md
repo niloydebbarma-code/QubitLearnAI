@@ -226,22 +226,46 @@ npx tsx tests/run_all_tests.ts
 
 ---
 
-## 🚀 Google Cloud Production Deployment (`gcloud` CLI)
+## 🚀 Google Cloud Production Deployment & Vertex AI Integration (`gcloud` CLI)
 
-### 1. Deploy Main Application to Google Cloud Run
+### 1. Local Development with Google Cloud Vertex AI (Application Default Credentials)
+
+To run Vertex AI Gemini 3.7 Flash locally without hardcoding API keys in `.env`:
 
 ```bash
-# Set your active Google Cloud project
+# 1. Initialize and authenticate Google Cloud CLI
+gcloud auth login
 gcloud config set project YOUR_PROJECT_ID
 
-# Enable required Google Cloud services
-gcloud services enable run.googleapis.com aiplatform.googleapis.com compute.googleapis.com
+# 2. Authenticate Application Default Credentials (ADC)
+gcloud auth application-default login
+gcloud auth application-default set-quota-project YOUR_PROJECT_ID
 
-# Deploy qubitlearn-app container directly to Cloud Run
+# 3. Enable Vertex AI & Cloud Run APIs
+gcloud services enable aiplatform.googleapis.com run.googleapis.com compute.googleapis.com
+```
+
+### 2. Deploy Main Application to Google Cloud Run (Keyless IAM Authentication)
+
+Cloud Run uses a dedicated runtime service account with `roles/aiplatform.user` for credential-free inference with Vertex AI:
+
+```bash
+# 1. Create a dedicated Cloud Run runtime service account
+gcloud iam service-accounts create qubitlearn-runner \
+  --display-name="QubitLearn AI Cloud Run Runtime" \
+  --project=YOUR_PROJECT_ID
+
+# 2. Grant Vertex AI User role to the service account
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+  --member="serviceAccount:qubitlearn-runner@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/aiplatform.user"
+
+# 3. Deploy container directly to Cloud Run
 gcloud run deploy qubitlearn-app \
   --source . \
-  --platform managed \
   --region us-central1 \
+  --project YOUR_PROJECT_ID \
+  --service-account=qubitlearn-runner@YOUR_PROJECT_ID.iam.gserviceaccount.com \
   --allow-unauthenticated \
   --memory 1Gi \
   --cpu 1 \
@@ -250,29 +274,29 @@ gcloud run deploy qubitlearn-app \
   --set-env-vars="NODE_ENV=production,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=global,QUANTUM_EXECUTION_MODE=IN_MEMORY_V8,VM_PROVIDER=CLOUD_RUN"
 ```
 
-### 2. (Optional) Deploy Dedicated Compute Engine N2 VM for Firecracker MicroVMs
+### 3. (Optional) Deploy Dedicated Compute Engine N2 VM for Hardware Firecracker MicroVMs
 
 ```bash
-# Create base disk with Ubuntu 22.04 LTS
+# 1. Create base disk with Ubuntu 22.04 LTS
 gcloud compute disks create disk-base \
   --image-family=ubuntu-2204-lts \
   --image-project=ubuntu-os-cloud \
   --zone=us-central1-a
 
-# Create custom image with Nested Virtualization (Intel VMX) enabled
+# 2. Create custom image with Nested Virtualization (Intel VMX) enabled
 gcloud compute images create nested-ubuntu-2204 \
   --source-disk=disk-base \
   --source-disk-zone=us-central1-a \
   --licenses="https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
 
-# Launch n2-standard-2 instance with hardware KVM support
+# 3. Launch n2-standard-2 instance with hardware KVM support
 gcloud compute instances create firecracker-sandbox-host \
   --zone=us-central1-a \
   --machine-type=n2-standard-2 \
   --image=nested-ubuntu-2204 \
   --tags=firecracker-sandbox
 
-# Update Cloud Run to route sandboxed execution to the N2 host over private VPC
+# 4. Update Cloud Run to route sandboxed execution to the N2 host over private VPC
 gcloud run services update qubitlearn-app \
   --region us-central1 \
   --update-env-vars="QUANTUM_EXECUTION_MODE=FIRECRACKER_KVM,VM_PROVIDER=GCP_N2_KVM,FIRECRACKER_SERVICE_URL=http://<INTERNAL_N2_IP>:8080"
