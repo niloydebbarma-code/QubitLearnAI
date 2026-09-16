@@ -25,6 +25,7 @@
 | 🎬 **Pitch Video Demo** | 54-Second Motion-Graphics & Working Prototype Showcase | *[Evaluator Access Provided via Official Portal]* |
 | 📑 **Architecture & Verification Report** | Formal System Specifications & Proof Bounds (Vector PDF) | [`project_documents/System_Architecture_and_Verification_Report.pdf`](project_documents/System_Architecture_and_Verification_Report.pdf) |
 | 🛡️ **Giallar KVM Benchmark Report** | 12-Program Multi-SDK Sandbox & 20-Rule Formal Verifier | [`test_codes/Giallar_Firecracker_KVM_Verification_Report.md`](test_codes/Giallar_Firecracker_KVM_Verification_Report.md) |
+| 📐 **Multi-SDK Giallar Theory** | How Giallar Extends Beyond Qiskit to Cirq, PennyLane & Braket | [`project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md`](project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md) |
 | ☁️ **Cloud VM & Runtime Specification** | Multi-VM Topology, Hardware KVM, Cost & Sizing Analysis | [`project_documents/Cloud_VM_and_Runtime_Architecture.md`](project_documents/Cloud_VM_and_Runtime_Architecture.md) |
 | 🔬 **System Audit & Test Suite** | 24-Module Automated Verification Report ($F \ge 0.999$, Latency Benchmark) | [`project_documents/Test_Results.md`](project_documents/Test_Results.md) |
 | 🐳 **Dockerized Deployment** | Reproducible multi-stage Dockerfile & Compose stack | [`Dockerfile`](Dockerfile) • [`docker-compose.yml`](docker-compose.yml) |
@@ -338,6 +339,7 @@ QubitLearnAI/
 └── project_documents/                     # Technical Specifications & Audits
     ├── readme_banner.svg                  # Brand Architecture Banner Graphic
     ├── System_Architecture_and_Verification_Report.pdf # Formal Architecture & Invariant Bounds (PDF)
+    ├── Giallar_Multi_SDK_Universal_Verification_Architecture.md # Cross-SDK Formal Proof Theory
     ├── Cloud_VM_and_Runtime_Architecture.md # Multi-VM Topology, Hardware KVM & Cost Analysis
     ├── Test_Results.md                    # 24-Module Verification Test Suite Report
     └── Browser_Quantum_Simulation_Memory_Limits.md # V8 & WASM 14 vs 28 Qubit Bounds
