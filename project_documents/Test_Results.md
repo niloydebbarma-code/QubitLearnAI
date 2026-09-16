@@ -48,9 +48,27 @@
 | **Video Analyzer: Multimodal Frame Transcription & Fact-Checking** | ✅ PASSED | Timestamp analysis delivered with multi-frame agreement disclosure (Type D). |
 | **Resiliency: Graceful Handling of Malformed Client Payloads** | ✅ PASSED | Server maintained uptime and handled malformed payload safely (Status: 200). |
 
+### 6. Multi-SDK Firecracker MicroVM & Giallar Formal Verification (12-Program Benchmark)
+
+| ID | SDK | Algorithm / Circuit Test | Category | Sandbox Isolation | Execution Time | RAM | State Fidelity ($F$) | Giallar Proof Result |
+| :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Q1** | Qiskit | Bell State ($|\Phi^+\rangle$) | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 1115 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **Q2** | Qiskit | 3-Qubit GHZ State | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 717 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **Q3** | Qiskit | Quantum Teleportation Protocol | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 820 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **Q4** | Qiskit | Grover 2-Qubit Search ($|11\rangle$) | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 763 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **Q5_BUG** | Qiskit | Flawed CX Commutation (Bug #4465) | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 809 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_1, R_7$)** |
+| **Q6_BUG** | Qiskit | RZ Target Commutation (Bug #3812) | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 735 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_{11}, R_{12}$)** |
+| **C1** | Cirq | Deutsch-Jozsa (Balanced Oracle) | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 759 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **C2** | Cirq | 3-Qubit Quantum Fourier Transform | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 776 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **C3_BUG** | Cirq | Missing Hadamard CZ Conjugation | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 729 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_{15}$)** |
+| **P1** | PennyLane | 2-Qubit VQE Parameterized Ansatz | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 816 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **P2** | PennyLane | QAOA Max-Cut Layer ($p=1$) | Valid Algorithm | `KVM_FIRECRACKER_MICROVM` | 727 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
+| **P3_BUG** | PennyLane | Parameterized Rotation Sign Bug | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 824 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_{16}$)** |
+
 ## Summary
-- **Total Tests:** 24
-- **Passed:** 24
+- **Total Tests:** 36 (24 Core Platform Tests + 12 Multi-SDK MicroVM Benchmarks)
+- **Passed:** 36
 - **Failed:** 0
 - **Pass Rate:** 100.0%
-- **Execution Duration:** 67.30s
+- **Execution Duration:** 76.98s
+- **Security Isolation:** 100% Linux KVM Hardware MicroVM Isolation Enforced (`/dev/kvm`)
