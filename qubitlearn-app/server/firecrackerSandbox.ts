@@ -113,12 +113,13 @@ class FirecrackerSandboxManager {
         // Native local/WSL2 KVM check
         let fcCheck = '';
         try {
-          fcCheck = execSync('firecracker --version', { timeout: 2000, encoding: 'utf8' });
+          fcCheck = execSync('firecracker --version', { timeout: 2000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] });
         } catch (_) {
           try {
-            fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version"', {
+            fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version 2>/dev/null || firecracker --version 2>/dev/null"', {
               timeout: 4000,
               encoding: 'utf8',
+              stdio: ['pipe', 'pipe', 'ignore'],
             });
           } catch (_) {
             fcCheck = '';
@@ -145,12 +146,13 @@ class FirecrackerSandboxManager {
       try {
         let fcCheck = '';
         try {
-          fcCheck = execSync('firecracker --version', { timeout: 2000, encoding: 'utf8' });
+          fcCheck = execSync('firecracker --version', { timeout: 2000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] });
         } catch (_) {
           try {
-            fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version"', {
+            fcCheck = execSync('wsl.exe -e sh -c "$HOME/firecracker/firecracker --version 2>/dev/null || firecracker --version 2>/dev/null"', {
               timeout: 4000,
               encoding: 'utf8',
+              stdio: ['pipe', 'pipe', 'ignore'],
             });
           } catch (_) {}
         }
@@ -302,18 +304,23 @@ except Exception as e:
         const base64Runner = Buffer.from(scriptRunner).toString('base64');
         let command = '';
         try {
-          // Check if native python3 exists, otherwise use WSL2
-          execSync('python3 --version', { timeout: 1000 });
+          execSync('python3 --version', { timeout: 1000, stdio: ['pipe', 'pipe', 'ignore'] });
           command = `python3 -c "import base64; exec(base64.b64decode('${base64Runner}').decode('utf-8'))"`;
         } catch (_) {
           command = `wsl.exe -e python3 -c "import base64; exec(base64.b64decode('${base64Runner}').decode('utf-8'))"`;
         }
 
-        const rawOutput = execSync(command, {
-          timeout: status.cpuTimeoutMs || 4000,
-          encoding: 'utf8',
-          maxBuffer: 1024 * 1024,
-        });
+        let rawOutput = '';
+        try {
+          rawOutput = execSync(command, {
+            timeout: status.cpuTimeoutMs || 4000,
+            encoding: 'utf8',
+            maxBuffer: 1024 * 1024,
+            stdio: ['pipe', 'pipe', 'ignore'],
+          });
+        } catch (execErr: any) {
+          rawOutput = execErr?.stdout || '';
+        }
 
         let resultData: any = null;
         let memMb = 12;

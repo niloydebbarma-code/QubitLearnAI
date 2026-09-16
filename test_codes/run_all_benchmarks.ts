@@ -57,9 +57,12 @@ async function runAll() {
   console.log(`• Security Boundaries: Air-Gapped Zero-Network, Wall-Clock Bounded\n`);
 
   const results: BenchmarkRecord[] = [];
+  const repoRoot = fs.existsSync(path.resolve(process.cwd(), 'test_codes'))
+    ? process.cwd()
+    : path.resolve(process.cwd(), '..');
 
   for (const test of TEST_FILES) {
-    const fullPath = path.resolve(process.cwd(), test.file);
+    const fullPath = path.resolve(repoRoot, test.file);
     const code = fs.readFileSync(fullPath, 'utf8');
 
     const start = Date.now();
