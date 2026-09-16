@@ -24,6 +24,7 @@
 | 🌐 **Live Deployed MVP** | Production Web Application deployed on cloud infrastructure | *[Evaluator Access Provided via Official Portal]* |
 | 🎬 **Pitch Video Demo** | 54-Second Motion-Graphics & Working Prototype Showcase | *[Evaluator Access Provided via Official Portal]* |
 | 📑 **Architecture & Verification Report** | Formal System Specifications & Proof Bounds (Vector PDF) | [`project_documents/System_Architecture_and_Verification_Report.pdf`](project_documents/System_Architecture_and_Verification_Report.pdf) |
+| 🛡️ **Giallar KVM Benchmark Report** | 12-Program Multi-SDK Sandbox & 20-Rule Formal Verifier | [`test_codes/Giallar_Firecracker_KVM_Verification_Report.md`](test_codes/Giallar_Firecracker_KVM_Verification_Report.md) |
 | ☁️ **Cloud VM & Runtime Specification** | Multi-VM Topology, Hardware KVM, Cost & Sizing Analysis | [`project_documents/Cloud_VM_and_Runtime_Architecture.md`](project_documents/Cloud_VM_and_Runtime_Architecture.md) |
 | 🔬 **System Audit & Test Suite** | 24-Module Automated Verification Report ($F \ge 0.999$, Latency Benchmark) | [`project_documents/Test_Results.md`](project_documents/Test_Results.md) |
 | 🐳 **Dockerized Deployment** | Reproducible multi-stage Dockerfile & Compose stack | [`Dockerfile`](Dockerfile) • [`docker-compose.yml`](docker-compose.yml) |
@@ -326,6 +327,13 @@ QubitLearnAI/
 │   ├── tests/                             # 24 Automated Test Suites
 │   ├── package.json                       # Dependencies & build scripts
 │   └── vite.config.ts                     # Vite build configuration
+│
+├── test_codes/                            # Multi-SDK MicroVM & Giallar Verification Suite
+│   ├── qiskit/                            # 4 Valid + 2 Compiler Bug Circuits (Qiskit 1.x)
+│   ├── cirq/                              # 2 Valid + 1 Compiler Bug Circuits (Cirq)
+│   ├── pennylane/                         # 2 Valid + 1 Compiler Bug Circuits (PennyLane)
+│   ├── run_all_benchmarks.ts              # Automated Local Firecracker & Giallar Runner
+│   └── Giallar_Firecracker_KVM_Verification_Report.md # Formal 12-Program Verification Report
 │
 └── project_documents/                     # Technical Specifications & Audits
     ├── readme_banner.svg                  # Brand Architecture Banner Graphic

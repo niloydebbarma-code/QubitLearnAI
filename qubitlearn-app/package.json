@@ -10,7 +10,8 @@
     "start": "tsx server.ts",
     "setup:runtime": "tsx scripts/configure_runtime.ts",
     "setup:firecracker": "bash scripts/install_firecracker.sh",
-    "test": "tsx tests/run_all_tests.ts"
+    "test": "tsx tests/run_all_tests.ts",
+    "test:benchmarks": "tsx ../test_codes/run_all_benchmarks.ts"
   },
   "dependencies": {
     "@google/genai": "^0.2.0",
