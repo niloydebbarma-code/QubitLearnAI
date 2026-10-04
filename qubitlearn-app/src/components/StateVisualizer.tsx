@@ -347,105 +347,30 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col space-y-4 text-slate-800">
-      {/* Top Navigation View Tabs & Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-slate-200">
-        <div className="flex items-center space-x-1 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-          <button
-            id="tab-histogram-view"
-            onClick={() => handleSetActiveView('histogram')}
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-sans ${
-              activeView === 'histogram'
-                ? 'bg-white text-blue-700 border border-slate-200 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <BarChart3 className="w-3.5 h-3.5 text-blue-600" />
-            <span>Probabilities</span>
-          </button>
-
-          <button
-            id="tab-statevector-view"
-            onClick={() => handleSetActiveView('statevector')}
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-sans ${
-              activeView === 'statevector'
-                ? 'bg-white text-purple-700 border border-slate-200 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Table className="w-3.5 h-3.5 text-purple-600" />
-            <span>Amplitudes</span>
-          </button>
-
-          <button
-            id="tab-density-view"
-            onClick={() => handleSetActiveView('density')}
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-sans ${
-              activeView === 'density'
-                ? 'bg-white text-cyan-700 border border-slate-200 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Grid className="w-3.5 h-3.5 text-cyan-600" />
-            <span>Density Matrix (ρ)</span>
-          </button>
-
-          <button
-            id="tab-verification-view"
-            onClick={() => handleSetActiveView('verification')}
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-sans ${
-              activeView === 'verification'
-                ? 'bg-white text-emerald-700 border border-slate-200 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Verification</span>
-          </button>
-        </div>
-
-        {/* Shot Sampling Selector, Live Measure Button & AI Explainer */}
+      {/* Mathematics & State Summary Header */}
+      <div className="flex flex-wrap items-center justify-between pb-2 border-b border-slate-200 mb-2 gap-3">
+        <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+          <Table className="w-4 h-4 text-purple-600" />
+          <span>Mathematical State Analysis</span>
+        </h3>
         <div className="flex items-center space-x-2 text-xs font-mono">
-          <button
-            onClick={() =>
-              openAiExplainer({
-                topic: activeView === 'statevector' ? 'amplitudes' : activeView === 'density' ? 'density_matrix' : activeView === 'verification' ? 'unitary_proof' : 'probabilities',
-                title: `AI Explanation: ${activeView.toUpperCase()} View`,
-              })
-            }
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold font-sans hover:from-indigo-700 hover:to-purple-700 shadow-xs cursor-pointer transition active:scale-95"
-            title="Ask AI to explain current quantum state and mathematical formulas"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
-            <span>AI Explainer</span>
-          </button>
-
-          <span className="text-slate-600 font-sans font-medium">Shots:</span>
+          <span className="text-slate-600 font-sans font-medium">Measurement Shots:</span>
           <select
-            id="select-shot-count"
             value={selectedShots}
             onChange={(e) => {
               const count = Number(e.target.value);
               setSelectedShots(count);
               onResample(count);
             }}
-            className="bg-white border border-slate-300 text-xs rounded-xl px-2.5 py-1 text-slate-800 font-medium cursor-pointer shadow-2xs font-sans"
+            className="bg-white border border-slate-300 text-xs rounded-xl px-2 py-1 text-slate-800 font-medium cursor-pointer shadow-2xs font-sans"
           >
-            <option value={100}>100 shots</option>
-            <option value={1024}>1024 shots</option>
-            <option value={4096}>4096 shots</option>
-            <option value={8192}>8192 shots</option>
+            <option value={100}>100</option>
+            <option value={1024}>1024</option>
+            <option value={4096}>4096</option>
           </select>
-          <button
-            id="btn-resample-shots"
-            onClick={() => onResample(selectedShots)}
-            className="p-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 cursor-pointer shadow-2xs"
-            title="Re-sample shots"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-blue-600" />
-          </button>
         </div>
       </div>
-
+      
       {/* Dynamic Dirac State Formula Banner with KaTeX Rendering & Copy */}
       <div className="bg-slate-50/90 p-3.5 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
         <div className="flex items-center space-x-2 overflow-x-auto max-w-[85%]">
@@ -505,7 +430,7 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
       </div>
 
       {/* VIEW 1: Histogram Probability Bars & Quantum Correlation Suite */}
-      {activeView === 'histogram' && (
+      {true && (
         <div className="space-y-4">
           {/* Computational Basis Distribution Card */}
           <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-2.5 shadow-2xs">
@@ -799,8 +724,22 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
         </div>
       )}
 
-      {/* VIEW 2: Complex Amplitude Matrix & Phase Circle */}
-      {activeView === 'statevector' && (
+      
+      {/* Toggle for Advanced Math */}
+      <div className="pt-4 mt-2 border-t border-slate-200">
+        <button
+          onClick={() => setShowAdvancedMath(!showAdvancedMath)}
+          className="flex items-center justify-between w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition cursor-pointer"
+        >
+          <span>{showAdvancedMath ? 'Hide Advanced Mathematical Analysis' : 'Show Advanced Mathematical Analysis (Amplitudes, Density Matrix, Formal Verification)'}</span>
+          <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+        </button>
+      </div>
+
+      {showAdvancedMath && (
+        <div className="space-y-6 pt-4 animate-in fade-in duration-300 slide-in-from-top-2">
+{/* VIEW 2: Complex Amplitude Matrix & Phase Circle */}
+      {true && (
         <div className="space-y-3 font-sans">
           {/* Informational Guidance for Students */}
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs bg-purple-50/70 border border-purple-200 p-2.5 rounded-xl">
@@ -978,7 +917,7 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
       )}
 
       {/* VIEW 3: 2ⁿ × 2ⁿ Density Matrix (ρ = |ψ⟩⟨ψ|) */}
-      {activeView === 'density' && (
+      {true && (
         <div className="space-y-3 font-sans">
           <div className="flex items-center justify-between text-xs text-slate-700 border-b border-slate-200 pb-2">
             <span className="font-bold text-slate-900 flex items-center gap-2">
@@ -1035,7 +974,7 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
       )}
 
       {/* VIEW 4: Formal Verification Report */}
-      {activeView === 'verification' && (
+      {true && (
         <div className="space-y-3 font-sans text-xs">
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
             <div className="flex items-center justify-between">
@@ -1085,6 +1024,10 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
               Every unitary matrix is multiplied using double-precision complex arithmetic (64-bit float IEEE 754), ensuring mathematical precision with zero numerical drift.
             </p>
           </div>
+        </div>
+      )}
+
+      
         </div>
       )}
 

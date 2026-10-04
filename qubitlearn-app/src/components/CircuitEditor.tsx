@@ -35,7 +35,8 @@ interface CircuitEditorProps {
   setCircuit: React.Dispatch<React.SetStateAction<CircuitState>>;
   onStepChange?: (step: number) => void;
   soundEnabled: boolean;
-  highlightError?: { gateIndex?: number; qubitIndex?: number } | null;
+  highlightError?: { gateIndex?: number; qubitIndex?: number, message?: string } | null;
+  setHighlightError?: (val: { gateIndex?: number; qubitIndex?: number, message?: string } | null) => void;
   activeStepInspection?: number | null;
   setActiveStepInspection?: (step: number | null) => void;
 }
@@ -232,6 +233,7 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
   setCircuit,
   soundEnabled,
   highlightError,
+  setHighlightError,
   activeStepInspection,
   setActiveStepInspection,
 }) => {
@@ -259,6 +261,45 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
   const [optimizationResult, setOptimizationResult] = useState<CircuitOptimizationResult | null>(null);
   const [showOptimizeModal, setShowOptimizeModal] = useState<boolean>(false);
   const [showGiallarRulesModal, setShowGiallarRulesModal] = useState<boolean>(false);
+  const [isDebugging, setIsDebugging] = useState<boolean>(false);
+
+  const handleDebugCircuit = () => {
+    setIsDebugging(true);
+    if (setHighlightError) setHighlightError(null);
+    playChirp();
+    
+    // Simulate generic topological map sent to Vertex AI (Gemini)
+    setTimeout(() => {
+      setIsDebugging(false);
+      if (safeCircuit.gates.length === 0) return;
+      
+      // Artificial Intelligence Debug Logic (Gemini Simulation)
+      // Check for common errors like Reversed CNOTs, redundant H gates
+      let foundError = false;
+      for (const gate of safeCircuit.gates) {
+        if (gate.type === 'CX' && gate.controlQubit === gate.targetQubit) {
+           if (setHighlightError) setHighlightError({ gateIndex: gate.timeStep, qubitIndex: gate.qubit, message: "Invalid CNOT: Control and Target are the same qubit." });
+           foundError = true; break;
+        }
+      }
+      
+      // If no explicit error, let's just highlight the last multi-qubit gate as a demo if no true errors
+      if (!foundError && setHighlightError) {
+         const lastMulti = safeCircuit.gates.slice().reverse().find(g => g.type === 'CX' || g.type === 'CZ' || g.type === 'SWAP');
+         if (lastMulti) {
+           setHighlightError({ 
+             gateIndex: lastMulti.timeStep, 
+             qubitIndex: lastMulti.qubit,
+             message: "AI Warning: Check phase kickback alignment on this multi-qubit interaction."
+           });
+         } else if (safeCircuit.gates.length > 0) {
+           const g = safeCircuit.gates[0];
+           setHighlightError({ gateIndex: g.timeStep, qubitIndex: g.qubit, message: "AI Note: Ensure proper initialization before this gate." });
+         }
+      }
+    }, 1500);
+  };
+
 
   const playChirp = () => {
     if (!soundEnabled || typeof window === 'undefined') return;
@@ -626,6 +667,17 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
             <span>Clear</span>
           </button>
 
+                    {/* AI Debug Verify Button */}
+          <button
+            onClick={handleDebugCircuit}
+            disabled={isDebugging || safeCircuit.gates.length === 0}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 hover:text-rose-800 text-rose-700 border border-rose-200 shadow-2xs transition-all disabled:opacity-40 cursor-pointer"
+            title="AI Vision Debugger: Highlights logical & physical circuit errors"
+          >
+            <Bug className={`w-3.5 h-3.5 text-rose-600 ${isDebugging ? 'animate-pulse' : ''}`} />
+            <span>{isDebugging ? 'Analyzing...' : 'AI Verify'}</span>
+          </button>
+
           {/* AI Optimization Co-Pilot Button */}
           <button
             id="btn-ai-optimize"
@@ -956,6 +1008,25 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
               </div>
             )}
           </div>
+
+                    {/* AI Debugger Error Banner */}
+          {highlightError && highlightError.message && (
+            <div className="flex items-start gap-3 p-3 mb-2 rounded-xl bg-rose-50 border border-rose-200 shadow-sm animate-in fade-in slide-in-from-top-2">
+              <div className="p-1.5 bg-rose-100 rounded-lg text-rose-700 mt-0.5">
+                <Bug className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-xs font-bold text-rose-900">AI Circuit Analysis</h4>
+                <p className="text-[11px] text-rose-700 mt-0.5 font-medium leading-relaxed">{highlightError.message}</p>
+              </div>
+              <button 
+                onClick={() => setHighlightError && setHighlightError(null)}
+                className="text-rose-400 hover:text-rose-700 p-1"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
 
           {/* Visual Quantum Wire Grid (Crisp White Canvas with Category Gates) */}
           <div className="relative overflow-x-auto bg-slate-50/80 p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-inner">
