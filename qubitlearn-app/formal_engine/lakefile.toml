@@ -1,0 +1,10 @@
+name = "quantum_formal"
+version = "0.1.0"
+defaultTargets = ["quantum_formal"]
+
+[[lean_lib]]
+name = "QuantumFormal"
+
+[[lean_exe]]
+name = "quantum_formal"
+root = "Main"

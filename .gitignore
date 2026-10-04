@@ -29,6 +29,18 @@ out/
 backup/
 *_backup*/
 backup_private/
+video_generator/
+
+# Lean 4 / Mathlib build caches (regenerate with `lake build`)
+.lake/
+
+# Internal SIH submission dossiers (portal-only, never public)
+SIH2026_Idea_Submission_*.txt
+SIH2026_Idea_Description_*.txt
+*_SIH2026_Master_Presentation_Plan.md
+*_Video_Pitch_Script_and_Storyboard.md
+MLAStyle.md
+MLAStyle.pdf
 
 # Exclude presentation decks & source slides from public GitHub (Internal jury use only)
 presentation/

@@ -145,21 +145,12 @@ export class QuantumSimulator {
     if (qubit < 0 || qubit >= n) return state;
 
     // Single-qubit gates
+    const upperType = type.toUpperCase();
     if (
-      type === 'H' ||
-      type === 'X' ||
-      type === 'Y' ||
-      type === 'Z' ||
-      type === 'S' ||
-      type === 'T' ||
-      type === 'Sdg' ||
-      type === 'Tdg' ||
-      type === 'Rx' ||
-      type === 'Ry' ||
-      type === 'Rz'
+      ['H', 'X', 'Y', 'Z', 'S', 'T', 'SDG', 'TDG', 'RX', 'RY', 'RZ'].includes(upperType)
     ) {
       const safeParam = isNaN(param) ? 0 : param;
-      const u = this.getSingleQubitMatrix(type, safeParam);
+      const u = this.getSingleQubitMatrix(upperType, safeParam);
       const targetBit = n - 1 - qubit; // Little-endian representation
 
       for (let i = 0; i < dim; i++) {
@@ -307,16 +298,19 @@ export class QuantumSimulator {
           [Complex.zero(), Complex.fromPolar(1, Math.PI / 4)],
         ];
       case 'Sdg':
+      case 'SDG':
         return [
           [Complex.one(), Complex.zero()],
           [Complex.zero(), new Complex(0, -1)],
         ];
       case 'Tdg':
+      case 'TDG':
         return [
           [Complex.one(), Complex.zero()],
           [Complex.zero(), Complex.fromPolar(1, -Math.PI / 4)],
         ];
-      case 'Rx': {
+      case 'Rx':
+      case 'RX': {
         const c = Math.cos(param / 2);
         const s = Math.sin(param / 2);
         return [
@@ -324,7 +318,8 @@ export class QuantumSimulator {
           [new Complex(0, -s), new Complex(c, 0)],
         ];
       }
-      case 'Ry': {
+      case 'Ry':
+      case 'RY': {
         const c = Math.cos(param / 2);
         const s = Math.sin(param / 2);
         return [
@@ -332,7 +327,8 @@ export class QuantumSimulator {
           [new Complex(s, 0), new Complex(c, 0)],
         ];
       }
-      case 'Rz': {
+      case 'Rz':
+      case 'RZ': {
         return [
           [Complex.fromPolar(1, -param / 2), Complex.zero()],
           [Complex.zero(), Complex.fromPolar(1, param / 2)],

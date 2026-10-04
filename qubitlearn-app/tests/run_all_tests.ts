@@ -2,130 +2,68 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * 
- * MASTER TEST ORCHESTRATOR & SYSTEM AUDIT RUNNER
- * Executes all 5 test suites across:
- * - Suite 1: Exact Hilbert Space Matrix Mathematics (Type A)
- * - Suite 2: API Endpoints & Supabase Cloud Deliveries
- * - Suite 3: Multi-Persona Real-Time AI Workflows (Vertex AI)
- * - Suite 4: Real-Time WebSockets & Collaboration Room Capacity
- * - Suite 5: Edge Cases, Boundary Conditions & Fault Tolerance
+ * Master TypeScript Test Suite Runner
+ * Executes all 11 modular TypeScript test suites in tests/
  */
 
-import { runQuantumEngineTests } from "./test_quantum_engine";
-import { runApiEndpointTests } from "./test_api_endpoints";
-import { runPersonaTests } from "./test_personas";
-import { runCollaborationWebSocketTests } from "./test_collaboration_websockets";
-import { runEdgeCaseTests } from "./test_edge_cases";
-import fs from "fs";
-import path from "path";
-import { spawn, ChildProcess } from "child_process";
+import { runBrowserSecurityAndKatexTests } from './browser_security_katex_test';
+import { runUniversalTranspilerTests } from './transpiler_ast_test';
+import { runGiallarAll20RulesTests } from './giallar_formal_rules_test';
+import { runQuantumEngineTests } from './quantum_state_engine_test';
+import { runQubitScalabilityTests } from './qubit_scalability_test';
+import { runLean4AutoformalizerTests } from './formal_verification_lean4_test';
+import { runBoundingBoxAndPaperTests } from './document_layout_extraction_test';
+import { runIsingColorCodeDecoderTests } from './ising_color_code_decoder_test';
+import { runAblationFailureDomainsTests } from './ablation_failure_domains_test';
+import { runUserPersonasTests } from './user_personas_workflow_test';
+import { runEdgeCasesTests } from './edge_cases_fault_tolerance_test';
+import { runRealWebSocketTests } from './websocket_synchronization_test';
+import { runLiveCloudServicesTests } from './cloud_services_connection_test';
 
-async function ensureServerRunning(): Promise<ChildProcess | null> {
-  try {
-    const res = await fetch("http://127.0.0.1:3000/api/health");
-    if (res.ok) return null; // already running
-  } catch (_) {}
+export async function runAllTypeScriptTests() {
+  console.log('='.repeat(80));
+  console.log('MASTER TYPESCRIPT & FULL-STACK VERIFICATION HARNESS');
+  console.log('='.repeat(80));
 
-  console.log("⚡ Starting background QubitLearn backend server for automated testing...");
-  const serverProc = spawn("node", [path.join(process.cwd(), "dist", "server.cjs")], {
-    env: { ...process.env, PORT: "3000" },
-    stdio: "ignore",
-  });
-
-  // Poll until healthy
-  for (let i = 0; i < 30; i++) {
-    await new Promise((r) => setTimeout(r, 500));
-    try {
-      const res = await fetch("http://127.0.0.1:3000/api/health");
-      if (res.ok) {
-        console.log("✅ QubitLearn server online and ready for testing.");
-        return serverProc;
-      }
-    } catch (_) {}
-  }
-  return serverProc;
-}
-
-async function runMasterTestSuite() {
-  const startTime = Date.now();
-  console.log("==========================================================================");
-  console.log("🔬 QUBITLEARN AI — COMPREHENSIVE END-TO-END SYSTEM TEST RUNNER");
-  console.log("==========================================================================");
-  console.log("Target Server: http://127.0.0.1:3000");
-  console.log("Database:      Supabase Cloud PostgreSQL");
-  console.log("AI Engine:     Google Cloud Vertex AI (Gemini Flash)");
-  console.log("Execution:     Real-time interactive requests across all user personas");
-  console.log("==========================================================================");
-
-  const serverProc = await ensureServerRunning();
-
-  // Run all 5 suites
-  const suite1 = await runQuantumEngineTests();
-  const suite2 = await runApiEndpointTests();
-  const suite3 = await runPersonaTests();
-  const suite4 = await runCollaborationWebSocketTests();
-  const suite5 = await runEdgeCaseTests();
-
-  const allTests = [
-    { category: "1. Quantum Mathematical Truth (Type A)", tests: suite1 },
-    { category: "2. Cloud Endpoints & Supabase Delivery", tests: suite2 },
-    { category: "3. Multi-Persona Vertex AI Real-Time Workflows", tests: suite3 },
-    { category: "4. Real-Time WebSockets & Room Limits", tests: suite4 },
-    { category: "5. Edge Cases, Boundaries & Fault Tolerance", tests: suite5 },
+  const suites = [
+    { title: '1. KaTeX Mathematical Engine & Browser Security', fn: runBrowserSecurityAndKatexTests },
+    { title: '2. Quantum AST & Universal Multi-SDK Transpiler', fn: runUniversalTranspilerTests },
+    { title: '3. Giallar 20 Formal Rewrite Rules & Equivalence', fn: runGiallarAll20RulesTests },
+    { title: '4. Quantum State Engine & Hilbert Space Truth', fn: runQuantumEngineTests },
+    { title: '5. In-Browser State Simulation & Scalability Limits', fn: runQubitScalabilityTests },
+    { title: '6. Lean 4 Formal Autoformalization & Mathlib4 Theorems', fn: runLean4AutoformalizerTests },
+    { title: '7. Document Layout & 2D Bounding Box Extraction', fn: runBoundingBoxAndPaperTests },
+    { title: '8. NVIDIA Ising 3D CNN Color Code Decoder', fn: runIsingColorCodeDecoderTests },
+    { title: '9. 4-Column System Ablation & Failure Domains', fn: runAblationFailureDomainsTests },
+    { title: '10. Multi-Persona User Workflows (Student/Researcher/Instructor)', fn: runUserPersonasTests },
+    { title: '11. Edge Cases, Boundaries & Fault Tolerance', fn: runEdgeCasesTests },
+    { title: '12. Real Full-Duplex WebSockets', fn: runRealWebSocketTests },
+    { title: '13. Live Cloud Services & Supabase Connectivity', fn: runLiveCloudServicesTests },
   ];
 
-  let totalCount = 0;
-  let passedCount = 0;
+  let totalTests = 0;
+  let totalPassed = 0;
 
-  console.log("\n==========================================================================");
-  console.log("📊 COMPREHENSIVE TEST AUDIT RESULTS TABLE");
-  console.log("==========================================================================");
-
-  let markdownReport = `# QubitLearn AI — Comprehensive System Test Audit Report\n\n`;
-  markdownReport += `**Executed At:** ${new Date().toISOString()}\n`;
-  markdownReport += `**Environment:** Supabase Cloud PostgreSQL + Google Cloud Vertex AI\n\n`;
-
-  allTests.forEach((suite) => {
-    console.log(`\n📂 ${suite.category}`);
-    markdownReport += `### ${suite.category}\n\n| Test Name | Status | Verification Details |\n| :--- | :---: | :--- |\n`;
-
-    suite.tests.forEach((t) => {
-      totalCount++;
-      if (t.passed) passedCount++;
-      const icon = t.passed ? "✅ PASS" : "❌ FAIL";
-      console.log(`  ${icon} | ${t.name}`);
-      console.log(`         ↳ ${t.details}`);
-      markdownReport += `| **${t.name}** | ${t.passed ? '✅ PASSED' : '❌ FAILED'} | ${t.details} |\n`;
-    });
-  });
-
-  const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-  const passRate = ((passedCount / totalCount) * 100).toFixed(1);
-
-  console.log("\n==========================================================================");
-  console.log(`🏆 FINAL SCORE: ${passedCount} / ${totalCount} PASSED (${passRate}%) in ${totalDuration}s`);
-  console.log("==========================================================================");
-
-  markdownReport += `\n## Summary\n- **Total Tests:** ${totalCount}\n- **Passed:** ${passedCount}\n- **Failed:** ${totalCount - passedCount}\n- **Pass Rate:** ${passRate}%\n- **Execution Duration:** ${totalDuration}s\n`;
-
-  const reportPath = path.join(process.cwd(), '..', 'project_documents', 'Comprehensive_Test_Results.md');
-  try {
-    fs.writeFileSync(reportPath, markdownReport);
-    console.log(`📄 Detailed Markdown Report saved to: project_documents/Comprehensive_Test_Results.md`);
-  } catch (e) {
-    fs.writeFileSync(path.join(process.cwd(), 'Comprehensive_Test_Results.md'), markdownReport);
-  }
-
-  if (serverProc) {
+  for (const suite of suites) {
+    console.log(`\n--- ${suite.title} ---`);
     try {
-      serverProc.kill();
-    } catch (_) {}
+      const results = await suite.fn();
+      for (const t of results) {
+        totalTests++;
+        if (t.passed) totalPassed++;
+        console.log(`[${t.passed ? 'PASS' : 'FAIL'}] ${t.name}: ${t.details}`);
+      }
+    } catch (err: any) {
+      console.log(`[FAIL] Suite execution error: ${err.message}`);
+    }
   }
 
-  process.exit(passedCount === totalCount ? 0 : 1);
+  const passPct = (totalPassed / totalTests) * 100;
+  console.log('\n' + '='.repeat(80));
+  console.log(`TYPESCRIPT SUITES SUMMARY: ${totalPassed}/${totalTests} tests passed (${passPct.toFixed(1)}%)`);
+  console.log('='.repeat(80));
 }
 
-runMasterTestSuite().catch((err) => {
-  console.error("Master Test Runner Error:", err);
-  process.exit(1);
-});
+if (import.meta.url.endsWith(process.argv[1]) || process.argv[1]?.includes('run_all_tests.ts')) {
+  runAllTypeScriptTests();
+}

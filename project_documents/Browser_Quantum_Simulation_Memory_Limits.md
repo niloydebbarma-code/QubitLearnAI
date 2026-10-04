@@ -36,10 +36,21 @@ $$\text{RAM}_{\text{DM}}(n) = 2^{2n} \times 16 \text{ bytes}$$
 
 ## 2. Browser Engine & Hardware Constraints
 
-### 2.1. Chromium V8 & WebAssembly Memory Ceilings
-1. **ArrayBuffer & Heap Allocation Limits (Chromium Issue 40055619):**  
-   While 64-bit V8 engines theoretically support large allocations, browser tabs operate under strict sandbox cgroups and per-isolate heap limits (typically **2 GB to 4 GB**). Single contiguous `ArrayBuffer` allocations exceeding 2–4 GB trigger uncatchable `RangeError: Out of memory` crashes.
-2. **WebGPU Buffer Allocations (`maxBufferSize`):**  
+### 2.1. Chronological Evolution of Browser Tab Memory Ceilings
+
+1. **The Early Baseline & Configurable Caps (2013):**  
+   Historically, the V8 JavaScript engine defaulted to a 1.4 GB heap ceiling on 64-bit systems. Developers manually appended `--max_old_space_size=4096` to allocate up to 4 GB of heap memory per process on desktop environments ([Stack Overflow Documentation, July 2013](https://stackoverflow.com/questions/17491022/max-memory-usage-of-a-chrome-process-tab-how-do-i-increase-it)).
+
+2. **The Architectural Pivot: V8 Pointer Compression & 4GB Heap Cage (2020–2021):**  
+   Modern 4GB limits became a permanent architectural design choice in Google V8 ([V8 Blog: Pointer Compression, March 2020](https://v8.dev/blog/pointer-compression); [V8 Release 9.2, July 2021](https://v8.dev/blog/v8-release-92)). By compressing 64-bit pointers into 32-bit offsets, V8 saves up to 40% of heap memory but strictly enforces a physical 4 GB ($2^{32}$ bytes) "heap cage" limitation across all threads in a sandboxed process.
+
+3. **Security Mandates & The "4GB Out-of-Memory" Bug (Chromium Issue 40691287):**  
+   Chromium deliberately enforces a hard 4 GB ceiling per tab process via OS-level constructs (e.g., Windows Job Objects, Linux cgroups) to prevent sandbox escapes, where large contiguous array allocations past 4 GB are used to trigger memory corruption exploits ([Chromium Issue Tracker: Bug #40691287](https://issues.chromium.org/40691287)). Single `ArrayBuffer` allocations exceeding 2–4 GB trigger uncatchable `RangeError: Out of memory` tab crashes.
+
+4. **Enterprise Capping & Adaptive Tab Discarding:**  
+   Under modern enterprise policies ([Chrome Enterprise Policy Hub](https://chromeenterprise.google/intl/en_au/policies/total-memory-limit-mb/); [Microsoft Edge Enterprise Policies](https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/totalmemorylimitmb)), the `TotalMemoryLimitMb` instruction enforces automated tab discarding when total browser memory pressure exceeds institutional quotas.
+
+5. **WebGPU Buffer Allocations (`maxBufferSize`):**  
    Standard WebGPU implementations enforce a default `maxBufferSize` between **512 MB and 1 GB** depending on underlying GPU hardware capabilities. Attempting to allocate multi-gigabyte unitary buffers over WebGPU throws instant allocation buffer overruns.
 
 ### 2.2. The Browser "Simulation Wall" (Craig Gidney / Quirk Analysis)
@@ -61,7 +72,9 @@ To provide 100% stable performance without browser crashes, QubitLearn AI deploy
 
 ## 4. Key Academic & Industry Citations
 
-1. **Chromium Project Issue 40055619:** V8 Engine 64-bit ArrayBuffer Allocation Limits and Isolate Heap Protections. [https://issues.chromium.org/40055619](https://issues.chromium.org/40055619)
-2. **Quirk Quantum Architecture:** Craig Gidney (Google Quantum AI), *Quirk: Interactive Browser Quantum Circuit Simulation*. [https://github.com/Strilanc/Quirk](https://github.com/Strilanc/Quirk)
-3. **ISCA '25 Quantum Simulation Benchmark:** Meng Wang, Swamit Tannu, Prashant J. Nair, *Accelerating Simulation of Quantum Circuits under Noise via Computational Reuse*, Proceedings of the 52nd Annual International Symposium on Computer Architecture (ISCA '25), [arXiv:2203.13892](https://arxiv.org/abs/2203.13892).
-4. **IBM Qiskit Compiler Framework:** Cross et al., *The Qiskit Compiler Framework*, [arXiv:2206.07885](https://arxiv.org/abs/2206.07885).
+1. **Chromium Project Issue 40691287 & 40055619:** V8 Engine 64-bit ArrayBuffer Allocation Limits, 4GB Pointer Compression Heap Cage, and Isolate Heap Protections. [https://issues.chromium.org/40691287](https://issues.chromium.org/40691287)
+2. **Google V8 Project:** *Pointer Compression in V8*, V8 Developer Blog, Mar. 2020. [https://v8.dev/blog/pointer-compression](https://v8.dev/blog/pointer-compression)
+3. **Quirk Quantum Architecture:** Craig Gidney (Google Quantum AI), *Quirk: Interactive Browser Quantum Circuit Simulation*. [https://github.com/Strilanc/Quirk](https://github.com/Strilanc/Quirk)
+4. **ISCA '25 Quantum Simulation Benchmark:** Meng Wang, Swamit Tannu, Prashant J. Nair, *Accelerating Simulation of Quantum Circuits under Noise via Computational Reuse*, Proceedings of the 52nd Annual International Symposium on Computer Architecture (ISCA '25), [arXiv:2203.13892](https://arxiv.org/abs/2203.13892).
+5. **IBM Qiskit Compiler Framework:** Cross et al., *The Qiskit Compiler Framework*, [arXiv:2206.07885](https://arxiv.org/abs/2206.07885).
+6. **Chrome & Edge Enterprise Policy Documentation:** TotalMemoryLimitMb Browser Process Governance. [https://chromeenterprise.google/intl/en_au/policies/total-memory-limit-mb/](https://chromeenterprise.google/intl/en_au/policies/total-memory-limit-mb/)
