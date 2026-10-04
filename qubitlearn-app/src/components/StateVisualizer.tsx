@@ -59,6 +59,7 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
     onViewChange?.(view);
   };
   const [selectedShots, setSelectedShots] = useState<number>(result.totalShots || 1024);
+  const [showAdvancedMath, setShowAdvancedMath] = useState<boolean>(false);
   const [selectedBasisState, setSelectedBasisState] = useState<string | null>(null);
   const [hasCopiedLatex, setHasCopiedLatex] = useState<boolean>(false);
   const [aiModalContext, setAiModalContext] = useState<AIExplanationContext | null>(null);
