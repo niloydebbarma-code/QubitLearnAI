@@ -263,41 +263,55 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
   const [showGiallarRulesModal, setShowGiallarRulesModal] = useState<boolean>(false);
   const [isDebugging, setIsDebugging] = useState<boolean>(false);
 
-  const handleDebugCircuit = () => {
+  const handleDebugCircuit = async () => {
     setIsDebugging(true);
     if (setHighlightError) setHighlightError(null);
     playChirp();
-    
-    // Simulate generic topological map sent to Vertex AI (Gemini)
-    setTimeout(() => {
-      setIsDebugging(false);
-      if (safeCircuit.gates.length === 0) return;
+
+    try {
+      const res = await fetch('/api/agents/circuit-debugger/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          circuitJson: safeCircuit,
+          inputMode: "structural",
+          targetGoal: "Review general logical correctness",
+          framework: codeFramework
+        }),
+      });
+      const data = await res.json();
       
-      // Artificial Intelligence Debug Logic (Gemini Simulation)
-      // Check for common errors like Reversed CNOTs, redundant H gates
-      let foundError = false;
-      for (const gate of safeCircuit.gates) {
-        if (gate.type === 'CX' && gate.controlQubit === gate.targetQubit) {
-           if (setHighlightError) setHighlightError({ gateIndex: gate.timeStep, qubitIndex: gate.qubit, message: "Invalid CNOT: Control and Target are the same qubit." });
-           foundError = true; break;
-        }
-      }
-      
-      // If no explicit error, let's just highlight the last multi-qubit gate as a demo if no true errors
-      if (!foundError && setHighlightError) {
-         const lastMulti = safeCircuit.gates.slice().reverse().find(g => g.type === 'CX' || g.type === 'CZ' || g.type === 'SWAP');
-         if (lastMulti) {
-           setHighlightError({ 
-             gateIndex: lastMulti.timeStep, 
-             qubitIndex: lastMulti.qubit,
-             message: "AI Warning: Check phase kickback alignment on this multi-qubit interaction."
+      if (data && !data.isCorrect && setHighlightError) {
+         // Focus on the first localized error returned by the backend
+         if (data.errorLocalization) {
+           setHighlightError({
+             gateIndex: data.errorLocalization.gateIndex,
+             qubitIndex: data.errorLocalization.qubitIndex,
+             message: data.explanation || "AI Note: Invalid gate logic detected."
            });
-         } else if (safeCircuit.gates.length > 0) {
-           const g = safeCircuit.gates[0];
-           setHighlightError({ gateIndex: g.timeStep, qubitIndex: g.qubit, message: "AI Note: Ensure proper initialization before this gate." });
+         } else {
+           // Fallback to warning if no specific gate localization
+           setHighlightError({
+             gateIndex: safeCircuit.gates.length > 0 ? safeCircuit.gates[safeCircuit.gates.length - 1].timeStep : 0,
+             qubitIndex: 0,
+             message: data.explanation || "AI Note: Ensure proper gate alignment."
+           });
          }
+      } else if (data && data.isCorrect && setHighlightError) {
+         setHighlightError({
+             gateIndex: undefined,
+             qubitIndex: undefined,
+             message: data.explanation || "AI Verification: Circuit verified successfully. Unitary evolution is sound."
+         });
       }
-    }, 1500);
+    } catch (err) {
+      console.error(err);
+      if (setHighlightError) {
+         setHighlightError({ message: "Network Error: Could not connect to AI backend for verification." });
+      }
+    } finally {
+      setIsDebugging(false);
+    }
   };
 
 
