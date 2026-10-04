@@ -124,10 +124,9 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (studioSubTab === 'cloud') {
-      loadSavedCircuits();
-    }
-  }, [studioSubTab]);
+    // Re-fetch circuits optionally if needed, studioSubTab was removed
+    loadSavedCircuits();
+  }, []);
 
   const handleSaveCircuitToCloud = async () => {
     if (!saveCircuitName.trim()) return;
