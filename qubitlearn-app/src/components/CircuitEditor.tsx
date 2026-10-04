@@ -28,7 +28,7 @@ import {
   Clock,
   Loader2,
   Cloud,
-} from 'lucide-react';
+Bug} from 'lucide-react';
 
 interface CircuitEditorProps {
   circuit: CircuitState;
