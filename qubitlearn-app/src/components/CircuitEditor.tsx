@@ -252,7 +252,7 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
   const [activePreset, setActivePreset] = useState<string>('');
   const [editorMode, setEditorMode] = useState<'visual' | 'code'>('visual');
   const [codeFramework, setCodeFramework] = useState<
-    'qiskit' | 'cirq' | 'pennylane' | 'braket' | 'cudaq' | 'qsharp' | 'pyquil' | 'qutip' | 'openqasm' | 'quantikz'
+    'qiskit' | 'cirq' | 'pennylane' | 'openqasm' | 'quantikz'
   >('qiskit');
   const [codeText, setCodeText] = useState<string>('');
   const [codeParseMsg, setCodeParseMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -326,7 +326,7 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
     playChirp();
     setTimeout(() => {
       setIsRunningSim(false);
-    }, 250);
+    }, 800);
   };
 
   // Drag and drop state
@@ -392,21 +392,7 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
           case 'pennylane':
             setCodeText(CircuitTranspiler.toPennyLane(safeCircuit));
             break;
-          case 'braket':
-            setCodeText(CircuitTranspiler.toBraket(safeCircuit));
-            break;
-          case 'cudaq':
-            setCodeText(CircuitTranspiler.toCudaQ(safeCircuit));
-            break;
-          case 'qsharp':
-            setCodeText(CircuitTranspiler.toQSharp(safeCircuit));
-            break;
-          case 'pyquil':
-            setCodeText(CircuitTranspiler.toPyQuil(safeCircuit));
-            break;
-          case 'qutip':
-            setCodeText(CircuitTranspiler.toQutip(safeCircuit));
-            break;
+
           case 'openqasm':
             setCodeText(CircuitTranspiler.toOpenQasm(safeCircuit));
             break;
@@ -864,13 +850,8 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
                 <option value="qiskit">1. IBM Qiskit 1.x</option>
                 <option value="cirq">2. Google Cirq</option>
                 <option value="pennylane">3. Xanadu PennyLane</option>
-                <option value="braket">4. Amazon Braket (AWS)</option>
-                <option value="cudaq">5. NVIDIA CUDA-Q</option>
-                <option value="qsharp">6. Microsoft Q#</option>
-                <option value="pyquil">7. Rigetti pyQuil</option>
-                <option value="qutip">8. QuTiP</option>
-                <option value="openqasm">9. OpenQASM 3.0/2.0</option>
-                <option value="quantikz">10. LaTeX quantikz</option>
+                <option value="openqasm">4. OpenQASM 3.0/2.0</option>
+                <option value="quantikz">5. LaTeX quantikz</option>
               </select>
             </div>
             <button
@@ -1030,7 +1011,12 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
 
           {/* Visual Quantum Wire Grid (Crisp White Canvas with Category Gates) */}
           <div className="relative overflow-x-auto bg-slate-50/80 p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-inner">
-            <div className="min-w-[640px] flex flex-col space-y-7 relative">
+            <div className="min-w-[640px] flex flex-col space-y-7 relative overflow-hidden">
+              {/* Animated Scanning Beam (Active during simulation) */}
+              {isRunningSim && (
+                <div className="absolute top-0 bottom-0 left-16 w-1.5 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)] z-30 animate-scan origin-left rounded-full" />
+              )}
+
               {/* Render horizontal wire for each qubit */}
               {Array.from({ length: safeCircuit.numQubits }).map((_, qIndex) => {
                 const initialMode = safeCircuit.initialState?.[qIndex] || 0;
@@ -1082,7 +1068,7 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
                               onClick={() => handleCellClick(qIndex, tIndex)}
                               className={`relative w-11 h-11 flex items-center justify-center rounded-xl border font-mono text-xs font-bold transition-all cursor-pointer ${
                                 gate
-                                  ? `${def?.placedClass || 'bg-blue-600 border-blue-700 text-white'} shadow-sm scale-100 hover:scale-105`
+                                  ? `${def?.placedClass || 'bg-blue-600 border-blue-700 text-white'} shadow-sm scale-100 hover:scale-105 animate-pop`
                                   : 'bg-white border-slate-200 text-slate-400 hover:border-blue-400 hover:bg-blue-50/50 hover:text-blue-600 shadow-2xs'
                               } ${isHighlighted ? 'ring-2 ring-rose-500 ring-offset-2 ring-offset-white animate-pulse' : ''}`}
                               title={

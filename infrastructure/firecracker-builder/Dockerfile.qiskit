@@ -1,0 +1,13 @@
+# This Dockerfile builds the EXT4 rootfs for the Qiskit Firecracker MicroVM
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# Install Qiskit and execution dependencies
+RUN pip3 install qiskit==1.0.0 qiskit-aer==0.14.0.1 numpy
+
+# Setup Sandbox Environment
+WORKDIR /sandbox
+COPY worker-quantum-sandbox/src/runners_quantum/qiskit_runner.py /sandbox/runner.py
+
+CMD ["python3", "/sandbox/runner.py"]

@@ -7,8 +7,6 @@
  * 1. Qiskit (IBM)
  * 2. Cirq (Google)
  * 3. PennyLane (Xanadu)
- * 4. QuTiP (Quantum Toolbox in Python)
- * 5. PyQuil (Rigetti)
  * + OpenQASM 2.0 & Publication LaTeX quantikz
  */
 
@@ -23,17 +21,7 @@ interface MultiFrameworkModalProps {
   circuit: CircuitState;
 }
 
-type FrameworkKey =
-  | 'qiskit'
-  | 'cirq'
-  | 'pennylane'
-  | 'braket'
-  | 'cudaq'
-  | 'qsharp'
-  | 'pyquil'
-  | 'qutip'
-  | 'openqasm'
-  | 'quantikz';
+type FrameworkKey = 'qiskit' | 'cirq' | 'pennylane' | 'openqasm' | 'quantikz';
 
 interface ExecutionAuditState {
   running: boolean;
