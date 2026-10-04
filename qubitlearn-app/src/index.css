@@ -1,6 +1,24 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
+@theme {
+  --animate-scan: scan 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-pop: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  
+  @keyframes scan {
+    0% { transform: translateX(0%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+  
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+}
+
+
 /* =========================================================================
    ACADEMIC TIMES NEW ROMAN & CRISP SERIF TYPOGRAPHY SYSTEM
    Primary Typography: "Times New Roman", Times, "Tinos", "Liberation Serif", serif

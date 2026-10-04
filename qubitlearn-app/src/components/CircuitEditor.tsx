@@ -835,45 +835,83 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
 
       {/* Code Editor View */}
       {editorMode === 'code' ? (
-        <div className="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-inner">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2">
               <Terminal className="w-4 h-4 text-slate-500" />
               <span className="text-xs font-semibold text-slate-800">
-                Multi-SDK Quantum Code Editor:
+                Multi-SDK Code Editor:
               </span>
               <select
                 value={codeFramework}
                 onChange={(e) => setCodeFramework(e.target.value as any)}
-                className="bg-white border border-slate-200 text-xs text-slate-800 font-mono rounded-lg px-2.5 py-1 focus:outline-none focus:border-blue-500 cursor-pointer shadow-2xs"
+                className="bg-white border border-slate-300 text-xs text-slate-800 font-mono rounded-lg px-2.5 py-1 focus:outline-none focus:border-blue-500 cursor-pointer shadow-2xs"
               >
-                <option value="qiskit">1. IBM Qiskit 1.x</option>
+                <option value="qiskit">1. IBM Qiskit</option>
                 <option value="cirq">2. Google Cirq</option>
                 <option value="pennylane">3. Xanadu PennyLane</option>
                 <option value="openqasm">4. OpenQASM 3.0/2.0</option>
                 <option value="quantikz">5. LaTeX quantikz</option>
               </select>
             </div>
-            <button
-              onClick={handleCompileCode}
-              className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1.5 cursor-pointer transition-colors"
-            >
-              <Play className="w-3 h-3 fill-current" />
-              <span>Compile to Visual Grid</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleRunCode}
+                disabled={isRunningCode}
+                className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1.5 cursor-pointer transition-colors disabled:opacity-50"
+                title="Execute code via isolated Firecracker MicroVM memory snapshot (.bin)"
+              >
+                {isRunningCode ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3 fill-current" />}
+                <span>Run in Sandbox (.bin)</span>
+              </button>
+              <button
+                onClick={handleCompileCode}
+                disabled={isRunningCode}
+                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1.5 cursor-pointer transition-colors disabled:opacity-50"
+                title="Parse AST and compile to Visual Circuit Grid"
+              >
+                <LayoutGrid className="w-3 h-3" />
+                <span>Compile to Visual Grid</span>
+              </button>
+            </div>
           </div>
 
-          <textarea
-            value={codeText}
-            onChange={(e) => setCodeText(e.target.value)}
-            rows={12}
-            className="w-full p-3.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 font-mono focus:outline-none focus:border-blue-500 leading-relaxed resize-y shadow-2xs"
-            placeholder="from qiskit import QuantumCircuit&#10;qc = QuantumCircuit(2)&#10;qc.h(0)&#10;qc.cx(0, 1)"
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {/* Editor Pane */}
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center px-1">
+                <span className="text-[10px] font-bold uppercase text-slate-500">Input Source Code</span>
+              </div>
+              <textarea
+                value={codeText}
+                onChange={(e) => setCodeText(e.target.value)}
+                rows={12}
+                className="w-full p-3.5 bg-[#1e1e1e] border border-slate-300 rounded-xl text-xs text-[#d4d4d4] font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed resize-y shadow-inner"
+                placeholder="from qiskit import QuantumCircuit
+qc = QuantumCircuit(2)
+qc.h(0)
+qc.cx(0, 1)"
+                spellCheck={false}
+              />
+            </div>
+
+            {/* Output / Terminal Pane */}
+            <div className="space-y-1.5 flex flex-col h-full">
+              <div className="flex justify-between items-center px-1">
+                <span className="text-[10px] font-bold uppercase text-slate-500">Execution Console</span>
+                <span className="text-[9px] font-mono bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">Firecracker KVM</span>
+              </div>
+              <textarea
+                value={consoleOutput}
+                readOnly
+                className="w-full flex-1 min-h-[190px] p-3.5 bg-black border border-slate-300 rounded-xl text-xs text-emerald-400 font-mono focus:outline-none leading-relaxed resize-none shadow-inner"
+              />
+            </div>
+          </div>
 
           {codeParseMsg && (
             <div
-              className={`p-2.5 rounded-xl text-xs font-mono ${
+              className={`p-3 rounded-xl text-xs font-mono whitespace-pre-wrap ${
                 codeParseMsg.type === 'success'
                   ? 'bg-emerald-50 border border-emerald-200 text-emerald-800'
                   : 'bg-rose-50 border border-rose-200 text-rose-800'
@@ -883,9 +921,9 @@ export const CircuitEditor: React.FC<CircuitEditorProps> = ({
             </div>
           )}
 
-          <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-1">
-            <span>Supports standard syntax: <code>qc.h(q)</code>, <code>qc.cx(c, t)</code>, <code>qc.swap(a, b)</code>, <code>qc.rx(θ, q)</code>, and OpenQASM.</span>
-            <span className="font-mono text-slate-700 font-medium">Bidirectional Transpiler Active</span>
+          <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-200">
+            <span>Supports standard syntax: <code>qc.h(q)</code>, <code>qc.cx(c, t)</code>, <code>qc.swap(a, b)</code>, <code>qc.rx(θ, q)</code>.</span>
+            <span className="font-mono text-indigo-700 font-bold bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200 flex items-center gap-1"><Code2 className="w-3 h-3"/> Bidirectional AST Pipeline Active</span>
           </div>
         </div>
       ) : (
