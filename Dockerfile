@@ -46,7 +46,6 @@ COPY qubitlearn-app/tsconfig.json ./tsconfig.json
 COPY qubitlearn-app/course_documents/ ./course_documents/
 COPY qubitlearn-app/challenge_documents/ ./challenge_documents/
 COPY qubitlearn-app/assessment_documents/ ./assessment_documents/
-COPY qubitlearn-app/research_documents/ ./research_documents/
 COPY qubitlearn-app/formal_engine/ ./formal_engine/
 
 # Expose standard application port (HTTP + WebSocket)
