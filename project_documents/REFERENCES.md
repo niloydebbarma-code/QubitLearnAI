@@ -1,10 +1,10 @@
 # QubitLearn AI: Official Research, Policy & Empirical References (1–23)
-## Master Bibliography & Citation Index (SIH 2026 — Problem Statement ID: 26140)
+## Master Bibliography & Citation Index (Interactive Quantum Computing & Algorithm Learning Platform)
 
 ---
 
 ### Executive Summary
-This document provides the formal 23-item academic and empirical bibliography underpinning **QubitLearn AI**, matching the exact citation map in **Slide 6** of the official National Hackathon Presentation. All references are verified, active, and hyperlinked to primary DOI, arXiv, Press Information Bureau (PIB), and institutional government repositories.
+This document provides the formal 23-item academic and empirical bibliography underpinning **QubitLearn AI**, matching the exact citation map in the master technical architecture. All references are verified, active, and hyperlinked to primary DOI, arXiv, Press Information Bureau (PIB), and institutional government repositories.
 
 ---
 
@@ -123,4 +123,4 @@ This document provides the formal 23-item academic and empirical bibliography un
   *Context:* Empirical verification report covering 75+ automated test suites across statevector math, transpilation ASTs, Lean 4 autoformalization, and KVM isolation.
 
 ---
-*Maintained under official version control for Smart India Hackathon (SIH 2026) National Grand Finale audit compliance.*
+*Maintained under official version control for QubitLearn AI academic audit and open-source reproducibility.*

@@ -4,7 +4,7 @@
  * 
  * QubitLearn AI — Interactive Quantum Circuit Studio
  * Modern White-First Design with Category-Colored Quantum Gates & Grid
- * Aligned with SIH 2026 Slide 2 & Slide 3 Architectural Specifications:
+ * Core Architectural & Verification Specifications:
  * - 2D Coordinate Vision & Bounding Box Error Localization [21]
  * - Flexible Multi-Qubit Gate Routing & Control Wiring (CX, CZ, SWAP, CCX)
  * - Exact State Simulation & Target Objective Telemetry (<2ms)
