@@ -6,8 +6,8 @@
  * Real execution of QuantumSimulator (qubitlearn-app/src/quantum/simulator.ts).
  */
 
-import { QuantumSimulator } from '../qubitlearn-app/src/quantum/simulator';
-import { CircuitState } from '../qubitlearn-app/src/types';
+import { QuantumSimulator } from '../src/quantum/simulator';
+import { CircuitState } from '../src/types';
 
 export async function runQubitScalabilityTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];

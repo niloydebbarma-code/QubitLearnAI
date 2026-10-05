@@ -7,7 +7,7 @@
  * and SciDocBench Visual Document Layout Analysis.
  */
 
-import { RESEARCH_PAPERS } from '../qubitlearn-app/src/quantum/papersData';
+import { RESEARCH_PAPERS } from '../src/quantum/papersData';
 
 export interface BoundingBox2D {
   box_2d: [number, number, number, number]; // [ymin, xmin, ymax, xmax] normalized to 1000

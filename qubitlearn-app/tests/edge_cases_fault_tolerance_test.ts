@@ -7,7 +7,7 @@
  * and malicious payload neutralization.
  */
 
-import { QuantumSimulator } from '../qubitlearn-app/src/quantum/simulator';
+import { QuantumSimulator } from '../src/quantum/simulator';
 
 export async function runEdgeCasesTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];

@@ -81,8 +81,8 @@ def main():
          [sys.executable, os.path.join(tests_dir, "cloud_supabase_db_test.py")],
          root_dir, {}),
         ("12. Master TypeScript & Full-Stack Verification",
-         ["npx", "--prefix", "qubitlearn-app", "tsx", "tests/run_all_tests.ts"],
-         root_dir, {"NODE_PATH": node_path}),
+         ["npx.cmd" if sys.platform == "win32" else "npx", "tsx", "tests/run_all_tests.ts"],
+         app_dir, {"NODE_PATH": node_path}),
     ]
 
     passed_suites = 0

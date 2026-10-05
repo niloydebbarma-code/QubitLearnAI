@@ -82,23 +82,26 @@ python tests/tensor_inference_engine_test.py
 python tests/symbolic_algebra_test.py
 
 # 6. Giallar 20 Formal Rewrite Rules
-npx --prefix qubitlearn-app tsx tests/giallar_formal_rules_test.ts
+cd qubitlearn-app && npx tsx tests/giallar_formal_rules_test.ts
 
 # 7. Quantum AST & Transpiler
-npx --prefix qubitlearn-app tsx tests/transpiler_ast_test.ts
+cd qubitlearn-app && npx tsx tests/transpiler_ast_test.ts
 
 # 8. Lean 4 Formal Autoformalization
-npx --prefix qubitlearn-app tsx tests/formal_verification_lean4_test.ts
+cd qubitlearn-app && npx tsx tests/formal_verification_lean4_test.ts
 
 # 9. NVIDIA Ising 3D CNN Decoder
-npx --prefix qubitlearn-app tsx tests/ising_color_code_decoder_test.ts
+cd qubitlearn-app && npx tsx tests/ising_color_code_decoder_test.ts
 
 # 10. WebSockets & Collaboration
-npx --prefix qubitlearn-app tsx tests/websocket_synchronization_test.ts
+cd qubitlearn-app && npx tsx tests/websocket_synchronization_test.ts
 ```
 
 ### Full Master Orchestration
 ```bash
-# Run all Python and TypeScript test suites end-to-end
+# Run all Frontend and Modular TypeScript suites
+cd qubitlearn-app && npm test
+
+# Run all Infrastructure and Python test suites end-to-end
 python tests/run_all_tests.py
 ```

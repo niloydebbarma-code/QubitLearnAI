@@ -6,7 +6,7 @@
  * Tests: Superposition, Bell State, GHZ State, Swap Circuit, Phase Oracles.
  */
 
-import { QuantumEngine } from '../qubitlearn-app/server/quantumEngine';
+import { QuantumEngine } from '../server/quantumEngine';
 
 export async function runQuantumEngineTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];

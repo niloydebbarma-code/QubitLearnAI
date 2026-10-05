@@ -6,8 +6,8 @@
  * Tests Student, Researcher, and Instructor interactive personas.
  */
 
-import { QuantumEngine } from '../qubitlearn-app/server/quantumEngine';
-import { LeanServerEngine } from '../qubitlearn-app/server/leanAutoformalizer';
+import { QuantumEngine } from '../server/quantumEngine';
+import { LeanServerEngine } from '../server/leanAutoformalizer';
 
 export async function runUserPersonasTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];

@@ -9,8 +9,8 @@
 import {
   PRE_VERIFIED_LEAN4_MATHLIB_THEOREMS,
   LeanAutoformalizationEngine
-} from '../qubitlearn-app/src/quantum/leanAutoformalizer';
-import { LeanServerEngine } from '../qubitlearn-app/server/leanAutoformalizer';
+} from '../src/quantum/leanAutoformalizer';
+import { LeanServerEngine } from '../server/leanAutoformalizer';
 
 export async function runLean4AutoformalizerTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];

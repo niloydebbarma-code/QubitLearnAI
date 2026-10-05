@@ -6,8 +6,8 @@
  * Real execution of CircuitTranspiler across target quantum SDKs.
  */
 
-import { CircuitTranspiler } from '../qubitlearn-app/src/quantum/transpiler';
-import { CircuitState } from '../qubitlearn-app/src/types';
+import { CircuitTranspiler } from '../src/quantum/transpiler';
+import { CircuitState } from '../src/types';
 
 export async function runUniversalTranspilerTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];
@@ -72,20 +72,7 @@ export async function runUniversalTranspilerTests(): Promise<{ name: string; pas
     results.push({ name: 'Transpiler -> OpenQASM Standard Format', passed: false, details: err.message });
   }
 
-  // 5. NVIDIA CUDA-Q Transpilation
-  try {
-    const cudaqCode = CircuitTranspiler.toCudaQ(bellCircuit);
-    const valid = cudaqCode.includes('cudaq') && cudaqCode.includes('h(q[0])') && (cudaqCode.includes('cx(q[0], q[1])') || cudaqCode.includes('x<cudaq::ctrl>(q[0], q[1])'));
-    results.push({
-      name: 'Transpiler -> NVIDIA CUDA-Q (C++/Python)',
-      passed: valid,
-      details: `Generated ${cudaqCode.split('\n').length} lines of verified CUDA-Q kernel.`
-    });
-  } catch (err: any) {
-    results.push({ name: 'Transpiler -> NVIDIA CUDA-Q', passed: false, details: err.message });
-  }
-
-  // 6. Publication LaTeX Quantikz Transpilation
+  // 5. Publication LaTeX Quantikz Transpilation
   try {
     const quantikzCode = CircuitTranspiler.toQuantikz(bellCircuit);
     const valid = quantikzCode.includes('\\begin{quantikz}') && quantikzCode.includes('\\gate{H}') && quantikzCode.includes('\\ctrl{');

@@ -6,7 +6,7 @@
  * Real execution of IsingQecDecoder (qubitlearn-app/src/quantum/isingQecDecoder.ts).
  */
 
-import { NvidiaIsingQecEngine, QecNoiseModel } from '../qubitlearn-app/src/quantum/isingQecDecoder';
+import { NvidiaIsingQecEngine, QecNoiseModel } from '../src/quantum/isingQecDecoder';
 
 export async function runIsingColorCodeDecoderTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];

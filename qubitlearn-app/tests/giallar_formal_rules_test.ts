@@ -6,8 +6,8 @@
  * Tests all 20 formal rewrite rules and the compiler pass equivalence verifier.
  */
 
-import { GIALLAR_20_REWRITE_RULES, GiallarCompilerVerifier } from '../qubitlearn-app/src/quantum/giallarVerifier';
-import { CircuitState } from '../qubitlearn-app/src/types';
+import { GIALLAR_20_REWRITE_RULES, GiallarCompilerVerifier } from '../src/quantum/giallarVerifier';
+import { CircuitState } from '../src/types';
 
 export async function runGiallarAll20RulesTests(): Promise<{ name: string; passed: boolean; details: string }[]> {
   const results: { name: string; passed: boolean; details: string }[] = [];
