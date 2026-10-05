@@ -255,6 +255,7 @@ export default function App() {
                 setCircuit={setCircuit}
                 soundEnabled={soundEnabled}
                 highlightError={highlightError}
+                setHighlightError={setHighlightError}
                 activeStepInspection={activeStepInspection}
                 setActiveStepInspection={setActiveStepInspection}
               />
