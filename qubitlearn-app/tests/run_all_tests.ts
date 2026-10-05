@@ -19,6 +19,7 @@ import { runUserPersonasTests } from './user_personas_workflow_test';
 import { runEdgeCasesTests } from './edge_cases_fault_tolerance_test';
 import { runRealWebSocketTests } from './websocket_synchronization_test';
 import { runLiveCloudServicesTests } from './cloud_services_connection_test';
+import { runApiEndpointTests } from './api_endpoints_test';
 
 export async function runAllTypeScriptTests() {
   console.log('='.repeat(80));
@@ -39,6 +40,7 @@ export async function runAllTypeScriptTests() {
     { title: '11. Edge Cases, Boundaries & Fault Tolerance', fn: runEdgeCasesTests },
     { title: '12. Real Full-Duplex WebSockets', fn: runRealWebSocketTests },
     { title: '13. Live Cloud Services & Supabase Connectivity', fn: runLiveCloudServicesTests },
+    { title: '14. Full-Stack API Endpoints & Service Layer', fn: runApiEndpointTests },
   ];
 
   let totalTests = 0;
