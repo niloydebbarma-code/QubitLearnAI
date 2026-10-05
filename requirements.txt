@@ -1,0 +1,42 @@
+# QubitLearn AI — Python Quantum & Scientific Dependencies
+# Pinning exact compatible versions for reproducible verification
+
+# Quantum SDKs & Simulators
+qiskit==2.5.2
+qiskit-aer==0.17.2
+cirq==1.7.0
+cirq-core==1.7.0
+cirq-google==1.7.0
+pennylane==0.45.1
+pennylane-lightning==0.45.0
+stim==1.16.0
+chromobius==1.1.1
+rustworkx==0.18.1
+
+# Scientific Computing & Math
+numpy==2.5.3
+scipy==1.18.1
+sympy==1.14.0
+matplotlib==3.11.2
+networkx==3.4.2
+pandas==3.0.6
+scikit-learn==1.9.0
+
+# Deep Learning & Tensor Inference
+onnx==1.23.0
+onnxruntime==1.30.0
+torch==2.14.0+cpu; sys_platform != "win32"
+torch==2.14.0; sys_platform == "win32"
+
+# Backend, Networking & Cloud
+fastapi==0.141.1
+uvicorn==0.52.4
+flask==3.1.3
+websockets==17.1
+requests==2.34.2
+google-auth==2.56.2
+protobuf==6.33.6
+psutil==7.2.2
+pypdf==6.18.0
+python-pptx==1.0.2
+rich==15.0.0

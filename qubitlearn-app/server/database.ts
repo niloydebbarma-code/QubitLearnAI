@@ -463,6 +463,7 @@ export async function getCircuitByIdFromDb(id: string) {
 }
 
 export async function listCircuitsFromDb(userId?: string) {
+  try {
   const supabase = getSupabase();
   let query = supabase.from("circuits").select("*").limit(50);
   if (userId) query = query.eq("user_id", userId);
@@ -478,6 +479,10 @@ export async function listCircuitsFromDb(userId?: string) {
     }));
   }
   return [];
+  } catch (err) {
+    console.warn("Supabase Warning:", err);
+    return [];
+  }
 }
 
 // ==========================================

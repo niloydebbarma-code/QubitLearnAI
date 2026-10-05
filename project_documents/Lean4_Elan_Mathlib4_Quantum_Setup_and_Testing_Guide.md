@@ -100,7 +100,7 @@ QubitLearnAI/
 
 ## 4. Automated Setup Scripts
 
-### Linux / WSL2 / Cloud Container (`scripts/setup_lean4_elan_environment.sh`)
+### Linux / WSL2 / Cloud Container (`qubitlearn-app/scripts/setup_lean4_elan_environment.sh`)
 ```bash
 #!/usr/bin/env bash
 set -e
@@ -116,7 +116,7 @@ lean --version
 lake --version
 
 echo "=== Initializing Quantum Formalization Workspace ==="
-mkdir -p quantum_formal && cd quantum_formal
+mkdir -p qubitlearn-app/formal_engine && cd qubitlearn-app/formal_engine
 echo "leanprover/lean4:v4.11.0" > lean-toolchain
 
 if [ ! -f "lakefile.toml" ] && [ ! -f "lakefile.lean" ]; then
@@ -130,22 +130,4 @@ echo "=== Building Quantum Formal Verification Kernel ==="
 lake build
 
 echo "=== Lean 4 & Mathlib4 Setup Completed Successfully ==="
-```
-
-### Windows Host (`scripts/setup_lean4_elan_environment.ps1`)
-```powershell
-Write-Host "=== Setting up elan on Windows ==="
-# Download and invoke elan installer for Windows
-$elanInstaller = "$env:TEMP\elan-init.ps1"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/leanprover/elan/master/elan-init.ps1" -OutFile $elanInstaller
-& powershell -ExecutionPolicy Bypass -File $elanInstaller -y
-
-$env:Path = "$env:USERPROFILE\.elan\bin;" + $env:Path
-
-Write-Host "=== Verifying Lean 4 Toolchains ==="
-& elan --version
-& lean --version
-& lake --version
-
-Write-Host "=== Lean 4 Windows Setup Complete ==="
 ```

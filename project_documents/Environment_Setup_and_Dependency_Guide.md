@@ -13,20 +13,8 @@ To install all Python quantum SDKs, scientific packages, Node.js frontend/backen
 cd QubitLearnAI
 
 # Make the setup script executable and run
-chmod +x scripts/setup_all_dependencies.sh scripts/setup_lean4_elan_environment.sh
-bash scripts/setup_all_dependencies.sh
-```
-
-### Windows (PowerShell)
-```powershell
-Set-Location -Path "D:\Jan 2025\Downloads\QubitLearnAI"
-& ".\scripts\setup_all_dependencies.ps1"
-```
-
-### Windows (Command Prompt / Double-Click)
-```cmd
-cd /d "D:\Jan 2025\Downloads\QubitLearnAI"
-scripts\setup_all_dependencies.bat
+chmod +x qubitlearn-app/scripts/setup_all_dependencies.sh qubitlearn-app/scripts/setup_lean4_elan_environment.sh
+bash qubitlearn-app/scripts/setup_all_dependencies.sh
 ```
 
 ---

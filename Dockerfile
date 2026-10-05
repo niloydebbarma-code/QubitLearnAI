@@ -47,6 +47,8 @@ COPY qubitlearn-app/course_documents/ ./course_documents/
 COPY qubitlearn-app/challenge_documents/ ./challenge_documents/
 COPY qubitlearn-app/assessment_documents/ ./assessment_documents/
 COPY qubitlearn-app/formal_engine/ ./formal_engine/
+COPY qubitlearn-app/scripts/ ./scripts/
+COPY qubitlearn-app/infrastructure/ ./infrastructure/
 
 # Expose standard application port (HTTP + WebSocket)
 EXPOSE 3000

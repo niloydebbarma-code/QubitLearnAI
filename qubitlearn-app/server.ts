@@ -55,7 +55,7 @@ import {
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 
 // 1. Trust proxy for Cloud Run, Render, Cloudflare & Nginx client IP resolution
 app.set("trust proxy", 1);
@@ -547,6 +547,7 @@ function getTargetAwareCircuitFix(targetGoal: string) {
 }
 
 async function handleCircuitDebug(req: express.Request, res: express.Response) {
+  try {
   const {
     inputMode = "structural",
     imageMimeType = "image/png",
@@ -904,6 +905,10 @@ Return valid JSON adhering strictly to Section 6.1 schema:
       },
     };
     res.json(fallback);
+  }
+  } catch (err: any) {
+    console.error("handleCircuitDebug error:", err);
+    res.status(500).json({ error: err.message });
   }
 }
 
