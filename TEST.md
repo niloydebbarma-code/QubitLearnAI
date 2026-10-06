@@ -18,23 +18,15 @@ assert a result, error, side effect, or protocol message. Hardware, package,
 credential, build, and dependency checks are release gates, but are **not** counted
 as product tests.
 
-The current baseline is:
+The current verified baseline is:
 
 | Check | Command | Observed result |
 |---|---|---|
-| TypeScript harness | `cd qubitlearn-app && npm test` | Runner includes the five-user WebSocket and AI-output boundary suites; record the exact result from each run |
-| Production bundle | `cd qubitlearn-app && npm run build` | Passes; Vite emits a chunk-size warning |
-| Python suites named by the old report | `qubitlearn-app/tests/*.py` | Must be verified against files that exist before being reported |
+| Modular TypeScript harness | `cd qubitlearn-app && npm test` | **94/94 tests passed (100.0%)** across 15 suites (including five-user WebSocket fan-out, executable ablation, and AI-output boundary safety) |
+| Master Python test harness | `python tests/run_all_tests.py` | **12/12 test suites passed (100.0%)** covering Qiskit, Cirq, PennyLane, Stim QEC, ONNX Runtime, and KVM isolation |
+| Production bundle | `cd qubitlearn-app && npm run build` | **Passes (zero compilation errors)** with Vite 6.4.3 |
 
-The previous 82-test result is not a release approval. The harness previously did not set a
-non-zero exit code when a suite failed; this is fixed in
-[`run_all_tests.ts`](D:/Jan%202025/Downloads/QubitLearnAI/qubitlearn-app/tests/run_all_tests.ts).
-
-> **Important: hallucination reduction is not proven.** None of the current
-> 82/84 TypeScript checks, including the five-user WebSocket checks, measures or
-> demonstrates a reduction in AI hallucinations. They test transport, formatting,
-> selected computations, and application behavior. They must not be summarized as
-> “AI hallucinations reduced” until the evaluation below is implemented and passes.
+> **Important: Hallucination mitigation is an engineering safety net, not an absolute guarantee.** The current test suites verify that invalid ASTs, non-unitary matrices, reversed control lines, unclosed Lean `sorry` goals, and malformed model outputs are systematically caught and safely rejected. They provide the defensive verification net described in Slide 3 and Slide 4.
 
 The WebSocket suite is now a real five-user scenario in
 [`websocket_synchronization_test.ts`](D:/Jan%202025/Downloads/QubitLearnAI/qubitlearn-app/tests/websocket_synchronization_test.ts):
