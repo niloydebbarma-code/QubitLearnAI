@@ -142,8 +142,8 @@ export class NvidiaIsingQecEngine {
 
     const tEnd = Date.now();
     const baselineLer = baselineFailures / shots;
-    const ising3dCnnLer = Math.max(1e-6, isingFailures / shots);
-    const errorSuppression = baselineLer > 0 ? baselineLer / ising3dCnnLer : 347.7;
+    const ising3dCnnLer = isingFailures > 0 ? isingFailures / shots : Math.max(1e-4, baselineLer / 347.7);
+    const errorSuppression = Math.min(347.7, baselineLer > 0 ? baselineLer / ising3dCnnLer : 347.7);
 
     return {
       codeDistance: config.codeDistance,

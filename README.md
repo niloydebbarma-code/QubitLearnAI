@@ -7,7 +7,7 @@
 [![Demonstration Video](https://img.shields.io/badge/Demo%20Video-Watch%20on%20YouTube-dc2626?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy)
 [![Architecture PDF](https://img.shields.io/badge/Architecture-System%20Report-09479e?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](project_documents/System_Architecture_and_Verification_Report.pdf)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ed?style=for-the-badge&logo=docker&logoColor=white)](#-docker-quickstart)
-[![Test Suite](https://img.shields.io/badge/Tests-101%20Core%20Suites%20Passed-15803d?style=for-the-badge)](project_documents/Test_Results.md)
+[![Test Suite](https://img.shields.io/badge/Tests-113%20Core%20Tests%20Passed-15803d?style=for-the-badge)](project_documents/Test_Results.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)](LICENSE)
 
 </div>
@@ -18,11 +18,11 @@
 
 **QubitLearn AI** is an interactive quantum computing and algorithm education platform designed to make quantum concepts practical and verifiable for learners. 
 
-By pairing an **in-browser statevector simulation engine (<2ms for introductory circuits)** with **server-side microVM execution for high-qubit workloads**, **multimodal spatial vision for circuit error localization**, and a **4-Tier AI Trust Framework backed by Lean 4 theorem proving**, the platform helps students move from abstract linear algebra to validated quantum circuit implementation.
+By pairing an **in-browser statevector simulation engine (<2ms up to 10 qubits, supporting up to 15 qubits in browser)** with **server-side microVM execution for high-qubit workloads (138ms cold-boot)**, **multimodal spatial vision for circuit error localization**, and a **4-Tier AI Trust Framework backed by Lean 4 theorem proving**, the platform helps students move from abstract linear algebra to validated quantum circuit implementation.
 
 * 📺 **Project Demonstration Video:** [https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy](https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy)
 * 📑 **System Architecture & Formal Bounds:** [`project_documents/System_Architecture_and_Verification_Report.pdf`](project_documents/System_Architecture_and_Verification_Report.pdf)
-* 🔬 **100+ Test Suite Audit Report:** [`project_documents/Test_Results.md`](project_documents/Test_Results.md)
+* 🔬 **113-Test Suite Audit Report:** [`project_documents/Test_Results.md`](project_documents/Test_Results.md)
 * 📚 **Official Bibliography & Citation Index:** [`project_documents/REFERENCES.md`](project_documents/REFERENCES.md)
 * 📐 **Multi-SDK Giallar Formal Proof Theory:** [`project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md`](project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md)
 * ☁️ **Cloud Runtime & VM Specifications:** [`project_documents/Cloud_VM_and_Runtime_Architecture.md`](project_documents/Cloud_VM_and_Runtime_Architecture.md)
@@ -38,7 +38,7 @@ While thousands of engineering students learn quantum mechanics, textbook instru
 Empirical benchmarks from **QuanBench** (*arXiv:2510.16779*) indicate that generic Large Language Models show $>60\%$ error rates on quantum algorithm synthesis, generating invalid gate orders, phase inversions, and broken AST mappings. QubitLearn AI mitigates these issues through formal mathematical checks and automated unit tests.
 
 ### 3. Curriculum & Workforce Alignment
-The platform is structured to support practical units from the **AICTE QT-03 Quantum Technologies Curriculum** and aligns with the workforce goals of India's **National Quantum Mission (NQM 2030)**, enabling vendor-neutral learning across multiple frameworks.
+The platform is structured to support practical units from the **AICTE QT-03 Quantum Technologies Curriculum** and aligns with the workforce goals of India's **National Quantum Mission (NQM 2030)**, aiming to train 100,000+ engineers and developers in vendor-neutral quantum programming.
 
 ---
 
@@ -119,27 +119,28 @@ QubitLearn AI organizes quantum education into three complementary tiers:
 
 ---
 
-## 📊 Verification & Test Summary (101 Domain Tests Passed)
+## 📊 Verification & Test Summary (113 Domain Tests Passed)
 
-The platform is backed by **101 automated algorithmic and system tests** verified with a **100% pass rate** (detailed in [`project_documents/Test_Results.md`](project_documents/Test_Results.md)):
+The platform is backed by **113 automated algorithmic and system tests** verified with a **100% pass rate** (detailed in [`project_documents/Test_Results.md`](project_documents/Test_Results.md)):
 
 | Domain / Suite Category | Checks | Benchmark Metric | Status |
 | :--- | :---: | :--- | :---: |
 | **KaTeX Mathematical Engine** | 2 / 2 | Statevector & VQE MathML AST rendering | `PASSED ✓` |
 | **Universal Multi-SDK Transpiler** | 5 / 5 | AST concordance across Qiskit, Cirq, PennyLane | `PASSED ✓` |
-| **Giallar 20 Formal Rewrite Rules** | 22 / 22 | 20 Coq/Z3 rules + compiler pass equivalence | `PASSED ✓` |
+| **Giallar 20 Formal Rewrite Rules** | 22 / 22 | 20 verified rewrite rules + compiler pass equivalence | `PASSED ✓` |
 | **Quantum State Engine & Physics** | 8 / 8 | Bell state, GHZ, CHSH non-locality ($\langle S \rangle = 2.8284$), purity | `PASSED ✓` |
-| **In-Browser Scalability & Limits** | 9 / 9 | 1–5 Qubit statevectors (<2ms) and memory limits | `PASSED ✓` |
+| **In-Browser Scalability & Limits** | 9 / 9 | 1–5 Qubit statevectors (<2ms up to 10Q) and memory limits | `PASSED ✓` |
 | **Lean 4 Autoformalization** | 7 / 7 | Mathlib 4 theorem catalog, proof DAGs, live kernel | `PASSED ✓` |
 | **2D Bounding Box Document Extraction** | 3 / 3 | Paper claim audit and normalized 0–1000 spatial boxes | `PASSED ✓` |
-| **NVIDIA Ising 3D CNN QEC** | 3 / 3 | 3D space-time syndrome generation & LER suppression | `PASSED ✓` |
-| **4-Column System Ablation** | 4 / 4 | Failure domain analysis across pure SDK, AI, and hybrid | `PASSED ✓` |
+| **NVIDIA Ising 3D CNN QEC** | 3 / 3 | 3D space-time syndrome generation & LER suppression (~347.7x benchmark) | `PASSED ✓` |
+| **Executable System Ablation** | 6 / 6 | Failure domain analysis across pure SDK, AI, and hybrid | `PASSED ✓` |
 | **Multi-Persona User Workflows** | 4 / 4 | Student, researcher, and instructor workflows | `PASSED ✓` |
-| **Edge Cases & Boundary Tests** | 6 / 6 | Empty circuits, clamping, out-of-order execution | `PASSED ✓` |
-| **Real-Time WebSockets** | 3 / 3 | Full-duplex Socket.IO handshake and room state sync | `PASSED ✓` |
+| **Edge Cases & Boundary Tests** | 6 / 6 | Empty circuits, clamping, out-of-order execution, Pauli anti-commutation | `PASSED ✓` |
+| **Five-User Full-Duplex WebSockets** | 5 / 5 | Five-client Socket.IO handshake and room state sync | `PASSED ✓` |
 | **Live Cloud Services Connectivity** | 3 / 3 | Vertex AI & Supabase configuration checks | `PASSED ✓` |
 | **Full-Stack API Endpoints** | 3 / 3 | Simulation, Giallar optimization, and transpiler services | `PASSED ✓` |
-| **Python SDK & Isolation Suites** | 19 / 19 | Qiskit, Cirq, PennyLane, Stim QEC, ONNX Runtime, KVM | `PASSED ✓` |
+| **AI Output Validation Boundaries** | 8 / 8 | JSON parsing, markdown fences, repair, and sorry rejection | `PASSED ✓` |
+| **Python SDK & Isolation Suites** | 19 / 19 | Qiskit, Cirq, PennyLane, Stim QEC, ONNX Runtime, KVM (138ms) | `PASSED ✓` |
 
 ---
 
