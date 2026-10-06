@@ -60,7 +60,7 @@ export const PRE_VERIFIED_LEAN4_MATHLIB_THEOREMS: LeanTheoremDeclaration[] = [
     mathlibDependencies: ['Mathlib.LinearAlgebra.TensorProduct.Basic', 'Mathlib.Analysis.InnerProductSpace.Basic'],
     proofTactics: ['have', 'rw', 'contradiction'],
     faithfulnessScore: 0.98,
-    typeCheckStatus: 'PROVEN',
+    typeCheckStatus: 'OPEN_GOAL',
     proofDagNodes: [
       { nodeId: 'n1', label: 'Hypothesis: Unitary Isometry U', type: 'hypothesis', dependencies: [] },
       { nodeId: 'n2', label: 'Cloning condition for |ψ⟩ and |φ⟩', type: 'hypothesis', dependencies: ['n1'] },

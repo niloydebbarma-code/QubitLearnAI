@@ -25,15 +25,24 @@ export function safeExtractJson<T = any>(rawInput: string | undefined | null, fa
     candidate = fenceMatch[1].trim();
   }
 
+  const parseStructured = (value: string): T | undefined => {
+    try {
+      const parsed = JSON.parse(value) as T;
+      return parsed !== null && typeof parsed === 'object' ? parsed : undefined;
+    } catch (_) {
+      return undefined;
+    }
+  };
+
   // Step 2: Try native JSON.parse
-  try {
-    return JSON.parse(candidate) as T;
-  } catch (_) {}
+  const nativeParsed = parseStructured(candidate);
+  if (nativeParsed !== undefined) return nativeParsed;
 
   // Step 3: Try jsonrepair on the candidate string
   try {
     const repaired = jsonrepair(candidate);
-    return JSON.parse(repaired) as T;
+    const parsed = parseStructured(repaired);
+    if (parsed !== undefined) return parsed;
   } catch (_) {}
 
   // Step 4: Extract outermost { ... } or [ ... ] and repair
@@ -42,7 +51,8 @@ export function safeExtractJson<T = any>(rawInput: string | undefined | null, fa
   if (firstBrace !== -1 && lastBrace > firstBrace) {
     const braceSubstring = candidate.substring(firstBrace, lastBrace + 1);
     try {
-      return JSON.parse(jsonrepair(braceSubstring)) as T;
+      const parsed = parseStructured(jsonrepair(braceSubstring));
+      if (parsed !== undefined) return parsed;
     } catch (_) {}
   }
 
@@ -51,7 +61,8 @@ export function safeExtractJson<T = any>(rawInput: string | undefined | null, fa
   if (firstBracket !== -1 && lastBracket > firstBracket) {
     const bracketSubstring = candidate.substring(firstBracket, lastBracket + 1);
     try {
-      return JSON.parse(jsonrepair(bracketSubstring)) as T;
+      const parsed = parseStructured(jsonrepair(bracketSubstring));
+      if (parsed !== undefined) return parsed;
     } catch (_) {}
   }
 
@@ -59,7 +70,8 @@ export function safeExtractJson<T = any>(rawInput: string | undefined | null, fa
   if (firstBrace !== -1) {
     try {
       const openSubstring = candidate.substring(firstBrace);
-      return JSON.parse(jsonrepair(openSubstring)) as T;
+      const parsed = parseStructured(jsonrepair(openSubstring));
+      if (parsed !== undefined) return parsed;
     } catch (_) {}
   }
 

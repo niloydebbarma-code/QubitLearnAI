@@ -68,7 +68,7 @@ export class LeanServerEngine {
       mathlibDependencies: ['Mathlib.LinearAlgebra.TensorProduct.Basic', 'Mathlib.Analysis.InnerProductSpace.Basic'],
       proofTactics: ['have', 'rw', 'contradiction'],
       faithfulnessScore: 0.98,
-      typeCheckStatus: 'PROVEN',
+      typeCheckStatus: 'OPEN_GOAL',
       proofDag: [
         { nodeId: 'n1', label: 'Unitary Tensor Map U', type: 'hypothesis', dependencies: [] },
         { nodeId: 'n2', label: 'Overlap Conservation: ⟨ψ|φ⟩ = ⟨ψ|φ⟩²', type: 'lemma', dependencies: ['n1'] },

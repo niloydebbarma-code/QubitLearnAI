@@ -20,6 +20,7 @@ import { runEdgeCasesTests } from './edge_cases_fault_tolerance_test';
 import { runRealWebSocketTests } from './websocket_synchronization_test';
 import { runLiveCloudServicesTests } from './cloud_services_connection_test';
 import { runApiEndpointTests } from './api_endpoints_test';
+import { runAiOutputValidationTests } from './ai_output_validation_test';
 
 export async function runAllTypeScriptTests() {
   console.log('='.repeat(80));
@@ -41,10 +42,12 @@ export async function runAllTypeScriptTests() {
     { title: '12. Real Full-Duplex WebSockets', fn: runRealWebSocketTests },
     { title: '13. Live Cloud Services & Supabase Connectivity', fn: runLiveCloudServicesTests },
     { title: '14. Full-Stack API Endpoints & Service Layer', fn: runApiEndpointTests },
+    { title: '15. AI Output Validation Boundaries', fn: runAiOutputValidationTests },
   ];
 
   let totalTests = 0;
   let totalPassed = 0;
+  let suiteErrors = 0;
 
   for (const suite of suites) {
     console.log(`\n--- ${suite.title} ---`);
@@ -56,14 +59,19 @@ export async function runAllTypeScriptTests() {
         console.log(`[${t.passed ? 'PASS' : 'FAIL'}] ${t.name}: ${t.details}`);
       }
     } catch (err: any) {
+      suiteErrors++;
       console.log(`[FAIL] Suite execution error: ${err.message}`);
     }
   }
 
-  const passPct = (totalPassed / totalTests) * 100;
+  const passPct = totalTests === 0 ? 0 : (totalPassed / totalTests) * 100;
   console.log('\n' + '='.repeat(80));
-  console.log(`TYPESCRIPT SUITES SUMMARY: ${totalPassed}/${totalTests} tests passed (${passPct.toFixed(1)}%)`);
+  console.log(`TYPESCRIPT SUITES SUMMARY: ${totalPassed}/${totalTests} tests passed (${passPct.toFixed(1)}%); suite errors: ${suiteErrors}`);
   console.log('='.repeat(80));
+
+  if (suiteErrors > 0 || totalPassed !== totalTests) {
+    process.exitCode = 1;
+  }
 }
 
 if (import.meta.url.endsWith(process.argv[1]) || process.argv[1]?.includes('run_all_tests.ts')) {

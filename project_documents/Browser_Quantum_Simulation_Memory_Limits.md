@@ -60,7 +60,7 @@ $$\text{RAM}_{\text{DM}}(n) = 2^{2n} \times 16 \text{ bytes}$$
 
 ## 3. The QubitLearn AI Hybrid Resolution
 
-To provide 100% stable performance without browser crashes, QubitLearn AI deploys a 3-tier execution architecture:
+To maintain high responsiveness and prevent browser crashes, QubitLearn AI deploys a 3-tier execution architecture:
 
 | Qubit Count | Simulation Method | Execution Location | Memory Footprint | Latency & User Experience |
 | :---: | :---: | :---: | :---: | :--- |

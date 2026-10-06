@@ -59,15 +59,15 @@ QubitLearn AI decouples SDK-specific syntax from formal logic verification throu
                  └───────────────────────┬───────────────────────┘
                                          │
                                          ▼  [ Stage 3: Verified Lowering & Code Generation ]
-                 ┌───────────────────────────────────────────────┐
-                 │    Universal Transpiler (transpiler.ts)       │
-                 │   • Lowers verified AST into 10 target SDKs   │
-                 │   • 100% Mathematically Verified Code Output  │
-                 └────────────┬──────────────┬─────────────┬─────┘
-                              │              │             │
-                              ▼              ▼             ▼
-                        [ Verified ]   [ Verified ]   [ Verified ]
-                           Qiskit          Cirq        PennyLane
+                  ┌───────────────────────────────────────────────┐
+                  │    Universal Transpiler (transpiler.ts)       │
+                  │   • Lowers verified AST into target SDKs      │
+                  │   • Formally Verified Code Output             │
+                  └────────────┬──────────────┬─────────────┬─────┘
+                               │              │             │
+                               ▼              ▼             ▼
+                         [ Verified ]   [ Verified ]   [ Verified ]
+                            Qiskit          Cirq        PennyLane
 ```
 
 ---

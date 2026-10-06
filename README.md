@@ -4,383 +4,249 @@
 
 <br/><br/>
 
-[![Live Web Application](https://img.shields.io/badge/Live%20Platform-Deployed%20MVP-0284c7?style=for-the-badge&logo=render&logoColor=white)](#-live-mvp--demo-video)
-[![Pitch Video Demonstration](https://img.shields.io/badge/Demo%20Video-Full%20HD%20Pitch-dc2626?style=for-the-badge&logo=youtube&logoColor=white)](#-live-mvp--demo-video)
-[![Architecture PDF](https://img.shields.io/badge/Architecture-Vector%20PDF%20Report-09479e?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](project_documents/System_Architecture_and_Verification_Report.pdf)
+[![Demonstration Video](https://img.shields.io/badge/Demo%20Video-Watch%20on%20YouTube-dc2626?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy)
+[![Architecture PDF](https://img.shields.io/badge/Architecture-System%20Report-09479e?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](project_documents/System_Architecture_and_Verification_Report.pdf)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ed?style=for-the-badge&logo=docker&logoColor=white)](#-docker-quickstart)
-[![Lean 4 Verified](https://img.shields.io/badge/Formal%20Prover-Lean%204%20Verified-882d2d?style=for-the-badge)](project_documents/Test_Results.md)
-[![Status](https://img.shields.io/badge/Status-Functional%20MVP%20(55%25%20Done)-15803d?style=for-the-badge)](#)
+[![Test Suite](https://img.shields.io/badge/Tests-101%20Core%20Suites%20Passed-15803d?style=for-the-badge)](project_documents/Test_Results.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)](LICENSE)
 
 </div>
 
 ---
 
-## 📌 Executive Summary & Submission Deliverables
+## 📌 Overview & Key Links
 
-**QubitLearn AI** is an indigenous, full-stack interactive quantum computing and algorithm education platform engineered to democratize quantum education across universities (Tier-1, Tier-2, and Tier-3 institutions). By integrating an **in-memory sparse statevector simulator (<2ms latency)**, **Gemini 3.7 Flash spatial vision for 2D circuit error localization**, and a **Lean 4 formal verification proof kernel**, QubitLearn AI eliminates the steep mathematical barrier and guarantees zero AI hallucinations.
+**QubitLearn AI** is an interactive quantum computing and algorithm education platform designed to make quantum concepts practical and verifiable for learners. 
 
-| Deliverable | Description | Location / Access |
-| :--- | :--- | :--- |
-| 🌐 **Live Deployed MVP** | Production Web Application deployed on cloud infrastructure | *[Evaluator Access Provided via Official Portal]* |
-| 🎬 **Pitch Video Demo** | 54-Second Motion-Graphics & Working Prototype Showcase | *[Evaluator Access Provided via Official Portal]* |
-| 📑 **Architecture & Verification Report** | Formal System Specifications & Proof Bounds (Vector PDF) | [`project_documents/System_Architecture_and_Verification_Report.pdf`](project_documents/System_Architecture_and_Verification_Report.pdf) |
-| 🛡️ **Giallar KVM Benchmark Report** | 12-Program Multi-SDK Sandbox & 20-Rule Formal Verifier | [`test_codes/Giallar_Firecracker_KVM_Verification_Report.md`](test_codes/Giallar_Firecracker_KVM_Verification_Report.md) |
-| 📐 **Multi-SDK Giallar Theory** | How Giallar Extends Beyond Qiskit to Cirq, PennyLane & Braket | [`project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md`](project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md) |
-| ☁️ **Cloud VM & Runtime Specification** | Multi-VM Topology, Hardware KVM, Cost & Sizing Analysis | [`project_documents/Cloud_VM_and_Runtime_Architecture.md`](project_documents/Cloud_VM_and_Runtime_Architecture.md) |
-| 🔬 **System Audit & Test Suite** | 24-Module Automated Verification Report ($F \ge 0.999$, Latency Benchmark) | [`project_documents/Test_Results.md`](project_documents/Test_Results.md) |
-| 🐳 **Dockerized Deployment** | Reproducible multi-stage Dockerfile & Compose stack | [`Dockerfile`](Dockerfile) • [`docker-compose.yml`](docker-compose.yml) |
+By pairing an **in-browser statevector simulation engine (<2ms for introductory circuits)** with **server-side microVM execution for high-qubit workloads**, **multimodal spatial vision for circuit error localization**, and a **4-Tier AI Trust Framework backed by Lean 4 theorem proving**, the platform helps students move from abstract linear algebra to validated quantum circuit implementation.
+
+* 📺 **Project Demonstration Video:** [https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy](https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy)
+* 📑 **System Architecture & Formal Bounds:** [`project_documents/System_Architecture_and_Verification_Report.pdf`](project_documents/System_Architecture_and_Verification_Report.pdf)
+* 🔬 **100+ Test Suite Audit Report:** [`project_documents/Test_Results.md`](project_documents/Test_Results.md)
+* 📚 **Official Bibliography & Citation Index:** [`project_documents/REFERENCES.md`](project_documents/REFERENCES.md)
+* 📐 **Multi-SDK Giallar Formal Proof Theory:** [`project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md`](project_documents/Giallar_Multi_SDK_Universal_Verification_Architecture.md)
+* ☁️ **Cloud Runtime & VM Specifications:** [`project_documents/Cloud_VM_and_Runtime_Architecture.md`](project_documents/Cloud_VM_and_Runtime_Architecture.md)
 
 ---
 
-## 🔍 The Problem & National Quantum Context
+## 🔍 Context & Educational Objectives
 
-### 1. The Theory-to-Practice Skill Barrier
-While India produces over **91,000 STEM graduates annually** (2021 baseline), the **Office of Principal Scientific Adviser (PSA 2025 Report)** revealed that **only 2.6% of scholars receive industry R&D absorption**. Traditional academic instruction relies on dense linear algebra and abstract matrix multiplication ($2^n \times 2^n$) without hands-on, zero-cost visual simulation tools (*arXiv:2108.01311*).
+### 1. Bridging the Theory-to-Practice Gap
+While thousands of engineering students learn quantum mechanics, textbook instruction frequently centers on abstract matrix algebra ($2^n \times 2^n$) without accessible, immediate simulation tools (*arXiv:2108.01311*). QubitLearn AI provides instant visual feedback and step-by-step state tracking on standard student laptops.
 
-### 2. The AI Quantum Code Reliability Gap
-Recent empirical evaluations from **QuanBench** (*arXiv:2510.16779*) prove that state-of-the-art Large Language Models (LLMs) achieve **<40% accuracy on quantum algorithm code generation**, frequently generating invalid gate sequences, phase angle inversions, and broken compiler ASTs.
+### 2. Addressing AI Quantum Code Generation Errors
+Empirical benchmarks from **QuanBench** (*arXiv:2510.16779*) indicate that generic Large Language Models show $>60\%$ error rates on quantum algorithm synthesis, generating invalid gate orders, phase inversions, and broken AST mappings. QubitLearn AI mitigates these issues through formal mathematical checks and automated unit tests.
 
-### 3. National Quantum Mission (NQM) Alignment
-Under India's **₹6,000 Crore (~$750M) National Quantum Mission** and the **AICTE QT-03 Model Curriculum Mandate**, India requires **25,000+ trained quantum engineers by 2030**. QubitLearn AI delivers a hardware-free, browser-accessible software stack to achieve this national scaling goal.
-
-```
-+-----------------------------------------------------------------------------------------------+
-|                                  THE QUANTUM LEARNING PARADOX                                 |
-+-------------------------------+-------------------------------+-------------------------------+
-|  Theoretical Brilliance       |  Tooling & Lab Deficit        |  QubitLearn AI Solution       |
-|  • 91k STEM Graduates/year    |  • <2.6% Industry Absorption  |  • In-Memory Statevector <2ms |
-|  • Strong Math Foundation     |  • <5% Physical Lab Access    |  • Gemini 2D Spatial Vision   |
-|  • High Research Interest     |  • LLMs Hallucinate (<40% Acc)|  • Lean 4 Formal Verification |
-+-------------------------------+-------------------------------+-------------------------------+
-```
+### 3. Curriculum & Workforce Alignment
+The platform is structured to support practical units from the **AICTE QT-03 Quantum Technologies Curriculum** and aligns with the workforce goals of India's **National Quantum Mission (NQM 2030)**, enabling vendor-neutral learning across multiple frameworks.
 
 ---
 
-## 🏛️ 3-Layer System Architecture
+## 🏛️ System Architecture
 
-QubitLearn AI decouples quantum education into three resilient architectural tiers:
+QubitLearn AI organizes quantum education into three complementary tiers:
 
-```
+```text
 +=============================================================================================+
 | [Layer 3] MicroVM Sandbox Tier                                                             |
-| • Firecracker Linux KVM Sandbox Execution (Pre-compiled .bin/SDK, zero network access)      |
+| • Firecracker Linux KVM Sandbox Execution (Pre-warmed snapshots, memory isolation)          |
 +=============================================================================================+
                                               ▲
                                               │  AST Invariant Dispatch
 +=============================================================================================+
 | [Layer 2] AI Reasoning & Formal Logic Tier                                                  |
-| • Gemini 3.7 Flash Spatial Vision (2D Bounding-Box Error Localization on Circuit Graphs)    |
+| • Google Gemini on Vertex AI (2D Bounding-Box Error Localization on Circuit Graphs)         |
 | • Lean 4 Dependent Type Proof Kernel (Autoformalization & 20 Giallar AST Rewrite Rules)      |
-| • Multi-SDK Transpiler (Universal AST across Qiskit, Cirq, PennyLane & OpenQASM 3.0)       |
+| • Universal Multi-SDK Transpiler (IBM Qiskit, Google Cirq, Xanadu PennyLane, OpenQASM)     |
 +=============================================================================================+
                                               ▲
                                               │  State Invariant Match
 +=============================================================================================+
 | [Layer 1] Quantum Simulation Engine Tier                                                    |
-| • Sparse O(2ⁿ) Bitmask In-Memory Statevector Engine (<2ms Latency, Client-Side WASM)         |
-| • 14-Qubit Dense Matrix vs. 28-Qubit Statevector Browser Memory Limit Bounds                |
+| • Client-Side In-Memory Statevector Engine (<2ms Latency for circuits up to 15 qubits)      |
+| • Memory bounds management routing larger circuits to server-side sandboxes                 |
 +=============================================================================================+
 ```
 
 ---
 
-## ⚡ 5-Engine Orchestration Flowchart
+## ⚡ Technical Workflow
 
-```
- [ Student Web UI ]
- (Circuit Lab, Arena, Dashboard, Vision Upload)
+```text
+ [ Student Web Interface ]
+ (Interactive Circuit Studio, Code Editor, Bloch Sphere, Mathematical Analysis)
          │
          ▼  (HTTP / WebSocket Protocol)
  [ API Gateway & Router ]
- (AST Parsing, Token Rate Limiting & RLS)
          │
-         ├───► [ 1. Hilbert Simulator (|ψ⟩) ] ────── In-Memory Bitmask Evolution (<2ms)
-         ├───► [ 2. Gemini 3.7 Flash AI ]     ────── 2D Bounding-Box Error Vision & Socratic Hints
-         ├───► [ 3. Multi-SDK Transpiler ]    ────── Universal AST (Qiskit, Cirq, PennyLane)
-         ├───► [ 4. Firecracker MicroVM ]     ────── Isolated Linux KVM Sandbox Execution
-         └───► [ 5. Formal Prover (Lean 4) ]  ────── Dependent-Type Invariants (20 Giallar Passes)
+         ├───► [ 1. In-Browser Statevector Engine (|ψ⟩) ] ── Real-time matrix simulation (<2ms)
+         ├───► [ 2. Multimodal Spatial Vision ]          ── 2D Bounding-Box Error Localization
+         ├───► [ 3. Universal Multi-SDK Transpiler ]     ── Bidirectional AST (Qiskit, Cirq, PennyLane)
+         ├───► [ 4. Firecracker Linux KVM MicroVM ]      ── Isolated Sandbox (<140ms cold-boot)
+         └───► [ 5. Formal Logic Verifier (Lean 4) ]     ── State Invariant Checking (20 Giallar Rules)
                                                                │
                                                                ▼
-                                                    [ Fidelity Gate (F ≥ 0.99?) ]
+                                                    [ State Verification Gate ]
                                                                │
                                          ┌─────────────────────┴─────────────────────┐
-                                         ▼ (PASS ✓)                                  ▼ (FAIL ✗)
-                                [ Supabase Database ]                   [ 3-Attempt Socratic Loop ]
-                                (State Hash Ledger & WS Sync)           (Causal Error Hints to Student)
+                                         ▼ (Verified)                                ▼ (Diagnostic)
+                                [ Active State Display ]                    [ Socratic AI Guidance ]
+                                (Dirac Math & 3D Bloch Orbitals)            (2D Bounding Box & Gate Auto-Fix)
 ```
 
 ---
 
-## 🌟 Core Feature Modules
+## 🌟 Core Features
 
-### 1. Interactive Quantum Circuit Lab
-* **16-Gate Palette:** Drag-and-drop Hadamard ($H$), Pauli ($X, Y, Z$), Phase ($S, S^\dagger, T, T^\dagger$), Rotation ($R_x, R_y, R_z$), CNOT, CZ, SWAP, Toffoli (CCX), and Measurement ($M$).
-* **Real-Time Bloch Sphere:** 3D interactive qubit vector orbital state evolution.
-* **Statevector Probability Histogram:** Instantaneous measurement distribution calculation.
+### 1. Interactive Quantum Circuit Studio
+* **Gate Palette:** Hadamard ($H$), Pauli ($X, Y, Z$), Phase ($S, S^\dagger, T, T^\dagger$), Rotation ($R_x, R_y, R_z$), CNOT, CZ, SWAP, Toffoli (CCX), and Measurement ($M$).
+* **Flexible Wire Routing:** Interactive gate drawer to configure control, target, and swap wires across any qubit channels.
+* **Real-Time Bloch Sphere:** 3D vector coordinates with pure/mixed state orbital projections.
+* **Statevector Probability Analysis:** Computational basis distributions, amplitudes, and KaTeX Dirac formulas.
 
-### 2. Quantum Coding Arena & Competitions
-* **Algorithmic Challenges:** Superposition preparation, Bell state generation, Quantum Teleportation, Deutsch-Jozsa, Grover search ($O(\sqrt{N})$), and Quantum Phase Estimation (QPE).
-* **Dual-Agent Exam Invigilator:** Anti-cheat code execution with automated test case validation.
+### 2. Multi-SDK Transpilation & Execution Console
+* **Bidirectional AST:** Instant code generation across **IBM Qiskit 1.x, Google Cirq, Xanadu PennyLane, OpenQASM, and LaTeX Quantikz**.
+* **MicroVM Execution Console:** Terminal environment simulating memory snapshot execution (`<140ms`).
 
-### 3. Gemini 3.7 Multimodal Spatial Vision
-* **Hand-Drawn Circuit Transcriber:** Upload camera photos of handwritten quantum circuits.
-* **2D Bounding-Box Localizer:** Accurately draws spatial coordinates around misplaced gates, incorrect target qubits, or inverted control lines.
+### 3. Spatial Vision & 2D Bounding Box Debugger
+* **Circuit Photo Scanner:** Transcribes hand-drawn whiteboard or notebook diagrams into digital circuits.
+* **Visual Bounding Boxes:** Marks and pinpoints misplaced gates or phase errors directly on the wire grid ($0\text{--}1000$ coordinate scale).
 
-### 4. Lean 4 Formal Verification Prover
-* **Mathematical Proof DAG:** Autoformalizes circuit ASTs into Lean 4 dependent-type theorems.
-* **20 Giallar Rewrite Rules:** Proves semantic equivalence across compiler optimization passes (*PLDI '22*), completely eliminating LLM hallucinations.
-
-### 5. Research & Literature Verification
-* **Adversarial Claim Auditor:** Validates quantum computational claims against peer-reviewed literature (*Grover 1996, Shor 1994, VQE Peruzzo 2014, QAOA Farhi 2014*).
-
-### 6. Student Progress & AI Trust Dashboard
-* **Quantum XP & Learning Milestones:** Tracks linear algebra competencies, coding submissions, and invariant health ($96\%$ verified).
-* **AI Trust Diagnostic:** Categorizes failure telemetry into learner mistakes, AI slips, and unsolvable edge cases.
+### 4. Mathematical & Formal Verification
+* **Giallar 20-Rule Optimizer:** Applies sound rewrite rules based on PLDI '22 research to reduce gate depth without modifying unitary matrices.
+* **Lean 4 Mathlib Autoformalizer:** Autoformalizes quantum state claims into machine-checked Proof DAGs.
+* **NVIDIA Ising 3D CNN QEC Suite:** Interactive triangular color code error correction benchmark comparing against baseline decoders.
 
 ---
 
-## 📊 Empirical Benchmarks & Verification
+## 📊 Verification & Test Summary (101 Domain Tests Passed)
 
-### 1. 24-Module Platform System Audit
-Comprehensive system audits verified across 24 core modules (detailed in `project_documents/Test_Results.md`):
+The platform is backed by **101 automated algorithmic and system tests** verified with a **100% pass rate** (detailed in [`project_documents/Test_Results.md`](project_documents/Test_Results.md)):
 
-| Test Category | Suite Target | Benchmark Metric | Status |
-| :--- | :--- | :--- | :---: |
-| **Statevector Engine** | Bitmask tensor simulation | Latency $< 2.0\text{ ms}$ up to 14 qubits | `PASSED ✓` |
-| **Circuit Transpiler** | AST concordance | State Fidelity $F \ge 0.999$ across Qiskit/Cirq | `PASSED ✓` |
-| **Gemini 3.7 Vision** | 2D bounding-box localization | IoU $\ge 0.82$ on hand-drawn circuits | `PASSED ✓` |
-| **Lean 4 Proof Kernel** | AST invariant equivalence | 20 Giallar compiler rewrite passes proven | `PASSED ✓` |
-| **Reflexion Loop** | Causal fault localization | Max 3 attempts with adaptive Socratic hints | `PASSED ✓` |
-| **Platform Scalability** | Browser memory limits | 14-qubit dense matrix vs. 28-qubit statevector | `PASSED ✓` |
-
-### 2. Multi-SDK MicroVM & Giallar Verification Benchmark (12 Programs: Qiskit, Cirq, PennyLane)
-Empirical execution and formal invariant verification in **Local Firecracker Linux KVM Sandbox** (`npm run test:benchmarks`):
-
-| ID | SDK | Algorithm / Circuit Name | Type | Sandbox Isolation | Time | RAM | State Fidelity ($F$) | Formal Proof |
-| :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Q1** | Qiskit | Bell State ($|\Phi^+\rangle$) | Valid | `KVM_FIRECRACKER_MICROVM` | 1115 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **Q2** | Qiskit | 3-Qubit GHZ State | Valid | `KVM_FIRECRACKER_MICROVM` | 717 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **Q3** | Qiskit | Quantum Teleportation Protocol | Valid | `KVM_FIRECRACKER_MICROVM` | 820 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **Q4** | Qiskit | Grover 2-Qubit Search ($|11\rangle$) | Valid | `KVM_FIRECRACKER_MICROVM` | 763 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **Q5_BUG** | Qiskit | Flawed CX Commutation (Bug #4465) | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 809 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_1, R_7$)** |
-| **Q6_BUG** | Qiskit | RZ Target Phase Drift (Bug #3812) | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 735 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_{11}, R_{12}$)** |
-| **C1** | Cirq | Deutsch-Jozsa (Balanced Oracle) | Valid | `KVM_FIRECRACKER_MICROVM` | 759 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **C2** | Cirq | 3-Qubit Quantum Fourier Transform | Valid | `KVM_FIRECRACKER_MICROVM` | 776 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **C3_BUG** | Cirq | Missing Hadamard CZ Conjugation | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 729 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_{15}$)** |
-| **P1** | PennyLane | 2-Qubit VQE Parameterized Circuit | Valid | `KVM_FIRECRACKER_MICROVM` | 816 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **P2** | PennyLane | QAOA Max-Cut Layer ($p=1$) | Valid | `KVM_FIRECRACKER_MICROVM` | 727 ms | 12 MB | $F = 1.0000$ | Verified ✅ |
-| **P3_BUG** | PennyLane | Parameterized Rotation Sign Bug | **Compiler Bug** | `KVM_FIRECRACKER_MICROVM` | 824 ms | 12 MB | $F = 1.0000$ | **Solved ✅ ($R_{16}$)** |
+| Domain / Suite Category | Checks | Benchmark Metric | Status |
+| :--- | :---: | :--- | :---: |
+| **KaTeX Mathematical Engine** | 2 / 2 | Statevector & VQE MathML AST rendering | `PASSED ✓` |
+| **Universal Multi-SDK Transpiler** | 5 / 5 | AST concordance across Qiskit, Cirq, PennyLane | `PASSED ✓` |
+| **Giallar 20 Formal Rewrite Rules** | 22 / 22 | 20 Coq/Z3 rules + compiler pass equivalence | `PASSED ✓` |
+| **Quantum State Engine & Physics** | 8 / 8 | Bell state, GHZ, CHSH non-locality ($\langle S \rangle = 2.8284$), purity | `PASSED ✓` |
+| **In-Browser Scalability & Limits** | 9 / 9 | 1–5 Qubit statevectors (<2ms) and memory limits | `PASSED ✓` |
+| **Lean 4 Autoformalization** | 7 / 7 | Mathlib 4 theorem catalog, proof DAGs, live kernel | `PASSED ✓` |
+| **2D Bounding Box Document Extraction** | 3 / 3 | Paper claim audit and normalized 0–1000 spatial boxes | `PASSED ✓` |
+| **NVIDIA Ising 3D CNN QEC** | 3 / 3 | 3D space-time syndrome generation & LER suppression | `PASSED ✓` |
+| **4-Column System Ablation** | 4 / 4 | Failure domain analysis across pure SDK, AI, and hybrid | `PASSED ✓` |
+| **Multi-Persona User Workflows** | 4 / 4 | Student, researcher, and instructor workflows | `PASSED ✓` |
+| **Edge Cases & Boundary Tests** | 6 / 6 | Empty circuits, clamping, out-of-order execution | `PASSED ✓` |
+| **Real-Time WebSockets** | 3 / 3 | Full-duplex Socket.IO handshake and room state sync | `PASSED ✓` |
+| **Live Cloud Services Connectivity** | 3 / 3 | Vertex AI & Supabase configuration checks | `PASSED ✓` |
+| **Full-Stack API Endpoints** | 3 / 3 | Simulation, Giallar optimization, and transpiler services | `PASSED ✓` |
+| **Python SDK & Isolation Suites** | 19 / 19 | Qiskit, Cirq, PennyLane, Stim QEC, ONNX Runtime, KVM | `PASSED ✓` |
 
 ---
 
-## ☁️ Execution Modes & Cloud VM Topology
-
-QubitLearn AI dynamically routes quantum execution across four interchangeable runtime modes based on environment configuration (`.env`):
-
-| Mode (`QUANTUM_EXECUTION_MODE`) | Target Infrastructure | Nested KVM Required? | Typical Cost | Security Boundary |
-| :--- | :--- | :---: | :---: | :--- |
-| **`IN_MEMORY_V8`** *(Default)* | Google Cloud Run / Local Node | **No** | **$0.00** (Free Tier) | Fast in-memory V8 sandbox with deterministic Hilbert space simulation ($<2\text{ ms}$). |
-| **`FIRECRACKER_KVM`** | GCP Compute Engine N2 (`n2-standard-2`) or Local WSL2 | **Yes** (`/dev/kvm`) | ~$0.097/hr (~$5–7 for judging) | Hardware-level microVM jail (5ms cold start, zero network access, ephemeral cleanup). |
-| **`CLOUD_RUN_SANDBOX`** | Google Cloud Run Container Sandbox | **No** | Free tier / Pay-per-req | Managed container isolation for executing sandboxed Python code. |
-| **`BINARY_RUNTIME`** | GCP Compute Engine E2 (`e2-micro` / `e2-medium`) | **No** | $0 to ~$7/month | Standalone precompiled SDK binary execution on standard VMs. |
-
----
-
-## 🐳 Docker Quickstart & Local Deployment
+## 🐳 Quickstart & Local Setup
 
 ### Prerequisites
-* Docker Engine $\ge 24.0$ and Docker Compose $\ge 2.20$
-* Or Node.js $\ge 20.0$ and npm $\ge 10.0$
+* Node.js $\ge 20.0$ and npm $\ge 10.0$
+* Or Docker Engine $\ge 24.0$ with Docker Compose
 
-### Option A: Run via Docker Compose (Recommended)
+### Option A: Run Locally via Node.js
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/niloydebbarma-code/QubitLearnAI.git
-cd QubitLearnAI
-
-# 2. Build and launch the containerized application
-docker compose up --build -d
-
-# 3. Open in your browser
-open http://localhost:3000
-```
-
-### Option B: Run Locally via Node.js
-
-```bash
-# 1. Navigate to the application directory
-cd qubitlearn-app
+cd QubitLearnAI/qubitlearn-app
 
 # 2. Install dependencies
 npm install
 
-# 3. Configure environment variables (optional)
-cp .env.example .env
-
-# 4. Start the development server
+# 3. Start development server
 npm run dev
 
-# 5. Build for production
-npm run build
+# 4. Open in your browser
+# http://localhost:3000
 ```
 
-### Option C: 1-Click Firecracker & KVM Setup (Local WSL2 / Linux)
+### Option B: Run via Docker Compose
 
 ```bash
-cd qubitlearn-app
+# From repository root:
+docker compose up --build -d
 
-# 1. Install Firecracker v1.7.0 & configure /dev/kvm permissions
-npm run setup:firecracker
-
-# 2. Launch the interactive runtime selector & diagnostic scanner
-npm run setup:runtime
-# Automatically detects WSL2, /dev/kvm, Firecracker, Python & configures .env
+# Open in browser:
+# http://localhost:3000
 ```
 
-### Option D: Run the Complete Verification Test Suite
+### Option C: Run Master Test Harness
 
 ```bash
-cd qubitlearn-app
-npx tsx tests/run_all_tests.ts
-```
+# Run all TypeScript modular test suites (82 tests):
+cd qubitlearn-app && npm test
 
----
-
-## 🚀 Google Cloud Production Deployment & Vertex AI Integration (`gcloud` CLI)
-
-### 1. Local Development with Google Cloud Vertex AI (Application Default Credentials)
-
-To run Vertex AI Gemini 3.7 Flash locally without hardcoding API keys in `.env`:
-
-```bash
-# 1. Initialize and authenticate Google Cloud CLI
-gcloud auth login
-gcloud config set project YOUR_PROJECT_ID
-
-# 2. Authenticate Application Default Credentials (ADC)
-gcloud auth application-default login
-gcloud auth application-default set-quota-project YOUR_PROJECT_ID
-
-# 3. Enable Vertex AI & Cloud Run APIs
-gcloud services enable aiplatform.googleapis.com run.googleapis.com compute.googleapis.com
-```
-
-### 2. Deploy Main Application to Google Cloud Run (Keyless IAM Authentication)
-
-Cloud Run uses a dedicated runtime service account with `roles/aiplatform.user` for credential-free inference with Vertex AI:
-
-```bash
-# 1. Create a dedicated Cloud Run runtime service account
-gcloud iam service-accounts create qubitlearn-runner \
-  --display-name="QubitLearn AI Cloud Run Runtime" \
-  --project=YOUR_PROJECT_ID
-
-# 2. Grant Vertex AI User role to the service account
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-  --member="serviceAccount:qubitlearn-runner@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
-  --role="roles/aiplatform.user"
-
-# 3. Deploy container directly to Cloud Run
-gcloud run deploy qubitlearn-app \
-  --source . \
-  --region us-central1 \
-  --project YOUR_PROJECT_ID \
-  --service-account=qubitlearn-runner@YOUR_PROJECT_ID.iam.gserviceaccount.com \
-  --allow-unauthenticated \
-  --memory 1Gi \
-  --cpu 1 \
-  --concurrency 20 \
-  --max-instances 3 \
-  --set-env-vars="NODE_ENV=production,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=global,QUANTUM_EXECUTION_MODE=IN_MEMORY_V8,VM_PROVIDER=CLOUD_RUN"
-```
-
-### 3. (Optional) Deploy Dedicated Compute Engine N2 VM for Hardware Firecracker MicroVMs
-
-```bash
-# 1. Create base disk with Ubuntu 22.04 LTS
-gcloud compute disks create disk-base \
-  --image-family=ubuntu-2204-lts \
-  --image-project=ubuntu-os-cloud \
-  --zone=us-central1-a
-
-# 2. Create custom image with Nested Virtualization (Intel VMX) enabled
-gcloud compute images create nested-ubuntu-2204 \
-  --source-disk=disk-base \
-  --source-disk-zone=us-central1-a \
-  --licenses="https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
-
-# 3. Launch n2-standard-2 instance with hardware KVM support
-gcloud compute instances create firecracker-sandbox-host \
-  --zone=us-central1-a \
-  --machine-type=n2-standard-2 \
-  --image=nested-ubuntu-2204 \
-  --tags=firecracker-sandbox
-
-# 4. Update Cloud Run to route sandboxed execution to the N2 host over private VPC
-gcloud run services update qubitlearn-app \
-  --region us-central1 \
-  --update-env-vars="QUANTUM_EXECUTION_MODE=FIRECRACKER_KVM,VM_PROVIDER=GCP_N2_KVM,FIRECRACKER_SERVICE_URL=http://<INTERNAL_N2_IP>:8080"
+# Run all Python and end-to-end infrastructure test suites:
+python tests/run_all_tests.py
 ```
 
 ---
 
 ## 📂 Repository Structure
 
-```
+```text
 QubitLearnAI/
 ├── Dockerfile                             # Multi-stage production Docker build
-├── docker-compose.yml                     # Container orchestration & service definition
-├── .dockerignore                          # Docker build exclusion rules
-├── .gitignore                             # Comprehensive Git privacy rules
+├── docker-compose.yml                     # Container orchestration definition
+├── package.json                           # Root package descriptor
+├── requirements.txt                       # Pinned Python scientific dependencies
 ├── README.md                              # Master project documentation
 │
-├── qubitlearn-app/                        # Full-Stack Application Source Code
+├── qubitlearn-app/                        # Core Full-Stack Application
 │   ├── src/
-│   │   ├── components/                    # React UI (Circuit Lab, Arena, Bloch, Dashboard)
-│   │   ├── quantum/                       # Simulator, Transpiler, Lean Prover, Curricula
-│   │   ├── App.tsx                        # Application Root
-│   │   └── types.ts                       # TypeScript Data Contracts & Interfaces
-│   ├── server/                            # Express Backend, Vertex AI, MicroVM Router
-│   ├── scripts/                           # Runtime & VM Setup Configurator CLI
-│   ├── server.ts                          # Production Entry Point & WebSocket Gateway
-│   ├── tests/                             # 24 Automated Test Suites
-│   ├── package.json                       # Dependencies & build scripts
-│   └── vite.config.ts                     # Vite build configuration
+│   │   ├── components/                    # React UI (Circuit Studio, Bloch Sphere, Math)
+│   │   ├── quantum/                       # Simulator, Transpiler, Giallar, Lean Prover
+│   │   ├── App.tsx                        # Application Root & Vertical Flow
+│   │   └── types.ts                       # TypeScript Interfaces
+│   ├── server/                            # Backend Engine, Vertex AI, Database Helpers
+│   ├── scripts/                           # Setup and environment automation scripts
+│   ├── infrastructure/                    # Firecracker microVM snapshot builders
+│   ├── formal_engine/                     # Lean 4 formal verification kernel & Mathlib
+│   ├── tests/                             # 82 Automated TypeScript Test Suites
+│   ├── server.ts                          # Production Server & WebSocket Gateway
+│   └── package.json                       # Application build scripts
 │
-├── test_codes/                            # Multi-SDK MicroVM & Giallar Verification Suite
-│   ├── qiskit/                            # 4 Valid + 2 Compiler Bug Circuits (Qiskit 1.x)
-│   ├── cirq/                              # 2 Valid + 1 Compiler Bug Circuits (Cirq)
-│   ├── pennylane/                         # 2 Valid + 1 Compiler Bug Circuits (PennyLane)
-│   ├── run_all_benchmarks.ts              # Automated Local Firecracker & Giallar Runner
-│   └── Giallar_Firecracker_KVM_Verification_Report.md # Formal 12-Program Verification Report
+├── tests/                                 # 19 Python Quantum, QEC & Host Test Suites
+│   ├── quantum_sdk_simulation_test.py
+│   ├── quantum_error_correction_test.py
+│   ├── tensor_inference_engine_test.py
+│   ├── symbolic_algebra_test.py
+│   ├── microvm_snapshot_isolation_test.py
+│   └── run_all_tests.py                   # Master test orchestrator
 │
-└── project_documents/                     # Technical Specifications & Audits
-    ├── readme_banner.svg                  # Brand Architecture Banner Graphic
-    ├── System_Architecture_and_Verification_Report.pdf # Formal Architecture & Invariant Bounds (PDF)
-    ├── Giallar_Multi_SDK_Universal_Verification_Architecture.md # Cross-SDK Formal Proof Theory
-    ├── Cloud_VM_and_Runtime_Architecture.md # Multi-VM Topology, Hardware KVM & Cost Analysis
-    ├── Test_Results.md                    # 24-Module Verification Test Suite Report
-    └── Browser_Quantum_Simulation_Memory_Limits.md # V8 & WASM 14 vs 28 Qubit Bounds
+└── project_documents/                     # Technical Documentation & References
+    ├── readme_banner.svg                  # Architecture Banner
+    ├── REFERENCES.md                      # Official 23-Item Bibliography
+    ├── Test_Results.md                    # 101-Test Audit Report
+    ├── System_Architecture_and_Verification_Report.pdf # Architecture Specs (PDF)
+    ├── Giallar_Multi_SDK_Universal_Verification_Architecture.md
+    ├── Cloud_VM_and_Runtime_Architecture.md
+    └── Browser_Quantum_Simulation_Memory_Limits.md
 ```
 
 ---
 
-## 📚 References & Research Citations
+## 📚 Primary Academic Citations
 
-1. **QuanBench Benchmark:** Hu et al. *"QuanBench: Benchmarking Large Language Models on Quantum Program Synthesis"*, *arXiv:2510.16779* (2025).
+1. **QuanBench Benchmark:** Guo et al. *"QuanBench: Benchmarking Quantum Code Generation with Large Language Models"*, *arXiv:2510.16779* (2025).
 2. **Giallar Compiler Verification:** Tao et al. *"Giallar: Push-Button Verification for the Qiskit Quantum Compiler"*, *ACM PLDI '22 / arXiv:2205.00661* (2022).
-3. **Quantum Education Skill Gap:** Asfaw et al. *"Building a Quantum Engineering Undergraduate Curriculum"*, *arXiv:2108.01311* (2021).
-4. **Lean 4 / LeanDojo Formal Reasoning:** Yang et al. *"LeanDojo: Theorem Proving with Retrieval-Augmented Language Models"*, *NeurIPS / arXiv:2406.01940v1* (2024).
-5. **Office of Principal Scientific Adviser (PSA):** Government of India Report on *Quantum Science & Human Capital Reforms* (2025).
-6. **AICTE QT-03 Model Curriculum:** All India Council for Technical Education, *Model Curriculum for Minor Degree in Quantum Technologies* (2024).
-7. **National Quantum Mission (NQM):** Department of Science & Technology, Government of India (*dst.gov.in / pib.gov.in PRID: 1917992*).
+3. **Lean 4 Interactive Prover:** de Moura & Ullrich. *"The Lean 4 Theorem Prover and Programming Language"*, *CADE-28* (2021).
+4. **MerLean Quantum Formalization:** Ren et al. *"MerLean: An Agentic Framework for Autoformalization in Quantum Computation"*, *arXiv:2602.16554* (2026).
+5. **NVIDIA Ising QEC Decoding:** Olle et al. *"Fast and Accurate AI-Based Pre-Decoders for Color Codes"*, *NVIDIA Quantum / arXiv:2607.10058* (2026).
+6. **Firecracker Lightweight Virtualization:** Agache et al. *"Firecracker: Lightweight Virtualization for Serverless Applications"*, *USENIX NSDI* (2020).
+7. **Full 23-Item Reference Index:** See [`project_documents/REFERENCES.md`](project_documents/REFERENCES.md).
 
 ---
 
-## 👥 Project Information
+## 👥 Project & License
 
 * **Platform Name:** **QubitLearn AI**
-* **Domain:** Interactive Quantum Computing & Formal Algorithm Verification
-* **License:** Apache-2.0
-* **Deployment & Verification Access:** Access links provided directly in the official evaluation submission portal.
+* **Project Scope:** Interactive Quantum Computing & Formal Algorithm Verification
+* **License:** [Apache-2.0](LICENSE)
+* **Demo Video:** [YouTube Demonstration](https://youtu.be/1YdqxLEdkoQ?si=pOfLQWTAeqO7cJRy)
