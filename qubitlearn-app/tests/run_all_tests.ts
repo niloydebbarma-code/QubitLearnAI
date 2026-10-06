@@ -2,8 +2,8 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * 
- * Master TypeScript Test Suite Runner
- * Executes all 11 modular TypeScript test suites in tests/
+ * Full-Stack TypeScript Test Suite Runner
+ * Executes all 15 modular TypeScript test suites in tests/
  */
 
 import { runBrowserSecurityAndKatexTests } from './browser_security_katex_test';
@@ -24,7 +24,7 @@ import { runAiOutputValidationTests } from './ai_output_validation_test';
 
 export async function runAllTypeScriptTests() {
   console.log('='.repeat(80));
-  console.log('MASTER TYPESCRIPT & FULL-STACK VERIFICATION HARNESS');
+  console.log('TYPESCRIPT & FULL-STACK VERIFICATION HARNESS');
   console.log('='.repeat(80));
 
   const suites = [
@@ -39,7 +39,7 @@ export async function runAllTypeScriptTests() {
     { title: '9. 4-Column System Ablation & Failure Domains', fn: runAblationFailureDomainsTests },
     { title: '10. Multi-Persona User Workflows (Student/Researcher/Instructor)', fn: runUserPersonasTests },
     { title: '11. Edge Cases, Boundaries & Fault Tolerance', fn: runEdgeCasesTests },
-    { title: '12. Real Full-Duplex WebSockets', fn: runRealWebSocketTests },
+    { title: '12. Five-User Full-Duplex WebSockets', fn: runRealWebSocketTests },
     { title: '13. Live Cloud Services & Supabase Connectivity', fn: runLiveCloudServicesTests },
     { title: '14. Full-Stack API Endpoints & Service Layer', fn: runApiEndpointTests },
     { title: '15. AI Output Validation Boundaries', fn: runAiOutputValidationTests },

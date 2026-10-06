@@ -132,7 +132,7 @@ def test_system_toolchains():
         env = os.environ.copy()
         env["MSYS_NO_PATHCONV"] = "1"
         try:
-            res = subprocess.run(["wsl.exe", "-d", "Ubuntu", "-e", "bash", "-lc", "elan --version 2>/dev/null"],
+            res = subprocess.run(["wsl.exe", "-d", "Ubuntu", "-e", "bash", "-lc", "export PATH=\"$HOME/.elan/bin:$PATH\"; elan --version 2>/dev/null"],
                                  capture_output=True, text=True, env=env, timeout=5)
             if "elan" in res.stdout:
                 elan_ok = True

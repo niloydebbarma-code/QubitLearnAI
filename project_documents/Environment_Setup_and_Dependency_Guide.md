@@ -57,8 +57,8 @@ For interactive theorem proving and mathematical autoformalization:
 
 ## 4. System Verification
 
-After running the installer, execute the master verification suite to test all components:
+After running the installer, execute the comprehensive verification suite to test all components:
 ```bash
-python test_codes/system_requirements_test.py
+python tests/run_all_tests.py
 ```
-Expected output: **71/71 checks passed (100.0%)**.
+Expected output: **All test suites passed**.

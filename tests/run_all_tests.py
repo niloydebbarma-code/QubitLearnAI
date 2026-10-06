@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Master Test Orchestrator
+System Test Orchestrator
 Platform Verification
 
 Executes all decoupled, non-synthetic test suites across Python and TypeScript
@@ -16,7 +16,7 @@ from a single unified testing directory (tests/):
 9. Symbolic Quantum Algebra with SymPy (tests/symbolic_algebra_test.py)
 10. Live Vertex AI & Gemini API (tests/cloud_vertex_ai_test.py)
 11. Live Supabase PostgreSQL DB (tests/cloud_supabase_db_test.py)
-12. Master TypeScript & Full-Stack Suite (tests/run_all_tests.ts)
+12. TypeScript & Full-Stack Suite (qubitlearn-app/tests/run_all_tests.ts)
 """
 
 import sys
@@ -80,7 +80,7 @@ def main():
         ("11. Supabase Cloud PostgreSQL Interface",
          [sys.executable, os.path.join(tests_dir, "cloud_supabase_db_test.py")],
          root_dir, {}),
-        ("12. Master TypeScript & Full-Stack Verification",
+        ("12. TypeScript & Full-Stack Verification",
          ["npx.cmd" if sys.platform == "win32" else "npx", "tsx", "tests/run_all_tests.ts"],
          app_dir, {"NODE_PATH": node_path}),
     ]
@@ -91,7 +91,7 @@ def main():
             passed_suites += 1
 
     print("\n" + "=" * 80)
-    print(f"MASTER VERIFICATION RUN COMPLETE: {passed_suites}/{len(suites)} test suites passed.")
+    print(f"SYSTEM VERIFICATION RUN COMPLETE: {passed_suites}/{len(suites)} test suites passed.")
     print("=" * 80)
     sys.exit(0 if passed_suites == len(suites) else 1)
 

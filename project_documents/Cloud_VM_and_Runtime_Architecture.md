@@ -69,7 +69,7 @@ npm run setup:runtime
 
 ## 💻 4. Local Testing with Hardware KVM & Firecracker in WSL2
 
-You can test real Firecracker microVM execution locally on Windows 11 / WSL2 with **zero cloud compute cost**:
+You can test Firecracker microVM execution locally on Windows 11 / WSL2:
 
 ### Prerequisites:
 - Windows 11 with WSL2 (WSL version $\ge 2.0$, Kernel $\ge 6.6$).

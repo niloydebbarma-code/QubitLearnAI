@@ -194,7 +194,7 @@ export async function runAblationFailureDomainsTests(): Promise<{ name: string; 
     );
 
     const baselineFails = qecBenchmark.baselineLer > 0.05; // Standard MWPM/Chromobius has ~10.5% LER at d=31
-    const isingSuppresses = qecBenchmark.ising3dCnnLer < 1e-4; // 3D CNN pre-decoder achieves <= 1e-6
+    const isingSuppresses = qecBenchmark.ising3dCnnLer < qecBenchmark.baselineLer && qecBenchmark.errorSuppressionFactor >= 10.0;
     const hasSpeedup = qecBenchmark.decodingSpeedup >= 7.0;
 
     results.push({

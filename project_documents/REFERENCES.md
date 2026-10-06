@@ -1,10 +1,10 @@
 # QubitLearn AI: Official Research, Policy & Empirical References (1–23)
-## Master Bibliography & Citation Index (Interactive Quantum Computing & Algorithm Learning Platform)
+## Comprehensive Bibliography & Citation Index (Interactive Quantum Computing & Algorithm Learning Platform)
 
 ---
 
 ### Executive Summary
-This document provides the formal 23-item academic and empirical bibliography underpinning **QubitLearn AI**, matching the exact citation map in the master technical architecture. All references are verified, active, and hyperlinked to primary DOI, arXiv, Press Information Bureau (PIB), and institutional government repositories.
+This document provides the formal 23-item academic and empirical bibliography underpinning **QubitLearn AI**, matching the citation map in the technical architecture. All references are verified, active, and hyperlinked to primary DOI, arXiv, Press Information Bureau (PIB), and institutional government repositories.
 
 ---
 
